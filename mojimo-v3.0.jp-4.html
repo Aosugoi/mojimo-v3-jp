@@ -262,6 +262,7 @@ h2{font-size:24px;margin:0;font-weight:800;letter-spacing:-.02em}
 .glyph.word{font-size:46px}
 .glyph.en{font-size:28px;font-family:"M PLUS Rounded 1c",sans-serif;font-weight:800;letter-spacing:-.02em}
 .romaji{font-size:16px;color:var(--muted);margin-top:6px;font-weight:600}
+.opt small.ansrj,.tile small.ansrj{display:block;font-size:13px;color:var(--muted);font-weight:600;margin-top:2px;letter-spacing:0}.tile small.ansrj{font-size:11px;margin-top:0}
 .meaning{font-size:18px;margin-top:6px;font-weight:700}
 .pic{font-size:40px;line-height:1;margin-bottom:6px}
 .speak{position:absolute;right:14px;top:14px;width:38px;height:38px;border-radius:50%;background:var(--lav-l);color:var(--lav);font-size:15px;display:grid;place-items:center}
@@ -981,7 +982,7 @@ try{S=Object.assign(fresh(),JSON.parse(localStorage.getItem(KEY)||'null')||{})}c
 if(S.lang!=='en'&&S.lang!=='ja')S.lang='en';
 if(!S.g)S.g={spins:0,miss:0,free:1};
 if(!S.lang)S.lang=detectLang();
-if(S.music===undefined)S.music=true;if(!S.rjDefault){S.romaji=true;S.rjDefault=1}if(!S.hints)S.hints={};
+if(S.music===undefined)S.music=true;if(!S.rjDefault){S.romaji=true;S.rjDefault=1}if(!S.hints)S.hints={};if(S.owned&&S.owned.length>1)S.owned.slice(1).forEach(id=>{const q=S.pets[id];if(q&&q.stage==='egg'&&q.tapHatch===undefined){q.tapHatch=true;q.taps=0}});
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch{}};
 const now=()=>Date.now()+S.dayOffset*DAY;
 const dayStr=t=>new Date(t).toDateString();
@@ -994,6 +995,7 @@ function tick(){
 }
 const pet=id=>S.pets[id]||(S.pets[id]={xp:0,stage:'egg',acc:null});
 const stageOf=id=>S.pets[id]?.stage||'egg';
+const TAP_HATCH=8;const tapEgg=id=>!!(S.pets[id]&&S.pets[id].tapHatch&&stageOf(id)==='egg');const markTapEgg=id=>{const pp=pet(id);if(pp.stage==='egg'){pp.tapHatch=true;pp.taps=pp.taps||0}};
 const xpOf=id=>S.pets[id]?.xp||0;
 const isNight=()=>{if(S.forceNight!==null)return S.forceNight;const h=new Date().getHours();return h>=22||h<7};
 const mOf=id=>S.m[id]||(S.m[id]={lvl:0,box:0,due:0});
@@ -1067,7 +1069,7 @@ const TR={
 'Home':['ホーム','Beranda'],'Journey':['ジャーニー','Perjalanan'],'Review':['復習','Ulasan'],'Collection':['コレクション','Koleksi'],
 'Feed':['ごはん','Beri makan'],'Play':['あそぶ','Main'],'Rest':['ねる','Tidur'],'Wake':['おこす','Bangun'],'Style':['スタイル','Gaya'],
 "Today's goals":['きょうの目標','Target hari ini'],'Word of the day':['きょうの言葉','Kata hari ini'],'Tap to play':['タップしてあそぶ','Ketuk untuk bermain'],
-'Tap to warm your egg':['タップしてたまごをあたためる','Ketuk untuk menghangatkan telurmu'],'Tap to wake':['タップしておこす','Ketuk untuk membangunkan'],
+'Tap to warm your egg':['タップしてたまごをあたためる','Ketuk untuk menghangatkan telurmu'],'Tap the egg to hatch it':['たまごをタップして孵化させよう','Ketuk telurnya untuk menetaskannya'],'Tap to wake':['タップしておこす','Ketuk untuk membangunkan'],
 'Mystery egg':['なぞのたまご','Telur misterius'],'Egg':['たまご','Telur'],'Baby':['ベビー','Bayi'],'Young':['ヤング','Remaja'],'Grown':['おとな','Dewasa'],'Head':['あたま','Kepala'],"Streak reward":["れんぞくボーナス", "Hadiah beruntun"],"Yay!":["やったー！", "Hore!"],"Daily treat":["きょうのおやつ", "Camilan harian"],"Thank you!":["ありがとう！", "Terima kasih!"],"Come back every day for a new treat.":["毎日来ると新しいおやつがもらえるよ。", "Datang setiap hari untuk camilan baru."],"Your egg brought you something":["たまごがプレゼントを持ってきた", "Telurmu membawakan sesuatu"],"Streak":["れんぞく", "Beruntun"],"Streak freeze":["れんぞくキープ", "Pembeku beruntun"],"A streak freeze is used automatically if you miss a day, so your streak keeps going.":["1日休んでも自動で使われて、れんぞく記録が続きます。", "Pembeku dipakai otomatis jika kamu melewatkan sehari, jadi beruntunmu tetap lanjut."],"Streak freeze ready. It saves your streak if you miss a day.":["れんぞくキープを用意しました。1日休んでも記録を守ります。", "Pembeku siap. Beruntunmu aman jika kamu melewatkan sehari."],"Friendship":["なかよし度", "Persahabatan"],"Best friends!":["大の仲良し！", "Sahabat terbaik!"],"Photo":["しゃしん", "Foto"],"Save photo":["しゃしんを保存", "Simpan foto"],"Share":["シェア", "Bagikan"],"Every world cleared. Keep your words fresh!":["全ワールドクリア！単語を復習しよう！", "Semua dunia selesai. Terus segarkan kosakatamu!"],"Snowflake clip":["ゆきのピン", "Jepit kepingan salju"],"Mitten clip":["てぶくろのピン", "Jepit sarung tangan"],"Tulip clip":["チューリップのピン", "Jepit tulip"],"Butterfly clip":["ちょうちょのピン", "Jepit kupu-kupu"],"Wish strip":["たんざく", "Kertas harapan"],"Fan clip":["うちわのピン", "Jepit kipas"],"Maple clip":["もみじのピン", "Jepit daun maple"],"Moon dango clip":["つきみだんごのピン", "Jepit dango bulan"],"Let's be partners!":["", "Ayo jadi partner!"],"Let's do our best together!":["", "Ayo berusaha bersama!"],"Welcome back!":["", "Selamat datang kembali!"],"I was waiting for you!":["", "Aku menunggumu!"],"We meet again today!":["", "Kita bertemu lagi hari ini!"],"It's fun being with you!":["", "Senang bersamamu!"],"Thanks for always being here":["", "Terima kasih selalu ada"],"We'll always be friends":["", "Kita akan selalu berteman"],"I love you most in the world!":["", "Aku paling sayang kamu di dunia!"],"Snowflake and mitten clips are in Style for a limited time.":["ゆきとてぶくろのピンが期間限定で登場。", "Jepit salju dan sarung tangan tersedia di Gaya untuk waktu terbatas."],"Tulip and butterfly clips are in Style for a limited time.":["チューリップとちょうちょのピンが期間限定で登場。", "Jepit tulip dan kupu-kupu tersedia di Gaya untuk waktu terbatas."],"Wish strip and fan clips are in Style for a limited time.":["たんざくとうちわのピンが期間限定で登場。", "Kertas harapan dan jepit kipas tersedia di Gaya untuk waktu terbatas."],"Maple and moon-dango clips are in Style for a limited time.":["もみじとつきみだんごのピンが期間限定で登場。", "Jepit maple dan dango bulan tersedia di Gaya untuk waktu terbatas."],'Oh, I see!':['','Oh, begitu!'],"What's new":['おしらせ','Yang baru'],'Change log and recent updates':['更新の記録','Catatan perubahan dan pembaruan terbaru'],'New':['NEW','Baru'],"I love you!":['',"Aku sayang kamu!"],"Ehehe, I'm happy":['',"Ehehe, aku senang"],"Let's stay together":['',"Ayo tetap bersama"],"Oh!":['',"Oh!"],"What a surprise!":['',"Kaget!"],"Got it!":['',"Aku mengerti!"],"What?":['',"Apa?"],"Why?":['',"Kenapa?"],"Really?":['',"Benarkah?"],"La la la♪":['',"La la la♪"],"Let's sing!":['',"Ayo bernyanyi!"],"This is fun♪":['',"Seru ya♪"],"*nervous sweat*":['',"*keringat dingin*"],"What do I do…":['',"Bagaimana ini…"],"I'm a little stuck":['',"Aku agak bingung"],"Hmph!":['',"Ih!"],"*huff huff*":['',"*cemberut*"],"I'm mad!":['',"Aku marah!"],"Umm…":['',"Umm…"],"*silence*":['',"*hening*"],"Sparkly!":['',"Berkilau!"],"Amazing!":['',"Hebat!"],"So pretty!":['',"Cantik sekali!"],"I'm sleepy…":['',"Aku mengantuk…"],"*sleeping soundly*":['',"*tidur nyenyak*"],"Good night…":['',"Selamat tidur…"],"I've got an idea!":['',"Aku dapat ide!"],"That's it!":['',"Oh iya!"],"Let's study!":['',"Ayo belajar!"],"*sniffle*":['',"*terisak*"],"I'm sad…":['',"Aku sedih…"],"Pat me…":['',"Elus aku…"],"My heart is racing!":['',"Deg-degan!"],"So cute!":['',"Lucu sekali!"],"I really love you":['',"Aku sayang banget"],"Okay!":['',"Oke!"],"Leave it to me!":['',"Serahkan padaku!"],"Sure!":['',"Boleh!"],'Face':['かお','Wajah'],'Neck':['くび','Leher'],'Wear up to three at once: one on the head, one on the face and one around the neck.':['3つまで同時につけられます。あたま・かお・くびに1つずつ。','Bisa memakai sampai tiga sekaligus: satu di kepala, satu di wajah, dan satu di leher.'],'Big ribbon':['大きなリボン','Pita besar'],'Sakura clip':['さくらのピン','Jepit sakura'],'Star clip':['ほしのピン','Jepit bintang'],'Cherry clip':['さくらんぼのピン','Jepit ceri'],'Leaf sprout':['はっぱ','Tunas daun'],'Pompom beanie':['ニットぼう','Kupluk pompom'],'Beret':['ベレーぼう','Baret'],'Straw hat':['むぎわらぼうし','Topi jerami'],'Onsen towel':['おんせんタオル','Handuk onsen'],'Hachimaki band':['はちまき','Ikat kepala hachimaki'],'Party hat':['パーティーぼう','Topi pesta'],'Cat-ear headband':['ねこみみ','Bando telinga kucing'],'Strawberry hat':['いちごぼうし','Topi stroberi'],'Chef hat':['コックぼう','Topi koki'],'Frog hat':['かえるぼうし','Topi katak'],'Flower crown':['はなかんむり','Mahkota bunga'],'Graduation cap':['そつぎょうぼう','Topi wisuda'],'Bow tie':['ちょうネクタイ','Dasi kupu-kupu'],'Bell collar':['すずのくびわ','Kalung lonceng'],'Flower lei':['はなのレイ','Kalung bunga'],'Heart shades':['ハートのサングラス','Kacamata hati'],'Cool shades':['サングラス','Kacamata hitam'],'Round glasses':['まるメガネ','Kacamata bulat'],'Knit scarf':['ニットのマフラー','Syal rajut'],'Star shades':['ほしのサングラス','Kacamata bintang'],'Halo':['てんしのわ','Lingkaran halo'],'Witch hat':['まじょのぼうし','Topi penyihir'],'Fox mask':['きつねのおめん','Topeng rubah'],'Mushroom cap':['きのこ','Topi jamur'],'Hangout':['あそびば','Tempat main'],'Every Mojimo you have unlocked hangs out here. Tap one to say hi, change the scene below, or press Dance party.':['なかまになったもじもがここでくつろいでいます。タップしてあいさつしたり、下でシーンをかえたり、ダンスパーティーをはじめよう。','Semua Mojimo yang sudah terbuka bersantai di sini. Ketuk salah satunya untuk menyapa, ganti latar di bawah, atau tekan Pesta dansa.'],'Dance party':['ダンスパーティー','Pesta dansa'],'Stop dancing':['ダンスをやめる','Berhenti menari'],'Word rush':['ことばラッシュ','Kilat kata'],'Spend time with all your Mojimo, or start a dance party':['なかまのもじもとすごしたり、ダンスパーティーをしよう','Habiskan waktu dengan semua Mojimo-mu, atau mulai pesta dansa'],'Pick the meaning in 30 seconds':['30秒で意味をえらぼう','Pilih artinya dalam 30 detik'],'All your Mojimo together':['もじもがみんなあつまる','Semua Mojimo-mu bersama'],'Scene':['シーン','Latar'],"Who's hanging out":['だれがあそぶ？','Siapa yang ikut main'],'Everyone':['みんな','Semua'],'At least one Mojimo stays to hang out':['すくなくとも1ぴきはのこります','Setidaknya satu Mojimo tetap ikut main'],'Meadow':['のはら','Padang rumput'],'Snowy day':['ゆきの日','Hari bersalju'],'Beach':['うみ','Pantai'],'Sky islands':['そらのしま','Pulau langit'],'Bamboo grove':['たけやぶ','Hutan bambu'],'Starry night':['ほしぞら','Malam berbintang'],'Firefly forest':['ほたるのもり','Hutan kunang-kunang'],'Rainy day':['あめの日','Hari hujan'],'Autumn':['あき','Musim gugur'],'Close':['とじる','Tutup'],'All forms unlocked':['すべての姿を解放','Semua wujud terbuka'],'Choose a look':['見た目をえらぶ','Pilih tampilan'],'All forms unlocked!':['すべての姿を解放！','Semua wujud terbuka!'],'Fully grown! You can switch between Baby and Grown any time.':['すっかり大きくなりました！ベビーとおとなはいつでも切り替えられます。','Sudah dewasa! Kamu bisa beralih antara Bayi dan Dewasa kapan saja.'],'Baby → Grown':['ベビー → おとな','Bayi → Dewasa'],'All forms unlocked! Choose Baby or Grown any time from the companion card.':['すべての姿が解放されました！コンパニオンカードからベビーとおとなをいつでも選べます。','Semua wujud terbuka! Pilih Bayi atau Dewasa kapan saja dari kartu teman.'],'Raise a Mojimo to Grown':['もじもをおとなまで育てる','Besarkan Mojimo hingga Dewasa'],
 'Something is sleeping inside':['なかで何かがねむっている','Ada sesuatu yang tidur di dalamnya'],
 'Top stage for now':['現在の最終段階','Tahap tertinggi saat ini'],'XP total':['XP（合計）','XP total'],
@@ -1121,7 +1123,7 @@ const TR={
 'Reward: choose 1 of 2 eggs':['ごほうび：2つのたまごから1つ選ぶ','Hadiah: pilih 1 dari 2 telur'],'Earned':['達成','Didapat'],
 'Active · earning XP':['あいぼう · XP獲得中','Aktif · mendapat XP'],'Milestone or capsule':['実績かガチャで','Pencapaian atau kapsul'],'Collect all 18 friends':['18匹すべて集める','Kumpulkan semua 18 teman'],'Secret':['ひみつ','Rahasia'],
 'Switch companion':['あいぼうを変える','Ganti teman'],'Cancel':['キャンセル','Batal'],'Your current egg':['今のたまご','Telurmu saat ini'],'this egg':['このたまご','telur ini'],'Your egg':['あなたのたまご','Telurmu'],'your egg':['たまご','telurmu'],
-'Milestone reached!':['実績達成！','Pencapaian tercapai!'],'Choose a new egg. It rests in your Collection until you make it your companion.':['新しいたまごを選ぼう。あいぼうにするまでコレクションで休みます。','Pilih telur baru. Telur akan menunggu di Koleksi sampai kamu menjadikannya teman.'],
+'Milestone reached!':['実績達成！','Pencapaian tercapai!'],'Choose a new egg. Make it your companion, then tap it 8 times on Home to hatch it.':['新しいたまごを選ぼう。あいぼうにして、ホームで8回タップすると孵化します。','Pilih telur baru. Jadikan temanmu, lalu ketuk 8 kali di Beranda untuk menetaskannya.'],
 'Take this egg':['このたまごにする','Ambil telur ini'],'Choose later':['あとで選ぶ','Pilih nanti'],'New egg in your Collection!':['コレクションに新しいたまご！','Telur baru di Koleksimu!'],
 // lesson
 'Check':['チェック','Periksa'],'Continue':['つづける','Lanjut'],'Got it':['わかった','Mengerti'],'Keep going':['つづける','Lanjutkan'],'Quit':['やめる','Keluar'],
@@ -1162,7 +1164,7 @@ const TR={
 'A new egg':['新しいたまご','Telur baru'],'An accessory or backdrop you don\'t own':['持っていないアクセサリーか背景','Aksesori atau latar yang belum kamu punya'],'2–3 treats, or 10–40 coins back':['おやつ2〜3個、または10〜40コイン','2–3 camilan, atau 10–40 koin kembali'],
 'Common':['ノーマル','Biasa'],'Rare':['レア','Langka'],'Super rare':['スーパーレア','Super langka'],'Legendary':['レジェンド','Legendaris'],
 'Tap to open':['タップしてひらく','Ketuk untuk membuka'],'Open capsule':['カプセルをひらく','Buka kapsul'],'Raise it now':['今すぐ育てる','Besarkan sekarang'],'Use it':['使う','Pakai'],
-'Something is sleeping inside. Make it your companion from Collection.':['なかで何かがねむっています。コレクションからあいぼうにできます。','Ada sesuatu yang tidur di dalamnya. Jadikan temanmu dari Koleksi.'],
+'Something is sleeping inside. Make it your companion, then tap it 8 times to hatch it.':['なかで何かがねむっています。あいぼうにして、8回タップすると孵化します。','Ada sesuatu yang tidur di dalamnya. Jadikan temanmu, lalu ketuk 8 kali untuk menetaskannya.'],
 'The secret friend has appeared.':['ひみつのなかまが現れた！','Teman rahasia telah muncul.'],'Jackpot, coins back.':['大当たり！コインがもどってきた。','Jackpot, koin kembali.'],'A few coins back.':['コインが少しもどってきた。','Sedikit koin kembali.'],
 // first run & toasts
 'Choose your first egg':['最初のたまごを選ぼう','Pilih telur pertamamu'],'Choose this egg':['このたまごにする','Pilih telur ini'],
@@ -1222,6 +1224,10 @@ const PAT=[
  [/^Tap (.+)'s name card to choose a look: Baby or Grown\. You can switch any time\.$/,m=>({ja:`${m[1]}の名前カードをタップして、ベビーかおとなの見た目をえらぼう。いつでも切り替えられます。`,id:`Ketuk kartu nama ${m[1]} untuk memilih tampilan: Bayi atau Dewasa. Bisa diganti kapan saja.`})],
  [/^(\d+) XP until it hatches$/,m=>({ja:`孵化まであと${m[1]} XP`,id:`${m[1]} XP lagi sampai menetas`})],
  [/^(\d+) XP until it becomes Grown$/,m=>({ja:`おとなまであと${m[1]} XP`,id:`${m[1]} XP lagi menjadi Dewasa`})],
+ [/^ \/ (\d+) taps$/,m=>({ja:` / ${m[1]} 回`,id:` / ${m[1]} ketukan`})],
+ [/^Tap (\d+) more times? to hatch$/,m=>({ja:`あと${m[1]}回タップで孵化`,id:`Ketuk ${m[1]} kali lagi untuk menetas`})],
+ [/^(\d+) \/ (\d+) taps to hatch$/,m=>({ja:`${m[1]} / ${m[2]} 回タップで孵化`,id:`${m[1]} / ${m[2]} ketukan untuk menetas`})],
+ [/^Tap it (\d+) times on Home to hatch it$/,m=>({ja:`ホームで${m[1]}回タップすると孵化します`,id:`Ketuk ${m[1]} kali di Beranda untuk menetaskannya`})],
  [/^(\d+) XP to hatch$/,m=>({ja:`孵化まで ${m[1]} XP`,id:`${m[1]} XP lagi menetas`})],
  [/^(\d+) XP to Grown$/,m=>({ja:`おとなまで ${m[1]} XP`,id:`${m[1]} XP lagi jadi Dewasa`})],
  [/^(\d+) \/ (\d+) XP to (hatch|Grown)$/,m=>({ja:`${m[1]} / ${m[2]} XP · ${m[3]==='hatch'?'孵化まで':'おとなまで'}`,id:`${m[1]} / ${m[2]} XP · menuju ${m[3]==='hatch'?'menetas':'Dewasa'}`})],
@@ -1665,13 +1671,15 @@ function renderHome(){
   const im=$('pet');setPetImg(im,id);const grownLook=sprite(id,st)==='grown';im.className='pet '+(egg?'egg':grownLook?'young':'baby');fitPet(im,id,egg,grownLook);$('petBody').className='pet-body '+(egg?'anim-egg':resting?'anim-sleep':'anim-idle');if(!egg)preloadVoice(id);$('nameSpk').classList.toggle('hidden',egg);
   $('zzz').classList.toggle('hidden',!resting);$('aura').classList.add('hidden');setTimeout(maybeFormTip,700);
   placeAccs(id,egg);
-  $('tapHint').textContent=egg?'Tap to warm your egg':resting?'Tap to wake':`Tap to play with ${p.name}`;
+  $('tapHint').textContent=egg&&tapEgg(id)?(n=>`Tap ${n} more time${n===1?'':'s'} to hatch`)(TAP_HATCH-(S.pets[id].taps||0)):egg?'Tap to warm your egg':resting?'Tap to wake':`Tap to play with ${p.name}`;
   $('petName').textContent=egg?'Mystery egg':(S.lang==='ja'?p.kana:p.name);$('stageChip').textContent={egg:'Egg',baby:'Baby',young:'Grown'}[st];
   $('petSub').textContent=egg?'Something is sleeping inside':(S.lang==='ja'?T(p.trait):`${p.kana} · ${p.trait}`);
   let lo,hi;if(egg){lo=0;hi=HATCH}else if(st==='baby'){lo=HATCH;hi=YOUNG}else{lo=YOUNG;hi=YOUNG}
   $('growBar').style.width=(young?100:Math.min(100,(xp-lo)/(hi-lo)*100))+'%';
+  if(egg&&tapEgg(id)){const t=S.pets[id].taps||0;$('growBar').style.width=(t/TAP_HATCH*100)+'%';}
   $('growN').replaceChildren(...(young?[el('b',{},String(xp)),' XP total']:[el('b',{},String(Math.min(xp,hi)-lo)),` / ${hi-lo} XP`]));
-  $('growHint').textContent=egg?`${Math.max(0,HATCH-xp)} XP to hatch`:st==='baby'?`${Math.max(0,YOUNG-xp)} XP to Grown`:'All forms unlocked';
+  if(egg&&tapEgg(id))$('growN').replaceChildren(el('b',{},String(S.pets[id].taps||0)),` / ${TAP_HATCH} taps`);
+  $('growHint').textContent=egg&&tapEgg(id)?'Tap the egg to hatch it':egg?`${Math.max(0,HATCH-xp)} XP to hatch`:st==='baby'?`${Math.max(0,YOUNG-xp)} XP to Grown`:'All forms unlocked';
   ['spotFeed','spotPlay','spotRest'].forEach(s=>$(s).disabled=egg);
   $('restLabel').textContent=S.resting?'Wake':'Rest';
   const nl=nextLesson();
@@ -1732,14 +1740,14 @@ function openCompanion(){
   const im=el('img',{alt:''});setPetImg(im,id);
   const lo=egg?0:st==='baby'?HATCH:YOUNG,hi=egg?HATCH:st==='baby'?YOUNG:YOUNG;
   const bar=el('div',{class:'bar'},el('i',{style:`width:${hi===lo?100:Math.min(100,(xp-lo)/(hi-lo)*100)}%`}));
-  const hint=egg?`${Math.max(0,HATCH-xp)} XP until it hatches`:st==='baby'?`${Math.max(0,YOUNG-xp)} XP until it becomes Grown`:'Fully grown! You can switch between Baby and Grown any time.';
+  const hint=egg&&tapEgg(id)?`Tap it ${TAP_HATCH} times on Home to hatch it`:egg?`${Math.max(0,HATCH-xp)} XP until it hatches`:st==='baby'?`${Math.max(0,YOUNG-xp)} XP until it becomes Grown`:'Fully grown! You can switch between Baby and Grown any time.';
   const rest=el('button',{class:'bigbtn white',style:'margin-top:16px'},S.resting?'Wake up':'Let it rest');rest.disabled=egg;rest.onclick=()=>{closeOverlays();toggleRest()};
   overlay(el('div',{class:'modal compcard'},el('div',{class:'mkicker'},'Your companion'),im,el('h3',{},egg?'Mystery egg':p.name),egg?null:el('div',{class:'romaji',lang:'ja'},p.kana),
     el('div',{class:'traitrow'},el('span',{},{egg:'Egg',baby:'Baby',young:'Grown'}[st]),egg?null:el('span',{},p.trait),egg?null:el('span',{lang:'ja'},`${p.word} = ${p.en}`)),
     bar,el('p',{style:'margin:10px 0 0'},hint),egg?null:el('div',{class:'frrow'},el('span',{},'Friendship'),heartsRow(id),el('small',{},frLevel(id)>=5?'Best friends!':`${FR_LV[frLevel(id)]-frOf(id)} more to level ${frLevel(id)+1}`)),st==='young'?lookPicker(id,im):null,el('p',{style:'margin:4px 0 0;font-size:12.5px'},'Only your active companion earns XP. Switch in Collection.'),
     rest,el('button',{class:'link',onclick:closeOverlays},'Close')));
 }
-const CHANGELOG=[{"v":"v3.1.0","d":"Nov 22, 2026","t":"Five new worlds","i":["Mochi Meadow, Neko Town, Festival Street, Moonlight Forest and Tokyo Adventure are now playable: 38 new lessons","All of hiragana, plus katakana lessons and katakana words","Sentence building in every world, and Mojimo chat in full sentences you have learned","Daily treat from your Mojimo, streak rewards at 3, 7 and 30 days, and streak freezes","Friendship levels that unlock special lines and emotes","Your Mojimo reacts when you choose it as your companion","Photo mode in the Hangout: save or share a picture","Seasonal events with limited items: Snow Festival, Hanami, Tanabata and Tsukimi"]},{"v":"v3.0.10","d":"Nov 22, 2026","t":"Natural voices","i":["Lessons are read by a natural Japanese AI voice (VOICEVOX)","Each Mojimo personality has its own voice for all its lines, emotes and Hangout chats","Voice credits: VOICEVOX:四国めたん, ずんだもん, 春日部つむぎ, 雨晴はう"]},{"v": "v3.0.9", "d": "Nov 22, 2026", "t": "Emotes", "i": ["Tap the emote button on Home to make your Mojimo express itself", "Each emote on Home gets one of three spoken replies", "Emotes pop up on their own and never cover the talk bubble"]}, {"v": "v3.0.8", "d": "Nov 22, 2026", "t": "Hangout chats", "i": ["Mojimo chat with each other using the words you have learned", "Tap a speech bubble in the Hangout to hear it read aloud"]}, {"v": "v3.0.7", "d": "Nov 22, 2026", "t": "Accessories", "i": ["30 new accessories in the same pixel style as the Mojimo", "Wear one on the head, one on the face and one around the neck", "Each item is fitted to every character, baby and grown", "Items that do not fit a character are locked for that character"]}, {"v": "v3.0.6", "d": "Nov 22, 2026", "t": "New look", "i": ["10 illustrated backgrounds with falling snow, petals, leaves, fireflies and stars", "Snow piles up on your Mojimo until it shakes it off", "Rounded, cosy style closer to the original Mojimo", "Tall characters no longer get cut off on Home"]}, {"v": "v3.0.5", "d": "Nov 22, 2026", "t": "Hangout", "i": ["A place where all your Mojimo spend time together", "Choose who hangs out, or everyone", "Dance party: everyone dances together to a beat"]}, {"v": "v3.0.4", "d": "Nov 22, 2026", "t": "Grown forms", "i": ["Every Mojimo grows from egg to baby to grown", "Choose the Baby or Grown look once all forms are unlocked"]}, {"v": "v3.0.3", "d": "Nov 22, 2026", "t": "Polish", "i": ["Original colour scheme and a more compact layout", "Capsule rewards now appear at the top of the screen", "Feeding no longer plays the \"bingo\" sound"]}, {"v": "v3.0.2", "d": "Nov 22, 2026", "t": "Sound", "i": ["Character voices play instantly when you tap", "Tap your Mojimo's name to hear it say its name", "\"Bingo\" plays before the answer is read aloud"]}, {"v": "v3.0.1", "d": "Nov 22, 2026", "t": "Launch", "i": ["English, 日本語 and Bahasa Indonesia", "Romaji on all Japanese, tutorials and gentle background music", "Pixel icons and the original character voices"]}];
+const CHANGELOG=[{"v":"v3.1.1","d":"Nov 22, 2026","t":"Fixes","i":["Every answer shows romaji: picking the Japanese, listening, matching pairs and sentence tiles","New eggs hatch after you tap them 8 times on Home"]},{"v":"v3.1.0","d":"Nov 22, 2026","t":"Five new worlds","i":["Mochi Meadow, Neko Town, Festival Street, Moonlight Forest and Tokyo Adventure are now playable: 38 new lessons","All of hiragana, plus katakana lessons and katakana words","Sentence building in every world, and Mojimo chat in full sentences you have learned","Daily treat from your Mojimo, streak rewards at 3, 7 and 30 days, and streak freezes","Friendship levels that unlock special lines and emotes","Your Mojimo reacts when you choose it as your companion","Photo mode in the Hangout: save or share a picture","Seasonal events with limited items: Snow Festival, Hanami, Tanabata and Tsukimi"]},{"v":"v3.0.10","d":"Nov 22, 2026","t":"Natural voices","i":["Lessons are read by a natural Japanese AI voice (VOICEVOX)","Each Mojimo personality has its own voice for all its lines, emotes and Hangout chats","Voice credits: VOICEVOX:四国めたん, ずんだもん, 春日部つむぎ, 雨晴はう"]},{"v": "v3.0.9", "d": "Nov 22, 2026", "t": "Emotes", "i": ["Tap the emote button on Home to make your Mojimo express itself", "Each emote on Home gets one of three spoken replies", "Emotes pop up on their own and never cover the talk bubble"]}, {"v": "v3.0.8", "d": "Nov 22, 2026", "t": "Hangout chats", "i": ["Mojimo chat with each other using the words you have learned", "Tap a speech bubble in the Hangout to hear it read aloud"]}, {"v": "v3.0.7", "d": "Nov 22, 2026", "t": "Accessories", "i": ["30 new accessories in the same pixel style as the Mojimo", "Wear one on the head, one on the face and one around the neck", "Each item is fitted to every character, baby and grown", "Items that do not fit a character are locked for that character"]}, {"v": "v3.0.6", "d": "Nov 22, 2026", "t": "New look", "i": ["10 illustrated backgrounds with falling snow, petals, leaves, fireflies and stars", "Snow piles up on your Mojimo until it shakes it off", "Rounded, cosy style closer to the original Mojimo", "Tall characters no longer get cut off on Home"]}, {"v": "v3.0.5", "d": "Nov 22, 2026", "t": "Hangout", "i": ["A place where all your Mojimo spend time together", "Choose who hangs out, or everyone", "Dance party: everyone dances together to a beat"]}, {"v": "v3.0.4", "d": "Nov 22, 2026", "t": "Grown forms", "i": ["Every Mojimo grows from egg to baby to grown", "Choose the Baby or Grown look once all forms are unlocked"]}, {"v": "v3.0.3", "d": "Nov 22, 2026", "t": "Polish", "i": ["Original colour scheme and a more compact layout", "Capsule rewards now appear at the top of the screen", "Feeding no longer plays the \"bingo\" sound"]}, {"v": "v3.0.2", "d": "Nov 22, 2026", "t": "Sound", "i": ["Character voices play instantly when you tap", "Tap your Mojimo's name to hear it say its name", "\"Bingo\" plays before the answer is read aloud"]}, {"v": "v3.0.1", "d": "Nov 22, 2026", "t": "Launch", "i": ["English, 日本語 and Bahasa Indonesia", "Romaji on all Japanese, tutorials and gentle background music", "Pixel icons and the original character voices"]}];
 function openChangelog(){
   const list=el('div',{class:'clog'});
   CHANGELOG.forEach((c,ix)=>{const box=el('div',{class:'clog-item'+(ix===0?' new':'')},el('div',{class:'clog-h'},el('b',{},c.t),el('span',{},`${c.v} · ${c.d}`)),el('ul',{},...c.i.map(x=>el('li',{},x))));list.append(box)});
@@ -1771,6 +1779,9 @@ function toggleRest(){
 $('stage').onclick=(e)=>{
   if(e.target.closest('#spotGacha')||e.target.closest('#emoBtn')||e.target.closest('.emopick'))return;
   const id=S.active;if(!id)return;const st=stageOf(id),im=$('petBody');
+  if(st==='egg'&&tapEgg(id)){const pp=pet(id);pp.taps=(pp.taps||0)+1;const left=TAP_HATCH-pp.taps;save();
+    if(left<=0){anim(im,'anim-shakeoff',750);setTimeout(()=>evolve(id,'hatch',()=>go('home')),500);return}
+    renderHome();anim($('petBody'),pp.taps>=5?'anim-shakeoff':'anim-squish',pp.taps>=5?750:360);emote($('petWrap'),pp.taps>=5?'excl':'dots',1200);return}
   if(st==='egg'){anim(im,'anim-squish',360);S.mood=Math.min(100,S.mood+3);{const il=idleLine();speak(il);say(il[0],PET[id].type)}emote($('petWrap'),Math.random()<.5?'dots':'question');save();return}
   if(S.resting){toggleRest();return}
   const flv=frLevel(id);const pool=[...persona().tap,'name',...Object.keys(FR_LINES).filter(l=>+l<=flv).map(l=>FR_LINES[l])];tapIdx=(tapIdx+1)%pool.length;const pick=pool[tapIdx];addFriend(id,1,'tap');
@@ -1795,8 +1806,8 @@ function eggsLeft(){return PETS.filter(p=>!S.owned.includes(p.id)&&p.id!=='gorom
 function rollGacha(){
   S.g.spins++;
   const left=eggsLeft();const gorilla=!left.length&&!S.owned.includes('goromaru');const r=Math.random();
-  if((left.length||gorilla)&&(S.g.miss>=PITY-1||r<.12)){S.g.miss=0;const id=gorilla?'goromaru':rnd(left);S.owned.push(id);pet(id);
-    return {kind:'egg',id,rar:gorilla?'lr':'sr',name:'A new egg',desc:gorilla?'The secret friend has appeared.':'Something is sleeping inside. Make it your companion from Collection.'}}
+  if((left.length||gorilla)&&(S.g.miss>=PITY-1||r<.12)){S.g.miss=0;const id=gorilla?'goromaru':rnd(left);S.owned.push(id);pet(id);markTapEgg(id);
+    return {kind:'egg',id,rar:gorilla?'lr':'sr',name:'A new egg',desc:gorilla?'The secret friend has appeared.':'Something is sleeping inside. Make it your companion, then tap it 8 times to hatch it.'}}
   S.g.miss++;
   const items=gachaItemsLeft();
   if(r<.42&&items.length){const it=rnd(items);S.decor.owned.push(it.id);return {kind:'item',it,rar:'r',name:it.name,desc:`New ${it.cat.toLowerCase()}. Use it from Style.`}}
@@ -2046,8 +2057,8 @@ function eggChoice(){
   if(!opts.length){S.pendingEggs=0;save();return}
   let chosen=null;const grid=el('div',{class:'eggpick',style:'grid-template-columns:1fr 1fr'});const btn=el('button',{class:'bigbtn',disabled:''},'Take this egg');
   opts.forEach(id=>{const b=el('button',{class:'eggopt','aria-pressed':'false'},el('img',{src:img(id,'egg'),alt:'Egg',style:'height:104px'}),'Mystery egg');b.onclick=()=>{grid.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');chosen=id;btn.disabled=false};grid.append(b)});
-  btn.onclick=()=>{S.owned.push(chosen);pet(chosen);S.pendingEggs--;save();closeOverlays();play('winner');toast('New egg in your Collection!');if(current==='collection')renderCollection()};
-  overlay(el('div',{class:'modal'},el('h3',{},'Milestone reached!'),el('p',{},'Choose a new egg. It rests in your Collection until you make it your companion.'),grid,btn,el('button',{class:'link',onclick:closeOverlays},'Choose later')));
+  btn.onclick=()=>{S.owned.push(chosen);pet(chosen);markTapEgg(chosen);S.pendingEggs--;save();closeOverlays();play('winner');toast('New egg in your Collection!');if(current==='collection')renderCollection()};
+  overlay(el('div',{class:'modal'},el('h3',{},'Milestone reached!'),el('p',{},'Choose a new egg. Make it your companion, then tap it 8 times on Home to hatch it.'),grid,btn,el('button',{class:'link',onclick:closeOverlays},'Choose later')));
 }
 
 /* ================= LESSON ENGINE ================= */
@@ -2127,6 +2138,8 @@ function nextEx(){
   renderEx(L.cur);
 }
 const KIND={intro:'New',recog:'Recognition',trans:'Translation',listen:'Listening',listenK:'Listening',kana:'Kana practice',kanaRev:'Kana practice',match:'Match pairs',build:'Build a sentence',recall:'Recall',ask:'Your companion asks'};
+const rjAns=w=>{const it=I[w];if(it&&it.r&&it.r[0])return it.r[0];try{return romajiFor(w)}catch(e){return ''}};
+const rjSmall=w=>{const r=rjAns(w);return r?el('small',{class:'ansrj'},r):null};
 function opt(content,onclick,cls='opt'){const b=el('button',{class:cls});[].concat(content).forEach(c=>{if(c!=null)b.append(c)});b.onclick=()=>onclick(b);return b}
 function selectable(g,v,b){g.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');L.sel=v;$('checkBtn').disabled=false}
 function picEl(it){if(it.pic)return pixImg(it.pic);if(it.w)return el('span',{class:'kanjipic',lang:'ja','data-noromaji':''},it.w);return ''}
@@ -2153,11 +2166,11 @@ function renderEx(e){
     if(e.t==='ask'){const pi=el('img',{alt:''});setPetImg(pi,S.active);const nm=stageOf(S.active)==='egg'?'Your egg':PET[S.active].name;
       box.append(el('p',{class:'q'},`${nm} wants to hear it in Japanese!`),el('div',{class:'askrow'},pi,el('div',{class:'bubble'},`Say "${meaning(e.k)}" to me!`,el('small',{},'Pick the Japanese'))));}
     else box.append(el('p',{class:'q'},'How do you say this in Japanese?'),el('div',{class:'promptcard'},el('div',{class:'pic'},picEl(it)),el('div',{class:'glyph en'},meaning(e.k))));
-    e.opts.forEach(o=>g.append(opt([el('span',{lang:'ja','data-noromaji':''},o),(mOf(o).lvl<2||S.romaji)?el('small',{},I[o].r[0]):null],b=>{selectable(g,o,b);say(o)})));L.answer=e.k;
+    e.opts.forEach(o=>g.append(opt([el('span',{lang:'ja','data-noromaji':''},o),el('small',{},I[o].r[0])],b=>{selectable(g,o,b);say(o)})));L.answer=e.k;
   }else if(e.t==='listen'||e.t==='listenK'){
     box.append(el('p',{class:'q'},'Listen and choose what you hear'),(()=>{const b=el('button',{class:'speakbig','aria-label':'Play sound',onclick:()=>say(e.k)});b.innerHTML=svgI('vol');b.firstChild.style.cssText='width:42px;height:42px';return b})());
     if(!hasVoice())box.append(el('div',{class:'novoice'},`No Japanese voice on this device. It says: ${it.r[0]}`));
-    e.opts.forEach(o=>g.append(opt([el('span',{lang:'ja','data-noromaji':''},o)],b=>selectable(g,o,b),'opt big')));L.answer=e.k;setTimeout(()=>say(e.k),250);
+    e.opts.forEach(o=>g.append(opt([el('span',{lang:'ja','data-noromaji':''},o),rjSmall(o)],b=>selectable(g,o,b),'opt big')));L.answer=e.k;setTimeout(()=>say(e.k),250);
   }else if(e.t==='kana'){
     box.append(el('p',{class:'q'},'How do you read this kana?'),el('div',{class:'promptcard','data-noromaji':''},el('div',{class:'glyph',lang:'ja'},e.k)));
     e.opts.forEach(o=>g.append(opt([I[o].r[0]],b=>selectable(g,o,b))));L.answer=e.k;
@@ -2174,8 +2187,8 @@ function renderEx(e){
   }else if(e.t==='build'){
     box.append(el('p',{class:'q'},'Build the sentence'),el('div',{class:'promptcard',style:'padding:14px'},el('div',{class:'glyph en',style:'font-size:22px'},sentMeaning(e.s))));
     const row=el('div',{class:'answerrow'}),tiles=el('div',{class:'tiles'});L.built=[];
-    const refresh=()=>{row.replaceChildren(...L.built.map((t,i)=>{const b=el('button',{class:'tile'},t.w);b.onclick=()=>{if(L.answered)return;t.b.classList.remove('used');L.built.splice(i,1);refresh()};return b}));c.disabled=!L.built.length;L.sel=L.built.map(t=>t.w).join('|')};
-    shuffle([...e.s.tiles,...e.s.extra]).forEach(w=>{const b=el('button',{class:'tile',lang:'ja'},w);b.onclick=()=>{if(L.answered||b.classList.contains('used'))return;b.classList.add('used');L.built.push({w,b});say(w);refresh()};tiles.append(b)});
+    const refresh=()=>{row.replaceChildren(...L.built.map((t,i)=>{const b=el('button',{class:'tile','data-noromaji':''},el('span',{lang:'ja'},t.w),rjSmall(t.w));b.onclick=()=>{if(L.answered)return;t.b.classList.remove('used');L.built.splice(i,1);refresh()};return b}));c.disabled=!L.built.length;L.sel=L.built.map(t=>t.w).join('|')};
+    shuffle([...e.s.tiles,...e.s.extra]).forEach(w=>{const b=el('button',{class:'tile','data-noromaji':''},el('span',{lang:'ja'},w),rjSmall(w));b.onclick=()=>{if(L.answered||b.classList.contains('used'))return;b.classList.add('used');L.built.push({w,b});say(w);refresh()};tiles.append(b)});
     box.append(row,tiles);L.answer=e.s.tiles.join('|');return;
   }else if(e.t==='match'){
     box.append(el('p',{class:'q'},'Tap the matching pairs'));
@@ -2187,7 +2200,7 @@ function renderEx(e){
         if(!remain){L.answered=true;L.doneCount++;verdict(true,'All matched!')}}
       else{const a=sel.b;[a,b].forEach(x=>{x.classList.remove('sel');x.classList.add('wrong')});play('wrong');L.mistakes++;setTimeout(()=>[a,b].forEach(x=>x.classList.remove('wrong')),400);sel=null}
     };
-    shuffle(e.pairs).forEach(k=>left.append(opt([I[k].kind==='kana'?el('span',{lang:'ja','data-noromaji':''},k):el('span',{lang:'ja'},k)],b=>handle('L',k,b))));
+    shuffle(e.pairs).forEach(k=>left.append(opt([el('span',{lang:'ja','data-noromaji':''},k),I[k].kind==='kana'?null:rjSmall(k)],b=>handle('L',k,b))));
     shuffle(e.pairs).forEach(k=>{const rb=opt([I[k].kind==='kana'?I[k].r[0]:meaning(k)],b=>handle('R',k,b));rb.dataset.k=k;right.append(rb)});
     box.append(el('div',{class:'matchgrid'},left,right));c.classList.add('hidden');return;
   }
@@ -2289,7 +2302,7 @@ function showResults(r){
       setTimeout(()=>{s.style.transform=`translate(${dst.left+dst.width/2-src.left-src.width/2+(Math.random()*40-20)}px,${dst.top+dst.height/2-src.top-8}px) scale(.5)`;s.style.opacity='0'},120+i*70);setTimeout(()=>s.remove(),1100+i*70)}
   }
   setTimeout(()=>{arc.style.strokeDashoffset=C*(1-frac(r.after));$('ringLabel').textContent=lab(r.after);const ri=$('ringPet');ri.style.animation='hop .5s ease';setTimeout(()=>ri.style.animation='',520)},700);
-  const evo=st==='egg'&&r.after>=HATCH?'hatch':st==='baby'&&r.after>=YOUNG?'young':null;
+  const evo=st==='egg'&&!tapEgg(id)&&r.after>=HATCH?'hatch':st==='baby'&&r.after>=YOUNG?'young':null;
   $('resContinue').textContent=evo==='hatch'?'Your egg is shaking…!':evo==='young'?`${p.name} is glowing…!`:'Continue';
   $('resContinue').onclick=()=>{const after=()=>afterResults(r);if(evo)evolve(id,evo,after);else after()};
 }
