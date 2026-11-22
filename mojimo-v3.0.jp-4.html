@@ -982,7 +982,7 @@ try{S=Object.assign(fresh(),JSON.parse(localStorage.getItem(KEY)||'null')||{})}c
 if(S.lang!=='en'&&S.lang!=='ja')S.lang='en';
 if(!S.g)S.g={spins:0,miss:0,free:1};
 if(!S.lang)S.lang=detectLang();
-if(S.music===undefined)S.music=true;if(!S.rjDefault){S.romaji=true;S.rjDefault=1}if(!S.hints)S.hints={};if(S.owned&&S.owned.length>1)S.owned.slice(1).forEach(id=>{const q=S.pets[id];if(q&&q.stage==='egg'&&q.tapHatch===undefined){q.tapHatch=true;q.taps=0}});
+if(S.music===undefined)S.music=true;if(!S.rjDefault){S.romaji=true;S.rjDefault=1}if(!S.hints)S.hints={};Object.values(S.pets||{}).forEach(q=>{if(q.tapHatch!==undefined){delete q.tapHatch;q.taps=0}});
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch{}};
 const now=()=>Date.now()+S.dayOffset*DAY;
 const dayStr=t=>new Date(t).toDateString();
@@ -995,7 +995,7 @@ function tick(){
 }
 const pet=id=>S.pets[id]||(S.pets[id]={xp:0,stage:'egg',acc:null});
 const stageOf=id=>S.pets[id]?.stage||'egg';
-const TAP_HATCH=8;const tapEgg=id=>!!(S.pets[id]&&S.pets[id].tapHatch&&stageOf(id)==='egg');const markTapEgg=id=>{const pp=pet(id);if(pp.stage==='egg'){pp.tapHatch=true;pp.taps=pp.taps||0}};
+const TAP_HATCH=8;const tapEgg=id=>!!(S.pets[id]&&stageOf(id)==='egg'&&(S.pets[id].xp||0)>=HATCH);
 const xpOf=id=>S.pets[id]?.xp||0;
 const isNight=()=>{if(S.forceNight!==null)return S.forceNight;const h=new Date().getHours();return h>=22||h<7};
 const mOf=id=>S.m[id]||(S.m[id]={lvl:0,box:0,due:0});
@@ -1046,7 +1046,7 @@ const TR={
 'Show tutorial':['チュートリアルを見る','Lihat tutorial'],'Replay the guided tour and tips':['ガイドとヒントをもう一度','Putar ulang tur dan tips'],
 'Tip':['ヒント','Tips'],'Next':['つぎへ','Lanjut'],'Skip':['スキップ','Lewati'],"Let's go!":['はじめよう！','Ayo mulai!'],'Dismiss':['とじる','Tutup'],
 'Meet your Mojimo':['あいぼうに会おう','Kenalan dengan Mojimo-mu'],'This is your companion. Tap it any time to say hi.':['これがあなたのあいぼう。いつでもタップしてあいさつしよう。','Ini temanmu. Ketuk kapan saja untuk menyapanya.'],
-'Grow with XP':['XPで育てよう','Tumbuh dengan XP'],'Lessons give XP. At 50 XP your egg hatches, then it keeps growing.':['レッスンでXPがたまります。50 XPでたまごが孵化し、その後も成長します。','Pelajaran memberi XP. Di 50 XP telurmu menetas, lalu terus tumbuh.'],
+'Grow with XP':['XPで育てよう','Tumbuh dengan XP'],'Lessons give XP. At 50 XP, tap your egg 8 times to hatch it. Then it keeps growing.':['レッスンでXPがたまります。50 XPになったら、たまごを8回タップして孵化させよう。その後も成長します。','Pelajaran memberi XP. Di 50 XP, ketuk telurmu 8 kali untuk menetaskannya. Lalu ia terus tumbuh.'],
 'Start here':['ここからスタート','Mulai di sini'],'Your next lesson is always here. Each one takes 3–5 minutes.':['つぎのレッスンはいつもここ。1回3〜5分です。','Pelajaran berikutnya selalu di sini. Masing-masing 3–5 menit.'],
 'Look after it':['お世話しよう','Rawat temanmu'],'Once it hatches you can feed it, play, let it rest, and change its style.':['孵化したら、ごはん・あそび・おやすみ・スタイル変更ができます。','Setelah menetas, kamu bisa memberi makan, bermain, menidurkan, dan mengganti gayanya.'],
 'Daily goals':['毎日の目標','Target harian'],'Three small goals each day. Each one gives bonus XP.':['毎日3つの小さな目標。達成するとボーナスXP。','Tiga target kecil setiap hari. Masing-masing memberi bonus XP.'],
@@ -1123,7 +1123,7 @@ const TR={
 'Reward: choose 1 of 2 eggs':['ごほうび：2つのたまごから1つ選ぶ','Hadiah: pilih 1 dari 2 telur'],'Earned':['達成','Didapat'],
 'Active · earning XP':['あいぼう · XP獲得中','Aktif · mendapat XP'],'Milestone or capsule':['実績かガチャで','Pencapaian atau kapsul'],'Collect all 18 friends':['18匹すべて集める','Kumpulkan semua 18 teman'],'Secret':['ひみつ','Rahasia'],
 'Switch companion':['あいぼうを変える','Ganti teman'],'Cancel':['キャンセル','Batal'],'Your current egg':['今のたまご','Telurmu saat ini'],'this egg':['このたまご','telur ini'],'Your egg':['あなたのたまご','Telurmu'],'your egg':['たまご','telurmu'],
-'Milestone reached!':['実績達成！','Pencapaian tercapai!'],'Choose a new egg. Make it your companion, then tap it 8 times on Home to hatch it.':['新しいたまごを選ぼう。あいぼうにして、ホームで8回タップすると孵化します。','Pilih telur baru. Jadikan temanmu, lalu ketuk 8 kali di Beranda untuk menetaskannya.'],
+'Milestone reached!':['実績達成！','Pencapaian tercapai!'],'Choose a new egg. It rests in your Collection until you make it your companion.':['新しいたまごを選ぼう。あいぼうにするまでコレクションで休みます。','Pilih telur baru. Telur akan menunggu di Koleksi sampai kamu menjadikannya teman.'],
 'Take this egg':['このたまごにする','Ambil telur ini'],'Choose later':['あとで選ぶ','Pilih nanti'],'New egg in your Collection!':['コレクションに新しいたまご！','Telur baru di Koleksimu!'],
 // lesson
 'Check':['チェック','Periksa'],'Continue':['つづける','Lanjut'],'Got it':['わかった','Mengerti'],'Keep going':['つづける','Lanjutkan'],'Quit':['やめる','Keluar'],
@@ -1164,7 +1164,7 @@ const TR={
 'A new egg':['新しいたまご','Telur baru'],'An accessory or backdrop you don\'t own':['持っていないアクセサリーか背景','Aksesori atau latar yang belum kamu punya'],'2–3 treats, or 10–40 coins back':['おやつ2〜3個、または10〜40コイン','2–3 camilan, atau 10–40 koin kembali'],
 'Common':['ノーマル','Biasa'],'Rare':['レア','Langka'],'Super rare':['スーパーレア','Super langka'],'Legendary':['レジェンド','Legendaris'],
 'Tap to open':['タップしてひらく','Ketuk untuk membuka'],'Open capsule':['カプセルをひらく','Buka kapsul'],'Raise it now':['今すぐ育てる','Besarkan sekarang'],'Use it':['使う','Pakai'],
-'Something is sleeping inside. Make it your companion, then tap it 8 times to hatch it.':['なかで何かがねむっています。あいぼうにして、8回タップすると孵化します。','Ada sesuatu yang tidur di dalamnya. Jadikan temanmu, lalu ketuk 8 kali untuk menetaskannya.'],
+'Something is sleeping inside. Make it your companion from Collection.':['なかで何かがねむっています。コレクションからあいぼうにできます。','Ada sesuatu yang tidur di dalamnya. Jadikan temanmu dari Koleksi.'],
 'The secret friend has appeared.':['ひみつのなかまが現れた！','Teman rahasia telah muncul.'],'Jackpot, coins back.':['大当たり！コインがもどってきた。','Jackpot, koin kembali.'],'A few coins back.':['コインが少しもどってきた。','Sedikit koin kembali.'],
 // first run & toasts
 'Choose your first egg':['最初のたまごを選ぼう','Pilih telur pertamamu'],'Choose this egg':['このたまごにする','Pilih telur ini'],
@@ -1515,7 +1515,7 @@ function placeAccOld(id,acc){
 /* ================= TUTORIAL & HINTS ================= */
 const TOUR=[
   {sel:'#stage',title:'Meet your Mojimo',text:'This is your companion. Tap it any time to say hi.'},
-  {sel:'.xp',title:'Grow with XP',text:'Lessons give XP. At 50 XP your egg hatches, then it keeps growing.'},
+  {sel:'.xp',title:'Grow with XP',text:'Lessons give XP. At 50 XP, tap your egg 8 times to hatch it. Then it keeps growing.'},
   {sel:'#startBtn',title:'Start here',text:'Your next lesson is always here. Each one takes 3–5 minutes.'},
   {sel:'.actions',title:'Look after it',text:'Once it hatches you can feed it, play, let it rest, and change its style.'},
   {sel:'#emaBtn',title:'Daily goals',text:'Three small goals each day. Each one gives bonus XP.'},
@@ -1747,7 +1747,7 @@ function openCompanion(){
     bar,el('p',{style:'margin:10px 0 0'},hint),egg?null:el('div',{class:'frrow'},el('span',{},'Friendship'),heartsRow(id),el('small',{},frLevel(id)>=5?'Best friends!':`${FR_LV[frLevel(id)]-frOf(id)} more to level ${frLevel(id)+1}`)),st==='young'?lookPicker(id,im):null,el('p',{style:'margin:4px 0 0;font-size:12.5px'},'Only your active companion earns XP. Switch in Collection.'),
     rest,el('button',{class:'link',onclick:closeOverlays},'Close')));
 }
-const CHANGELOG=[{"v":"v3.1.1","d":"Nov 22, 2026","t":"Fixes","i":["Every answer shows romaji: picking the Japanese, listening, matching pairs and sentence tiles","New eggs hatch after you tap them 8 times on Home"]},{"v":"v3.1.0","d":"Nov 22, 2026","t":"Five new worlds","i":["Mochi Meadow, Neko Town, Festival Street, Moonlight Forest and Tokyo Adventure are now playable: 38 new lessons","All of hiragana, plus katakana lessons and katakana words","Sentence building in every world, and Mojimo chat in full sentences you have learned","Daily treat from your Mojimo, streak rewards at 3, 7 and 30 days, and streak freezes","Friendship levels that unlock special lines and emotes","Your Mojimo reacts when you choose it as your companion","Photo mode in the Hangout: save or share a picture","Seasonal events with limited items: Snow Festival, Hanami, Tanabata and Tsukimi"]},{"v":"v3.0.10","d":"Nov 22, 2026","t":"Natural voices","i":["Lessons are read by a natural Japanese AI voice (VOICEVOX)","Each Mojimo personality has its own voice for all its lines, emotes and Hangout chats","Voice credits: VOICEVOX:四国めたん, ずんだもん, 春日部つむぎ, 雨晴はう"]},{"v": "v3.0.9", "d": "Nov 22, 2026", "t": "Emotes", "i": ["Tap the emote button on Home to make your Mojimo express itself", "Each emote on Home gets one of three spoken replies", "Emotes pop up on their own and never cover the talk bubble"]}, {"v": "v3.0.8", "d": "Nov 22, 2026", "t": "Hangout chats", "i": ["Mojimo chat with each other using the words you have learned", "Tap a speech bubble in the Hangout to hear it read aloud"]}, {"v": "v3.0.7", "d": "Nov 22, 2026", "t": "Accessories", "i": ["30 new accessories in the same pixel style as the Mojimo", "Wear one on the head, one on the face and one around the neck", "Each item is fitted to every character, baby and grown", "Items that do not fit a character are locked for that character"]}, {"v": "v3.0.6", "d": "Nov 22, 2026", "t": "New look", "i": ["10 illustrated backgrounds with falling snow, petals, leaves, fireflies and stars", "Snow piles up on your Mojimo until it shakes it off", "Rounded, cosy style closer to the original Mojimo", "Tall characters no longer get cut off on Home"]}, {"v": "v3.0.5", "d": "Nov 22, 2026", "t": "Hangout", "i": ["A place where all your Mojimo spend time together", "Choose who hangs out, or everyone", "Dance party: everyone dances together to a beat"]}, {"v": "v3.0.4", "d": "Nov 22, 2026", "t": "Grown forms", "i": ["Every Mojimo grows from egg to baby to grown", "Choose the Baby or Grown look once all forms are unlocked"]}, {"v": "v3.0.3", "d": "Nov 22, 2026", "t": "Polish", "i": ["Original colour scheme and a more compact layout", "Capsule rewards now appear at the top of the screen", "Feeding no longer plays the \"bingo\" sound"]}, {"v": "v3.0.2", "d": "Nov 22, 2026", "t": "Sound", "i": ["Character voices play instantly when you tap", "Tap your Mojimo's name to hear it say its name", "\"Bingo\" plays before the answer is read aloud"]}, {"v": "v3.0.1", "d": "Nov 22, 2026", "t": "Launch", "i": ["English, 日本語 and Bahasa Indonesia", "Romaji on all Japanese, tutorials and gentle background music", "Pixel icons and the original character voices"]}];
+const CHANGELOG=[{"v":"v3.1.1","d":"Nov 22, 2026","t":"Fixes","i":["Every answer shows romaji: picking the Japanese, listening, matching pairs and sentence tiles","When your egg reaches 50 XP, tap it 8 times on Home to hatch it"]},{"v":"v3.1.0","d":"Nov 22, 2026","t":"Five new worlds","i":["Mochi Meadow, Neko Town, Festival Street, Moonlight Forest and Tokyo Adventure are now playable: 38 new lessons","All of hiragana, plus katakana lessons and katakana words","Sentence building in every world, and Mojimo chat in full sentences you have learned","Daily treat from your Mojimo, streak rewards at 3, 7 and 30 days, and streak freezes","Friendship levels that unlock special lines and emotes","Your Mojimo reacts when you choose it as your companion","Photo mode in the Hangout: save or share a picture","Seasonal events with limited items: Snow Festival, Hanami, Tanabata and Tsukimi"]},{"v":"v3.0.10","d":"Nov 22, 2026","t":"Natural voices","i":["Lessons are read by a natural Japanese AI voice (VOICEVOX)","Each Mojimo personality has its own voice for all its lines, emotes and Hangout chats","Voice credits: VOICEVOX:四国めたん, ずんだもん, 春日部つむぎ, 雨晴はう"]},{"v": "v3.0.9", "d": "Nov 22, 2026", "t": "Emotes", "i": ["Tap the emote button on Home to make your Mojimo express itself", "Each emote on Home gets one of three spoken replies", "Emotes pop up on their own and never cover the talk bubble"]}, {"v": "v3.0.8", "d": "Nov 22, 2026", "t": "Hangout chats", "i": ["Mojimo chat with each other using the words you have learned", "Tap a speech bubble in the Hangout to hear it read aloud"]}, {"v": "v3.0.7", "d": "Nov 22, 2026", "t": "Accessories", "i": ["30 new accessories in the same pixel style as the Mojimo", "Wear one on the head, one on the face and one around the neck", "Each item is fitted to every character, baby and grown", "Items that do not fit a character are locked for that character"]}, {"v": "v3.0.6", "d": "Nov 22, 2026", "t": "New look", "i": ["10 illustrated backgrounds with falling snow, petals, leaves, fireflies and stars", "Snow piles up on your Mojimo until it shakes it off", "Rounded, cosy style closer to the original Mojimo", "Tall characters no longer get cut off on Home"]}, {"v": "v3.0.5", "d": "Nov 22, 2026", "t": "Hangout", "i": ["A place where all your Mojimo spend time together", "Choose who hangs out, or everyone", "Dance party: everyone dances together to a beat"]}, {"v": "v3.0.4", "d": "Nov 22, 2026", "t": "Grown forms", "i": ["Every Mojimo grows from egg to baby to grown", "Choose the Baby or Grown look once all forms are unlocked"]}, {"v": "v3.0.3", "d": "Nov 22, 2026", "t": "Polish", "i": ["Original colour scheme and a more compact layout", "Capsule rewards now appear at the top of the screen", "Feeding no longer plays the \"bingo\" sound"]}, {"v": "v3.0.2", "d": "Nov 22, 2026", "t": "Sound", "i": ["Character voices play instantly when you tap", "Tap your Mojimo's name to hear it say its name", "\"Bingo\" plays before the answer is read aloud"]}, {"v": "v3.0.1", "d": "Nov 22, 2026", "t": "Launch", "i": ["English, 日本語 and Bahasa Indonesia", "Romaji on all Japanese, tutorials and gentle background music", "Pixel icons and the original character voices"]}];
 function openChangelog(){
   const list=el('div',{class:'clog'});
   CHANGELOG.forEach((c,ix)=>{const box=el('div',{class:'clog-item'+(ix===0?' new':'')},el('div',{class:'clog-h'},el('b',{},c.t),el('span',{},`${c.v} · ${c.d}`)),el('ul',{},...c.i.map(x=>el('li',{},x))));list.append(box)});
@@ -1806,8 +1806,8 @@ function eggsLeft(){return PETS.filter(p=>!S.owned.includes(p.id)&&p.id!=='gorom
 function rollGacha(){
   S.g.spins++;
   const left=eggsLeft();const gorilla=!left.length&&!S.owned.includes('goromaru');const r=Math.random();
-  if((left.length||gorilla)&&(S.g.miss>=PITY-1||r<.12)){S.g.miss=0;const id=gorilla?'goromaru':rnd(left);S.owned.push(id);pet(id);markTapEgg(id);
-    return {kind:'egg',id,rar:gorilla?'lr':'sr',name:'A new egg',desc:gorilla?'The secret friend has appeared.':'Something is sleeping inside. Make it your companion, then tap it 8 times to hatch it.'}}
+  if((left.length||gorilla)&&(S.g.miss>=PITY-1||r<.12)){S.g.miss=0;const id=gorilla?'goromaru':rnd(left);S.owned.push(id);pet(id);
+    return {kind:'egg',id,rar:gorilla?'lr':'sr',name:'A new egg',desc:gorilla?'The secret friend has appeared.':'Something is sleeping inside. Make it your companion from Collection.'}}
   S.g.miss++;
   const items=gachaItemsLeft();
   if(r<.42&&items.length){const it=rnd(items);S.decor.owned.push(it.id);return {kind:'item',it,rar:'r',name:it.name,desc:`New ${it.cat.toLowerCase()}. Use it from Style.`}}
@@ -2057,8 +2057,8 @@ function eggChoice(){
   if(!opts.length){S.pendingEggs=0;save();return}
   let chosen=null;const grid=el('div',{class:'eggpick',style:'grid-template-columns:1fr 1fr'});const btn=el('button',{class:'bigbtn',disabled:''},'Take this egg');
   opts.forEach(id=>{const b=el('button',{class:'eggopt','aria-pressed':'false'},el('img',{src:img(id,'egg'),alt:'Egg',style:'height:104px'}),'Mystery egg');b.onclick=()=>{grid.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');chosen=id;btn.disabled=false};grid.append(b)});
-  btn.onclick=()=>{S.owned.push(chosen);pet(chosen);markTapEgg(chosen);S.pendingEggs--;save();closeOverlays();play('winner');toast('New egg in your Collection!');if(current==='collection')renderCollection()};
-  overlay(el('div',{class:'modal'},el('h3',{},'Milestone reached!'),el('p',{},'Choose a new egg. Make it your companion, then tap it 8 times on Home to hatch it.'),grid,btn,el('button',{class:'link',onclick:closeOverlays},'Choose later')));
+  btn.onclick=()=>{S.owned.push(chosen);pet(chosen);S.pendingEggs--;save();closeOverlays();play('winner');toast('New egg in your Collection!');if(current==='collection')renderCollection()};
+  overlay(el('div',{class:'modal'},el('h3',{},'Milestone reached!'),el('p',{},'Choose a new egg. It rests in your Collection until you make it your companion.'),grid,btn,el('button',{class:'link',onclick:closeOverlays},'Choose later')));
 }
 
 /* ================= LESSON ENGINE ================= */
@@ -2302,8 +2302,8 @@ function showResults(r){
       setTimeout(()=>{s.style.transform=`translate(${dst.left+dst.width/2-src.left-src.width/2+(Math.random()*40-20)}px,${dst.top+dst.height/2-src.top-8}px) scale(.5)`;s.style.opacity='0'},120+i*70);setTimeout(()=>s.remove(),1100+i*70)}
   }
   setTimeout(()=>{arc.style.strokeDashoffset=C*(1-frac(r.after));$('ringLabel').textContent=lab(r.after);const ri=$('ringPet');ri.style.animation='hop .5s ease';setTimeout(()=>ri.style.animation='',520)},700);
-  const evo=st==='egg'&&!tapEgg(id)&&r.after>=HATCH?'hatch':st==='baby'&&r.after>=YOUNG?'young':null;
-  $('resContinue').textContent=evo==='hatch'?'Your egg is shaking…!':evo==='young'?`${p.name} is glowing…!`:'Continue';
+  const ready=st==='egg'&&r.after>=HATCH;const evo=st==='baby'&&r.after>=YOUNG?'young':null;
+  $('resContinue').textContent=ready?'Your egg is shaking…!':evo==='young'?`${p.name} is glowing…!`:'Continue';
   $('resContinue').onclick=()=>{const after=()=>afterResults(r);if(evo)evolve(id,evo,after);else after()};
 }
 function afterResults(r){
@@ -2361,7 +2361,7 @@ function firstRun(){
 document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>{
   const t=b.dataset.tool,id=S.active;$('tools').classList.add('hidden');
   if(t==='xp50'&&id){const pp=pet(id);const st=pp.stage;pp.xp+=50;save();
-    if(st==='egg'&&pp.xp>=HATCH){evolve(id,'hatch',()=>go('home'));return}
+    if(st==='egg'&&pp.xp>=HATCH){go('home');return}
     if(st==='baby'&&pp.xp>=YOUNG){evolve(id,'young',()=>{go('home');if(checkMilestones())setTimeout(eggChoice,500)});return}}
   if(t==='due'){Object.values(S.m).forEach(x=>{if(x.box===0&&x.lvl>0)x.box=1;x.due=0});toast(Object.keys(S.m).length?'All words are due for review':'Learn some words first')}
   if(t==='day'){S.dayOffset++;toast('It\'s tomorrow now (streak and daily adventures reset)')}
