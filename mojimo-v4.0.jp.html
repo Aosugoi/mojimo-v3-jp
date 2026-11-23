@@ -994,6 +994,53 @@ svg.flag{width:24px;height:16px;border-radius:3px;box-shadow:0 0 0 1px rgba(43,3
 /* no mouse focus rings on tabs and buttons (keyboard still gets one) */
 button:focus:not(:focus-visible){outline:none}
 .nav button:focus-visible{outline:3px solid var(--accent);outline-offset:-6px;border-radius:14px}
+/* ===== v4.1 Home life ===== */
+#s-home .petzone{transform:translateX(calc(-50% + var(--px,0px)));transition:transform var(--wt,0ms) linear}
+#s-home #pet{transform:scaleX(var(--face,1));transition:transform .18s ease}
+#s-home .petzone.onright .bubble{left:auto;right:50%;margin-left:0;margin-right:-40px}
+#s-home .petzone .shadow.sh-hop{animation:shhop .56s ease}
+@keyframes shhop{0%,100%{transform:scale(1);opacity:1}35%{transform:scale(.62);opacity:.55}75%{transform:scale(1.12)}}
+@keyframes hopSS{0%{transform:scale(1,1)}12%{transform:scale(1.12,.86)}32%{transform:translateY(-30px) scale(.9,1.12)}55%{transform:translateY(-32px) scale(.98,1.02)}80%{transform:translateY(0) scale(1.15,.84)}92%{transform:scale(.97,1.04)}100%{transform:scale(1,1)}}
+#petBody.anim-hop{animation:hopSS .56s ease}
+#petBody.anim-spin{animation:spinhop .8s ease}
+#petBody.anim-squish{animation:squish .35s ease}
+#petBody.walking{animation:walkbob .42s ease-in-out infinite}
+#petBody.life-stretch{animation:lstretch 1.5s ease}
+@keyframes lstretch{0%,100%{transform:scale(1,1)}25%,55%{transform:scale(.9,1.14) translateY(-2px)}75%{transform:scale(1.07,.93)}}
+#petBody.life-sit{animation:lsit 2.8s ease}
+@keyframes lsit{0%,100%{transform:scale(1,1)}15%,85%{transform:scale(1.06,.9)}50%{transform:scale(1.07,.89) rotate(-2deg)}}
+#petBody.life-sniff{animation:lsniff 1.7s ease}
+@keyframes lsniff{0%,100%{transform:none}20%,60%{transform:translateY(5px) rotate(5deg) scale(1.03,.95)}40%,80%{transform:translateY(3px) rotate(7deg) scale(1.02,.97)}}
+#petBody.life-wiggle{animation:lwig 1s ease}
+@keyframes lwig{0%,100%{transform:rotate(0)}15%{transform:rotate(-9deg)}35%{transform:rotate(8deg)}55%{transform:rotate(-7deg)}75%{transform:rotate(5deg)}}
+#petBody.life-lookup{animation:llook 1.4s ease}
+@keyframes llook{0%,100%{transform:none}25%,80%{transform:translateY(-4px) rotate(-6deg) scale(.97,1.05)}}
+#petBody.life-doze{animation:ldoze 3.4s ease-in-out}
+@keyframes ldoze{0%,100%{transform:none}20%,40%,60%,80%{transform:rotate(-3deg) scale(1.03,.95)}30%,50%,70%{transform:rotate(3deg) scale(1.03,.95)}}
+#petBody.life-shiver{animation:lshiv .13s linear 10}
+@keyframes lshiv{0%,100%{transform:translateX(0)}50%{transform:translateX(2.5px) scale(1.01,.99)}}
+#petBody.life-chomp{animation:lchomp .25s ease-in-out 4}
+@keyframes lchomp{0%,100%{transform:scale(1,1)}50%{transform:scale(1.09,.9)}}
+#petBody.life-kick{animation:lkick .42s ease}
+@keyframes lkick{0%,100%{transform:none}40%{transform:rotate(-10deg) translateX(-4px)}70%{transform:rotate(8deg) translateX(6px) scale(1.04,.96)}}
+.pet-body.anim-idle.mood-happy{animation:bouncy 1.5s ease-in-out infinite}
+@keyframes bouncy{0%,100%{transform:translateY(0) scale(1,1)}40%{transform:translateY(-9px) scale(.97,1.04)}70%{transform:translateY(0) scale(1.05,.95)}}
+.pet-body.anim-idle.mood-low{animation:droop 3.8s ease-in-out infinite}
+@keyframes droop{0%,100%{transform:scale(1.02,.96)}50%{transform:scale(1.04,.93) translateY(1px)}}
+.pet-body.anim-idle.mood-sleepy{animation:sleepy 4s ease-in-out infinite}
+@keyframes sleepy{0%,100%{transform:rotate(-2deg) scale(1.02,.97)}50%{transform:rotate(2deg) scale(1.03,.95)}}
+.flytreat{position:absolute;left:0;top:0;z-index:8;width:28px;height:28px;animation:flytreat .65s cubic-bezier(.3,.1,.5,1) forwards;pointer-events:none}
+.flytreat .pix{width:28px;height:28px}
+@keyframes flytreat{0%{transform:translate(var(--x0),var(--y0)) scale(.8)}50%{transform:translate(calc((var(--x0) + var(--x1))/2),calc(var(--y1) - 70px)) scale(1.2) rotate(180deg)}100%{transform:translate(var(--x1),var(--y1)) scale(.6) rotate(360deg);opacity:.7}}
+.toyball{position:absolute;left:0;z-index:3;width:28px;height:28px;transform:translateX(var(--bx));pointer-events:none}
+.toyball svg{width:28px;height:28px;display:block}
+.toyball.fly{animation:ballfly var(--bt) linear forwards}
+.toyball.fly svg{animation:ballarc var(--bt) ease-out}
+@keyframes ballfly{to{transform:translateX(var(--bx)) rotate(540deg)}}
+@keyframes ballarc{0%{transform:translateY(0)}35%{transform:translateY(calc(var(--bh) * -1))}70%{transform:translateY(0)}85%{transform:translateY(-14px)}100%{transform:translateY(0)}}
+.toyball.pop{animation:ballout .4s forwards}
+@keyframes ballout{to{opacity:0;transform:translateX(var(--bx)) scale(.4)}}
+@media (prefers-reduced-motion: reduce){#s-home .petzone{transition:none}.pet-body.anim-idle.mood-happy,.pet-body.anim-idle.mood-sleepy{animation:bob 2.6s ease-in-out infinite}}
 </style>
 </head>
 <body>
@@ -1241,6 +1288,21 @@ const SHOP=[
   {id:'bd-snow',cat:'Backdrop',name:'Snowy day',price:60,grad:['#F4F9FD','#D3E5F2']},
   {id:'bd-rain',cat:'Backdrop',name:'Firefly forest',price:50,grad:['#CBD7E2','#9DAFC3']},
   {id:'bd-autumn',cat:'Backdrop',name:'Autumn',price:50,grad:['#FFF2DE','#FFD9AE']},
+  {id:'bd-fuji',cat:'Backdrop',name:'Mt. Fuji',price:70,grad:['#C2E4F7','#A9D38A']},
+  {id:'bd-shrine',cat:'Backdrop',name:'Shrine gate',price:60,grad:['#FCE4D7','#E8D3B0']},
+  {id:'bd-castle',cat:'Backdrop',name:'Castle',price:70,grad:['#B2DDF5','#7FB15F']},
+  {id:'bd-koi',cat:'Backdrop',name:'Koi pond',price:60,grad:['#CFECE0','#8FD1E0']},
+  {id:'bd-city',cat:'Backdrop',name:'City sunset',price:60,grad:['#FFBAA2','#DCD5E6']},
+  {id:'bd-sunflower',cat:'Backdrop',name:'Sunflower field',price:50,grad:['#A3DAF5','#D99A1F']},
+  {id:'bd-lavender',cat:'Backdrop',name:'Lavender hills',price:50,grad:['#CBDAF7','#848D99']},
+  {id:'bd-ajisai',cat:'Backdrop',name:'Rainy garden',price:50,grad:['#E9EEF4','#C8C3BA']},
+  {id:'bd-station',cat:'Backdrop',name:'Country station',price:60,grad:['#C0E4F2','#E8DCC2']},
+  {id:'bd-sunset',cat:'Backdrop',name:'Sunset beach',price:60,grad:['#FFA18B','#FFD9A8']},
+  {id:'bd-candy',cat:'Backdrop',name:'Candy land',price:70,grad:['#FFD8ED','#FFE4B8']},
+  {id:'bd-lanterns',cat:'Backdrop',name:'Lantern festival',price:null,grad:['#363771','#6E6AA8']},
+  {id:'bd-ocean',cat:'Backdrop',name:'Under the sea',price:null,grad:['#7BD0EE','#F2DDA8']},
+  {id:'bd-space',cat:'Backdrop',name:'Moon walk',price:null,grad:['#1F1C4D','#C9C2E8']},
+  {id:'bd-mushroom',cat:'Backdrop',name:'Mushroom forest',price:null,grad:['#BCDDC9','#93C38A']},
 ];
 const MLABEL=['New','Seen','Recognised','Recalled','Mastered'];
 const DAY=864e5, INTERVALS=[0,1,3,7,14,30];
@@ -1346,7 +1408,7 @@ function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');cle
 function el(tag,attrs={},...kids){const e=document.createElement(tag);for(const[k,v]of Object.entries(attrs)){if(v===false||v==null)continue;if(k==='class')e.className=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);else e.setAttribute(k,v)}for(const k of kids)if(k!=null&&k!==false)e.append(k);return e}
 function overlay(node,dismiss=true){const o=el('div',{class:'overlay'});o.append(node);if(dismiss)o.addEventListener('click',e=>{if(e.target===o)o.remove()});$('overlayHost').append(o);return o}
 const closeOverlays=()=>$('overlayHost').replaceChildren();
-function anim(node,cls,ms){node.classList.remove('anim-hop','anim-spin','anim-squish');void node.offsetWidth;node.classList.add(cls);setTimeout(()=>node.classList.remove(cls),ms)}
+function anim(node,cls,ms){node.classList.remove('anim-hop','anim-spin','anim-squish');void node.offsetWidth;node.classList.add(cls);setTimeout(()=>node.classList.remove(cls),ms);if(node.id==='petBody'&&(cls==='anim-hop'||cls==='anim-spin')){const sh=document.querySelector('#petzone .shadow');if(sh){sh.classList.remove('sh-hop');void sh.offsetWidth;sh.classList.add('sh-hop');setTimeout(()=>sh.classList.remove('sh-hop'),ms)}}}
 function setPetImg(node,id){const st=stageOf(id);node.src=img(id,st);node.alt=st==='egg'?'A Mojimo egg':PET[id].name}
 const romajiOf=id=>I[id].r[0];
 const norm=s=>s.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g,'').replace(/[^a-z]/g,'');
@@ -1387,7 +1449,7 @@ const TR={
 'Mystery egg':['なぞのたまご','Telur misterius'],'Egg':['たまご','Telur'],'Baby':['ベビー','Bayi'],'Young':['ヤング','Remaja'],'Grown':['おとな','Dewasa'],'Head':['あたま','Kepala'],"Streak reward":["れんぞくボーナス", "Hadiah beruntun"],"Yay!":["やったー！", "Hore!"],"Daily treat":["きょうのおやつ", "Camilan harian"],"Thank you!":["ありがとう！", "Terima kasih!"],"Come back every day for a new treat.":["毎日来ると新しいおやつがもらえるよ。", "Datang setiap hari untuk camilan baru."],"Your egg brought you something":["たまごがプレゼントを持ってきた", "Telurmu membawakan sesuatu"],"Streak":["れんぞく", "Beruntun"],"Streak freeze":["れんぞくキープ", "Pembeku beruntun"],"A streak freeze is used automatically if you miss a day, so your streak keeps going.":["1日休んでも自動で使われて、れんぞく記録が続きます。", "Pembeku dipakai otomatis jika kamu melewatkan sehari, jadi beruntunmu tetap lanjut."],"Streak freeze ready. It saves your streak if you miss a day.":["れんぞくキープを用意しました。1日休んでも記録を守ります。", "Pembeku siap. Beruntunmu aman jika kamu melewatkan sehari."],"Friendship":["なかよし度", "Persahabatan"],"Best friends!":["大の仲良し！", "Sahabat terbaik!"],"Photo":["しゃしん", "Foto"],"Save photo":["しゃしんを保存", "Simpan foto"],"Share":["シェア", "Bagikan"],"Every world cleared. Keep your words fresh!":["全ワールドクリア！単語を復習しよう！", "Semua dunia selesai. Terus segarkan kosakatamu!"],"Snowflake clip":["ゆきのピン", "Jepit kepingan salju"],"Mitten clip":["てぶくろのピン", "Jepit sarung tangan"],"Tulip clip":["チューリップのピン", "Jepit tulip"],"Butterfly clip":["ちょうちょのピン", "Jepit kupu-kupu"],"Wish strip":["たんざく", "Kertas harapan"],"Fan clip":["うちわのピン", "Jepit kipas"],"Maple clip":["もみじのピン", "Jepit daun maple"],"Moon dango clip":["つきみだんごのピン", "Jepit dango bulan"],"Let's be partners!":["", "Ayo jadi partner!"],"Let's do our best together!":["", "Ayo berusaha bersama!"],"Welcome back!":["", "Selamat datang kembali!"],"I was waiting for you!":["", "Aku menunggumu!"],"We meet again today!":["", "Kita bertemu lagi hari ini!"],"It's fun being with you!":["", "Senang bersamamu!"],"Thanks for always being here":["", "Terima kasih selalu ada"],"We'll always be friends":["", "Kita akan selalu berteman"],"I love you most in the world!":["", "Aku paling sayang kamu di dunia!"],"Snowflake and mitten clips are in Style for a limited time.":["ゆきとてぶくろのピンが期間限定で登場。", "Jepit salju dan sarung tangan tersedia di Gaya untuk waktu terbatas."],"Tulip and butterfly clips are in Style for a limited time.":["チューリップとちょうちょのピンが期間限定で登場。", "Jepit tulip dan kupu-kupu tersedia di Gaya untuk waktu terbatas."],"Wish strip and fan clips are in Style for a limited time.":["たんざくとうちわのピンが期間限定で登場。", "Kertas harapan dan jepit kipas tersedia di Gaya untuk waktu terbatas."],"Maple and moon-dango clips are in Style for a limited time.":["もみじとつきみだんごのピンが期間限定で登場。", "Jepit maple dan dango bulan tersedia di Gaya untuk waktu terbatas."],'Oh, I see!':['','Oh, begitu!'],"What's new":['おしらせ','Yang baru'],'Change log and recent updates':['更新の記録','Catatan perubahan dan pembaruan terbaru'],'New':['NEW','Baru'],"I love you!":['',"Aku sayang kamu!"],"Ehehe, I'm happy":['',"Ehehe, aku senang"],"Let's stay together":['',"Ayo tetap bersama"],"Oh!":['',"Oh!"],"What a surprise!":['',"Kaget!"],"Got it!":['',"Aku mengerti!"],"What?":['',"Apa?"],"Why?":['',"Kenapa?"],"Really?":['',"Benarkah?"],"La la la♪":['',"La la la♪"],"Let's sing!":['',"Ayo bernyanyi!"],"This is fun♪":['',"Seru ya♪"],"*nervous sweat*":['',"*keringat dingin*"],"What do I do…":['',"Bagaimana ini…"],"I'm a little stuck":['',"Aku agak bingung"],"Hmph!":['',"Ih!"],"*huff huff*":['',"*cemberut*"],"I'm mad!":['',"Aku marah!"],"Umm…":['',"Umm…"],"*silence*":['',"*hening*"],"Sparkly!":['',"Berkilau!"],"Amazing!":['',"Hebat!"],"So pretty!":['',"Cantik sekali!"],"I'm sleepy…":['',"Aku mengantuk…"],"*sleeping soundly*":['',"*tidur nyenyak*"],"Good night…":['',"Selamat tidur…"],"I've got an idea!":['',"Aku dapat ide!"],"That's it!":['',"Oh iya!"],"Let's study!":['',"Ayo belajar!"],"*sniffle*":['',"*terisak*"],"I'm sad…":['',"Aku sedih…"],"Pat me…":['',"Elus aku…"],"My heart is racing!":['',"Deg-degan!"],"So cute!":['',"Lucu sekali!"],"I really love you":['',"Aku sayang banget"],"Okay!":['',"Oke!"],"Leave it to me!":['',"Serahkan padaku!"],"Sure!":['',"Boleh!"],'Face':['かお','Wajah'],'Neck':['くび','Leher'],'Wear up to three at once: one on the head, one on the face and one around the neck.':['3つまで同時につけられます。あたま・かお・くびに1つずつ。','Bisa memakai sampai tiga sekaligus: satu di kepala, satu di wajah, dan satu di leher.'],'Big ribbon':['大きなリボン','Pita besar'],'Sakura clip':['さくらのピン','Jepit sakura'],'Star clip':['ほしのピン','Jepit bintang'],'Cherry clip':['さくらんぼのピン','Jepit ceri'],'Leaf sprout':['はっぱ','Tunas daun'],'Pompom beanie':['ニットぼう','Kupluk pompom'],'Beret':['ベレーぼう','Baret'],'Straw hat':['むぎわらぼうし','Topi jerami'],'Onsen towel':['おんせんタオル','Handuk onsen'],'Hachimaki band':['はちまき','Ikat kepala hachimaki'],'Party hat':['パーティーぼう','Topi pesta'],'Cat-ear headband':['ねこみみ','Bando telinga kucing'],'Strawberry hat':['いちごぼうし','Topi stroberi'],'Chef hat':['コックぼう','Topi koki'],'Frog hat':['かえるぼうし','Topi katak'],'Flower crown':['はなかんむり','Mahkota bunga'],'Graduation cap':['そつぎょうぼう','Topi wisuda'],'Bow tie':['ちょうネクタイ','Dasi kupu-kupu'],'Bell collar':['すずのくびわ','Kalung lonceng'],'Flower lei':['はなのレイ','Kalung bunga'],'Heart shades':['ハートのサングラス','Kacamata hati'],'Cool shades':['サングラス','Kacamata hitam'],'Round glasses':['まるメガネ','Kacamata bulat'],'Knit scarf':['ニットのマフラー','Syal rajut'],'Star shades':['ほしのサングラス','Kacamata bintang'],'Halo':['てんしのわ','Lingkaran halo'],'Witch hat':['まじょのぼうし','Topi penyihir'],'Fox mask':['きつねのおめん','Topeng rubah'],'Mushroom cap':['きのこ','Topi jamur'],'Hangout':['あそびば','Tempat main'],'Every Mojimo you have unlocked hangs out here. Tap one to say hi, change the scene below, or press Dance party.':['なかまになったもじもがここでくつろいでいます。タップしてあいさつしたり、下でシーンをかえたり、ダンスパーティーをはじめよう。','Semua Mojimo yang sudah terbuka bersantai di sini. Ketuk salah satunya untuk menyapa, ganti latar di bawah, atau tekan Pesta dansa.'],'Dance party':['ダンスパーティー','Pesta dansa'],'Stop dancing':['ダンスをやめる','Berhenti menari'],'Word rush':['ことばラッシュ','Kilat kata'],'Spend time with all your Mojimo, or start a dance party':['なかまのもじもとすごしたり、ダンスパーティーをしよう','Habiskan waktu dengan semua Mojimo-mu, atau mulai pesta dansa'],'Pick the meaning in 30 seconds':['30秒で意味をえらぼう','Pilih artinya dalam 30 detik'],'All your Mojimo together':['もじもがみんなあつまる','Semua Mojimo-mu bersama'],'Scene':['シーン','Latar'],"Who's hanging out":['だれがあそぶ？','Siapa yang ikut main'],'Everyone':['みんな','Semua'],'At least one Mojimo stays to hang out':['すくなくとも1ぴきはのこります','Setidaknya satu Mojimo tetap ikut main'],'Meadow':['のはら','Padang rumput'],'Snowy day':['ゆきの日','Hari bersalju'],'Beach':['うみ','Pantai'],'Sky islands':['そらのしま','Pulau langit'],'Bamboo grove':['たけやぶ','Hutan bambu'],'Starry night':['ほしぞら','Malam berbintang'],'Firefly forest':['ほたるのもり','Hutan kunang-kunang'],'Rainy day':['あめの日','Hari hujan'],'Autumn':['あき','Musim gugur'],'Close':['とじる','Tutup'],'All forms unlocked':['すべての姿を解放','Semua wujud terbuka'],'Choose a look':['見た目をえらぶ','Pilih tampilan'],'All forms unlocked!':['すべての姿を解放！','Semua wujud terbuka!'],'Fully grown! You can switch between Baby and Grown any time.':['すっかり大きくなりました！ベビーとおとなはいつでも切り替えられます。','Sudah dewasa! Kamu bisa beralih antara Bayi dan Dewasa kapan saja.'],'Baby → Grown':['ベビー → おとな','Bayi → Dewasa'],'All forms unlocked! Choose Baby or Grown any time from the companion card.':['すべての姿が解放されました！コンパニオンカードからベビーとおとなをいつでも選べます。','Semua wujud terbuka! Pilih Bayi atau Dewasa kapan saja dari kartu teman.'],'Raise a Mojimo to Grown':['もじもをおとなまで育てる','Besarkan Mojimo hingga Dewasa'],
 'Something is sleeping inside':['なかで何かがねむっている','Ada sesuatu yang tidur di dalamnya'],
 'Top stage for now':['現在の最終段階','Tahap tertinggi saat ini'],'XP total':['XP（合計）','XP total'],
-'Up next':['つぎ','Berikutnya'],'Event':['イベント','Acara'],'Due tomorrow':['あした復習','Besok jatuh tempo'],'Your words':['ことば','Kata-katamu'],'word learned':['ことばをおぼえた','kata dipelajari'],'words learned':['ことばをおぼえた','kata dipelajari'],'All fresh':['ぜんぶOK','Semua segar'],'Practise anyway':['とにかく練習','Tetap latihan'],'Keep them fresh':['わすれないように','Jaga tetap segar'],'Nothing is due. Practice grows mastery, no XP':['いまは復習なし。練習でじゅくれんどが上がります（XPなし）','Belum ada yang jatuh tempo. Latihan menaikkan penguasaan, tanpa XP'],'No words yet':['まだことばがありません','Belum ada kata'],'How review works':['復習のしくみ','Cara kerja ulasan'],'Capsules':['カプセル','Kapsul'],'Voice credits':['ボイスクレジット','Kredit suara'],'Outfit':['いしょう','Pakaian'],'Put it on':['きせてみる','Pakaikan'],'An outfit for one of your friends, or a backdrop you don\'t own':['なかまのいしょう、または持っていない背景','Pakaian untuk salah satu temanmu, atau latar yang belum kamu punya'],'Unlock all outfits':['いしょうをぜんぶかいほう','Buka semua pakaian'],'Your friends':['なかま','Teman-temanmu'],'Badges':['バッジ','Lencana'],'Buddy':['あいぼう','Sobat'],'Show less':['とじる','Lebih sedikit'],'Got it':['わかった','Mengerti'],'Practise':['ふくしゅう','Latihan'],'Journey':['たび','Perjalanan'],'Hatch more eggs to meet new friends.':['たまごをかえして新しいなかまに会おう。','Tetaskan telur lagi untuk bertemu teman baru.'],'How the Journey works':['たびのあそびかた','Cara kerja Perjalanan'],'Start lesson':['レッスンをはじめる','Mulai pelajaran'],'Egg':['たまご','Telur'],
+'Up next':['つぎ','Berikutnya'],'Event':['イベント','Acara'],'Play ball':['ボールあそび','Main bola'],'Throw a ball and watch your Mojimo chase it':['ボールを投げると、モジモが追いかけるよ','Lempar bola dan lihat Mojimo mengejarnya'],'Hatch your egg first!':['まずたまごをかえそう！','Tetaskan telurmu dulu!'],'Mt. Fuji':['富士山','Gunung Fuji'],'Shrine gate':['神社','Gerbang kuil'],'Castle':['おしろ','Kastil'],'Koi pond':['こいの池','Kolam koi'],'City sunset':['まちのゆうやけ','Senja kota'],'Sunflower field':['ひまわり畑','Ladang bunga matahari'],'Lavender hills':['ラベンダー畑','Bukit lavender'],'Rainy garden':['あじさいの庭','Taman hujan'],'Country station':['いなかのえき','Stasiun desa'],'Sunset beach':['ゆうひの海','Pantai senja'],'Candy land':['おかしの国','Negeri permen'],'Lantern festival':['ちょうちん祭り','Festival lampion'],'Under the sea':['うみのなか','Bawah laut'],'Moon walk':['つきのさんぽ','Jalan di bulan'],'Mushroom forest':['きのこの森','Hutan jamur'],'Due tomorrow':['あした復習','Besok jatuh tempo'],'Your words':['ことば','Kata-katamu'],'word learned':['ことばをおぼえた','kata dipelajari'],'words learned':['ことばをおぼえた','kata dipelajari'],'All fresh':['ぜんぶOK','Semua segar'],'Practise anyway':['とにかく練習','Tetap latihan'],'Keep them fresh':['わすれないように','Jaga tetap segar'],'Nothing is due. Practice grows mastery, no XP':['いまは復習なし。練習でじゅくれんどが上がります（XPなし）','Belum ada yang jatuh tempo. Latihan menaikkan penguasaan, tanpa XP'],'No words yet':['まだことばがありません','Belum ada kata'],'How review works':['復習のしくみ','Cara kerja ulasan'],'Capsules':['カプセル','Kapsul'],'Voice credits':['ボイスクレジット','Kredit suara'],'Outfit':['いしょう','Pakaian'],'Put it on':['きせてみる','Pakaikan'],'An outfit for one of your friends, or a backdrop you don\'t own':['なかまのいしょう、または持っていない背景','Pakaian untuk salah satu temanmu, atau latar yang belum kamu punya'],'Unlock all outfits':['いしょうをぜんぶかいほう','Buka semua pakaian'],'Your friends':['なかま','Teman-temanmu'],'Badges':['バッジ','Lencana'],'Buddy':['あいぼう','Sobat'],'Show less':['とじる','Lebih sedikit'],'Got it':['わかった','Mengerti'],'Practise':['ふくしゅう','Latihan'],'Journey':['たび','Perjalanan'],'Hatch more eggs to meet new friends.':['たまごをかえして新しいなかまに会おう。','Tetaskan telur lagi untuk bertemu teman baru.'],'How the Journey works':['たびのあそびかた','Cara kerja Perjalanan'],'Start lesson':['レッスンをはじめる','Mulai pelajaran'],'Egg':['たまご','Telur'],
 'Review your words':['単語を復習しよう','Ulas kata-katamu'],'Mochi Meadow opens in the full game':['もち草原は完全版で開放','Padang Mochi terbuka di versi lengkap'],
 'Fast asleep':['','Tertidur lelap'],'Sleeping':['','Sedang tidur'],'Full of energy':['','Penuh semangat'],'Happy':['','Senang'],'Relaxed':['','Santai'],
 'About your companion':['あいぼうについて','Tentang temanmu'],'Capsule machine':['ガチャ','Mesin kapsul'],'Coins and style shop':['コインとスタイル','Koin dan toko gaya'],
@@ -1600,6 +1662,7 @@ const PAT=[
  [/^Sakura Village · Lesson (\d+)$/,m=>({ja:`さくら村 · レッスン ${m[1]}`,id:`Desa Sakura · Pelajaran ${m[1]}`})],
  [/^Say "(.+)" to me!$/,m=>({ja:`「${m[1]}」って言って！`,id:`Bilang "${m[1]}" padaku!`})],
  [/^Spin · (\d+) coins$/,m=>({ja:`回す · ${m[1]}コイン`,id:`Putar · ${m[1]} koin`})],
+ [/^Tap to play · rub to pet (.+)$/,m=>({ja:`タップであそぶ・なでて${m[1]}をかわいがろう`,id:`Ketuk untuk bermain · usap untuk membelai ${m[1]}`})],
  [/^Tap to play with (.+)$/,m=>({ja:`タップして${m[1]}とあそぶ`,id:`Ketuk untuk bermain dengan ${m[1]}`})],
  [/^Welcome gift: (.+)$/,m=>({ja:`ようこそギフト：${T(m[1])}`,id:`Hadiah sambutan: ${T(m[1])}`})],
  [/^World cleared \+(\d+)$/,m=>({ja:`ワールドクリア +${m[1]}`,id:`Dunia selesai +${m[1]}`})],
@@ -2026,12 +2089,12 @@ function renderHome(){
   stg.style.setProperty('--c1',c[0]);stg.style.setProperty('--c2',c[1]);stg.classList.toggle('rest',resting);applyHomeScene(id);
   const mw=moodWord();$('moodChip').textContent=mw[0];
   $('gachaBadge').classList.toggle('hidden',!(S.g.free>0||S.coins>=GACHA_COST));
-  const im=$('pet');setPetImg(im,id);if(resting)im.src=img(id,'sleep');const grownLook=sprite(id,st)==='grown';im.className='pet '+(egg?'egg':grownLook?'young':'baby');fitPet(im,id,egg,grownLook);if(resting){const N=NFIT[id]||[];im.style.width=Math.round(Math.min(200,118*((sprite(id,'sleep')==='outfitsleep'?OFIT[id][1]:sprite(id,'sleep')==='grownsleep'?N[7]:N[6])||1.4)*(innerHeight<720?.86:1)))+'px'}$('petBody').className='pet-body '+(egg?'anim-egg':resting?'anim-sleep':'anim-idle');if(!egg)preloadVoice(id);$('nameSpk').classList.toggle('hidden',egg);
+  const im=$('pet');setPetImg(im,id);if(resting)im.src=img(id,'sleep');const grownLook=sprite(id,st)==='grown';im.className='pet '+(egg?'egg':grownLook?'young':'baby');fitPet(im,id,egg,grownLook);if(resting){const N=NFIT[id]||[];im.style.width=Math.round(Math.min(200,118*((sprite(id,'sleep')==='outfitsleep'?OFIT[id][1]:sprite(id,'sleep')==='grownsleep'?N[7]:N[6])||1.4)*(innerHeight<720?.86:1)))+'px'}$('petBody').className='pet-body '+(egg?'anim-egg':resting?'anim-sleep':'anim-idle');Life.sync();if(!egg)preloadVoice(id);$('nameSpk').classList.toggle('hidden',egg);
   $('zzz').classList.toggle('hidden',!resting);$('aura').classList.add('hidden');setTimeout(maybeFormTip,700);
   placeAccs(id,egg);
   {const rdy=egg&&tapEgg(id)&&current==='home';$('hatchRing').classList.toggle('hidden',!rdy);$('hatchTap').classList.toggle('hidden',!rdy);$('tapHint').classList.toggle('ready',!!rdy);
    if(rdy&&!S.hatchHinted?.[id]){S.hatchHinted=Object.assign(S.hatchHinted||{},{[id]:1});save();setTimeout(()=>{toast('Your egg is ready! Tap it 8 times to hatch it');emote($('petWrap'),'excl',1800);anim($('petBody'),'anim-shakeoff',750)},500)}}
-  $('tapHint').textContent=egg&&tapEgg(id)?(n=>`Tap ${n} more time${n===1?'':'s'} to hatch`)(TAP_HATCH-(S.pets[id].taps||0)):egg?'Tap to warm your egg':resting?'Tap to wake':`Tap to play with ${p.name}`;
+  $('tapHint').textContent=egg&&tapEgg(id)?(n=>`Tap ${n} more time${n===1?'':'s'} to hatch`)(TAP_HATCH-(S.pets[id].taps||0)):egg?'Tap to warm your egg':resting?'Tap to wake':`Tap to play · rub to pet ${p.name}`;
   $('petName').textContent=egg?'Mystery egg':(S.lang==='ja'?p.kana:p.name);$('stageChip').textContent={egg:'Egg',baby:'Baby',young:'Grown'}[st];
   $('petSub').textContent=egg?'Something is sleeping inside':(S.lang==='ja'?T(p.trait):`${p.kana} · ${p.trait}`);
   let lo,hi;if(egg){lo=0;hi=HATCH}else if(st==='baby'){lo=HATCH;hi=YOUNG}else{lo=YOUNG;hi=YOUNG}
@@ -2109,7 +2172,7 @@ function openCompanion(){
     bar,el('p',{style:'margin:10px 0 0'},hint),egg?null:el('div',{class:'frrow'},el('span',{},'Friendship'),heartsRow(id),el('small',{},frLevel(id)>=5?'Best friends!':`${FR_LV[frLevel(id)]-frOf(id)} more to level ${frLevel(id)+1}`)),(st==='young'||(st!=='egg'&&hasOutfit(id)))?lookPicker(id,im):null,el('p',{style:'margin:4px 0 0;font-size:12.5px'},'Only your active companion earns XP. Switch in Collection.'),
     rest,el('button',{class:'link',onclick:closeOverlays},'Close')));
 }
-const CHANGELOG=[{"v":"v4.0","d":"Nov 23, 2026","t":"Build 4.0","i":["Fix: the Dance party button in Hangout is always visible, even with the tip showing on small phones","New Review screen: a summary of your words by mastery level, a clearer Review button, and tidier word cards; the explanation moved behind the ? button","Flags on the language buttons in the menu","Fix: the Home scene could get stuck scrolled halfway during the tutorial, hiding the name card and showing an empty pink area","Shorter menu: Capsule machine, Hangout and Style as big buttons, language and Romaji, Music and Sound toggles on one screen","Fixes: long names no longer get cut off on Home, tips stretch to the full width, and lessons fit better on small phones","Removed the \"3–5 min\" lesson length from the Journey and the tips","New sticker-style icons for Feed, Play, Rest, Style and the Home, Journey, Review and Collection tabs","New capsule prize: outfits! Every one of the 50 Mojimo has its own outfit, with a matching sleeping look","Put an outfit on from the companion card with the new Outfit look; it works for Baby and Grown Mojimo","New Home: your Mojimo's scene fills the top, with its name, XP and mood, your streak, coins and menu, and Feed, Play, Rest and Style all inside the scene","The next lesson card now shows today's goals; Word of the day and the season event sit side by side below it","New Journey: switch worlds with chips at the top; each world shows a picture banner and a compact lesson list with your Mojimo on the next lesson","New lessons: the lesson takes place in the world's scene, and your Mojimo asks each question in a big speech bubble with combo hearts below it","New Collection: your companion is featured on its backdrop, with a row of round friend portraits (See all for the full grid) and milestones shown as badges","All characters were removed to make room for a new cast","50 placeholder Mojimo hold their places, each with its own colour and voice","New egg designs for all 50 Mojimo","New baby, sleeping and grown art for all 50 Mojimo","Baby and sleeping Mojimo now wear their signature accessory too","Grown Mojimo wear two accessories each","Your friends keep their XP, growth and friendship while the new art is made","Every Mojimo has its real name again","Prototype tools: unlock all characters and all forms","Grown Mojimo curl up with their own grown sleeping art","Every Mojimo has a child voice as a baby and an adult voice when grown (boys, girls, men and women)","Your recorded name voices are back for the original 19 Mojimo","The other 31 Mojimo say their names in their own playful way","Fixed: Mojimo no longer jump out of the XP circle when they level up","Fixed: Mojimo sometimes used the robotic browser voice instead of their AI voice","Sleeping Mojimo make soft sleepy sounds in their own voice","When an egg is ready to hatch, Home shows a tap hint","A newly chosen Mojimo always says its name first, with no other sounds on top","Speech bubbles now appear when the voice starts and stay as long as the line"]},{"v":"v3.3.1","d":"Nov 23, 2026","t":"A voice for every Mojimo","i":["Every Mojimo now has its own natural Japanese AI voice, with its own pitch: big friends sound deeper, tiny ones higher","Each Mojimo says its name in its own voice","Lessons are still read by the same teacher voice"]},{"v":"v3.3.0","d":"Nov 22, 2026","t":"50 new Mojimo","i":["A brand-new cast of 50 Mojimo, each with egg, baby and grown art","Mojimo curl up with their own sleeping art when they rest","Sarumaru, Hitsujin, Upamaru, Takopon and Goromaru have moved on. If you had one, a new friend took its place with all its XP","Accessories were removed for now and refunded as coins"]},{"v":"v3.2.0","d":"Nov 22, 2026","t":"Learn with your Mojimo","i":["Your Mojimo joins every lesson and cheers you on in its own voice","Combo hearts: get answers right in a row to fill them up, with sparkles and spins","Feeding time: read what your Mojimo wants to eat and tap the right food","Is it right?: your Mojimo sometimes tries to trick you, so catch its mistakes","Help: tap Help once per lesson (twice at friendship level 3) and your Mojimo crosses out a wrong answer","A victory spin after a perfect lesson"]},{"v":"v3.1.1","d":"Nov 22, 2026","t":"Fixes","i":["Every answer shows romaji: picking the Japanese, listening, matching pairs and sentence tiles","When your egg reaches 50 XP, tap it 8 times on Home to hatch it"]},{"v":"v3.1.0","d":"Nov 22, 2026","t":"Five new worlds","i":["Mochi Meadow, Neko Town, Festival Street, Moonlight Forest and Tokyo Adventure are now playable: 38 new lessons","All of hiragana, plus katakana lessons and katakana words","Sentence building in every world, and Mojimo chat in full sentences you have learned","Daily treat from your Mojimo, streak rewards at 3, 7 and 30 days, and streak freezes","Friendship levels that unlock special lines and emotes","Your Mojimo reacts when you choose it as your companion","Photo mode in the Hangout: save or share a picture","Seasonal events with limited items: Snow Festival, Hanami, Tanabata and Tsukimi"]},{"v":"v3.0.10","d":"Nov 22, 2026","t":"Natural voices","i":["Lessons are read by a natural Japanese AI voice (VOICEVOX)","Each Mojimo personality has its own voice for all its lines, emotes and Hangout chats","Voice credits: VOICEVOX:四国めたん, ずんだもん, 春日部つむぎ, 雨晴はう"]},{"v": "v3.0.9", "d": "Nov 22, 2026", "t": "Emotes", "i": ["Tap the emote button on Home to make your Mojimo express itself", "Each emote on Home gets one of three spoken replies", "Emotes pop up on their own and never cover the talk bubble"]}, {"v": "v3.0.8", "d": "Nov 22, 2026", "t": "Hangout chats", "i": ["Mojimo chat with each other using the words you have learned", "Tap a speech bubble in the Hangout to hear it read aloud"]}, {"v": "v3.0.7", "d": "Nov 22, 2026", "t": "Accessories", "i": ["30 new accessories in the same pixel style as the Mojimo", "Wear one on the head, one on the face and one around the neck", "Each item is fitted to every character, baby and grown", "Items that do not fit a character are locked for that character"]}, {"v": "v3.0.6", "d": "Nov 22, 2026", "t": "New look", "i": ["10 illustrated backgrounds with falling snow, petals, leaves, fireflies and stars", "Snow piles up on your Mojimo until it shakes it off", "Rounded, cosy style closer to the original Mojimo", "Tall characters no longer get cut off on Home"]}, {"v": "v3.0.5", "d": "Nov 22, 2026", "t": "Hangout", "i": ["A place where all your Mojimo spend time together", "Choose who hangs out, or everyone", "Dance party: everyone dances together to a beat"]}, {"v": "v3.0.4", "d": "Nov 22, 2026", "t": "Grown forms", "i": ["Every Mojimo grows from egg to baby to grown", "Choose the Baby or Grown look once all forms are unlocked"]}, {"v": "v3.0.3", "d": "Nov 22, 2026", "t": "Polish", "i": ["Original colour scheme and a more compact layout", "Capsule rewards now appear at the top of the screen", "Feeding no longer plays the \"bingo\" sound"]}, {"v": "v3.0.2", "d": "Nov 22, 2026", "t": "Sound", "i": ["Character voices play instantly when you tap", "Tap your Mojimo's name to hear it say its name", "\"Bingo\" plays before the answer is read aloud"]}, {"v": "v3.0.1", "d": "Nov 22, 2026", "t": "Launch", "i": ["English, 日本語 and Bahasa Indonesia", "Romaji on all Japanese, tutorials and gentle background music", "Pixel icons and the original character voices"]}];
+const CHANGELOG=[{"v":"v4.0","d":"Nov 23, 2026","t":"Build 4.0","i":["Your Mojimo comes alive on Home: it wanders, looks around, stretches, sits, sniffs, wiggles, dozes, watches the scene and shivers in the rain, and its mood shows in how it moves","Rub your Mojimo to pet it, tap the ground to call it over, watch it munch treats, and try the new Play ball game","15 new backdrops: Mt. Fuji, Shrine gate, Castle, Koi pond, City sunset, Sunflower field, Lavender hills, Rainy garden, Country station, Sunset beach and Candy land in the Style shop, plus Lantern festival, Under the sea, Moon walk and Mushroom forest from capsules","Fix: the Dance party button in Hangout is always visible, even with the tip showing on small phones","New Review screen: a summary of your words by mastery level, a clearer Review button, and tidier word cards; the explanation moved behind the ? button","Flags on the language buttons in the menu","Fix: the Home scene could get stuck scrolled halfway during the tutorial, hiding the name card and showing an empty pink area","Shorter menu: Capsule machine, Hangout and Style as big buttons, language and Romaji, Music and Sound toggles on one screen","Fixes: long names no longer get cut off on Home, tips stretch to the full width, and lessons fit better on small phones","Removed the \"3–5 min\" lesson length from the Journey and the tips","New sticker-style icons for Feed, Play, Rest, Style and the Home, Journey, Review and Collection tabs","New capsule prize: outfits! Every one of the 50 Mojimo has its own outfit, with a matching sleeping look","Put an outfit on from the companion card with the new Outfit look; it works for Baby and Grown Mojimo","New Home: your Mojimo's scene fills the top, with its name, XP and mood, your streak, coins and menu, and Feed, Play, Rest and Style all inside the scene","The next lesson card now shows today's goals; Word of the day and the season event sit side by side below it","New Journey: switch worlds with chips at the top; each world shows a picture banner and a compact lesson list with your Mojimo on the next lesson","New lessons: the lesson takes place in the world's scene, and your Mojimo asks each question in a big speech bubble with combo hearts below it","New Collection: your companion is featured on its backdrop, with a row of round friend portraits (See all for the full grid) and milestones shown as badges","All characters were removed to make room for a new cast","50 placeholder Mojimo hold their places, each with its own colour and voice","New egg designs for all 50 Mojimo","New baby, sleeping and grown art for all 50 Mojimo","Baby and sleeping Mojimo now wear their signature accessory too","Grown Mojimo wear two accessories each","Your friends keep their XP, growth and friendship while the new art is made","Every Mojimo has its real name again","Prototype tools: unlock all characters and all forms","Grown Mojimo curl up with their own grown sleeping art","Every Mojimo has a child voice as a baby and an adult voice when grown (boys, girls, men and women)","Your recorded name voices are back for the original 19 Mojimo","The other 31 Mojimo say their names in their own playful way","Fixed: Mojimo no longer jump out of the XP circle when they level up","Fixed: Mojimo sometimes used the robotic browser voice instead of their AI voice","Sleeping Mojimo make soft sleepy sounds in their own voice","When an egg is ready to hatch, Home shows a tap hint","A newly chosen Mojimo always says its name first, with no other sounds on top","Speech bubbles now appear when the voice starts and stay as long as the line"]},{"v":"v3.3.1","d":"Nov 23, 2026","t":"A voice for every Mojimo","i":["Every Mojimo now has its own natural Japanese AI voice, with its own pitch: big friends sound deeper, tiny ones higher","Each Mojimo says its name in its own voice","Lessons are still read by the same teacher voice"]},{"v":"v3.3.0","d":"Nov 22, 2026","t":"50 new Mojimo","i":["A brand-new cast of 50 Mojimo, each with egg, baby and grown art","Mojimo curl up with their own sleeping art when they rest","Sarumaru, Hitsujin, Upamaru, Takopon and Goromaru have moved on. If you had one, a new friend took its place with all its XP","Accessories were removed for now and refunded as coins"]},{"v":"v3.2.0","d":"Nov 22, 2026","t":"Learn with your Mojimo","i":["Your Mojimo joins every lesson and cheers you on in its own voice","Combo hearts: get answers right in a row to fill them up, with sparkles and spins","Feeding time: read what your Mojimo wants to eat and tap the right food","Is it right?: your Mojimo sometimes tries to trick you, so catch its mistakes","Help: tap Help once per lesson (twice at friendship level 3) and your Mojimo crosses out a wrong answer","A victory spin after a perfect lesson"]},{"v":"v3.1.1","d":"Nov 22, 2026","t":"Fixes","i":["Every answer shows romaji: picking the Japanese, listening, matching pairs and sentence tiles","When your egg reaches 50 XP, tap it 8 times on Home to hatch it"]},{"v":"v3.1.0","d":"Nov 22, 2026","t":"Five new worlds","i":["Mochi Meadow, Neko Town, Festival Street, Moonlight Forest and Tokyo Adventure are now playable: 38 new lessons","All of hiragana, plus katakana lessons and katakana words","Sentence building in every world, and Mojimo chat in full sentences you have learned","Daily treat from your Mojimo, streak rewards at 3, 7 and 30 days, and streak freezes","Friendship levels that unlock special lines and emotes","Your Mojimo reacts when you choose it as your companion","Photo mode in the Hangout: save or share a picture","Seasonal events with limited items: Snow Festival, Hanami, Tanabata and Tsukimi"]},{"v":"v3.0.10","d":"Nov 22, 2026","t":"Natural voices","i":["Lessons are read by a natural Japanese AI voice (VOICEVOX)","Each Mojimo personality has its own voice for all its lines, emotes and Hangout chats","Voice credits: VOICEVOX:四国めたん, ずんだもん, 春日部つむぎ, 雨晴はう"]},{"v": "v3.0.9", "d": "Nov 22, 2026", "t": "Emotes", "i": ["Tap the emote button on Home to make your Mojimo express itself", "Each emote on Home gets one of three spoken replies", "Emotes pop up on their own and never cover the talk bubble"]}, {"v": "v3.0.8", "d": "Nov 22, 2026", "t": "Hangout chats", "i": ["Mojimo chat with each other using the words you have learned", "Tap a speech bubble in the Hangout to hear it read aloud"]}, {"v": "v3.0.7", "d": "Nov 22, 2026", "t": "Accessories", "i": ["30 new accessories in the same pixel style as the Mojimo", "Wear one on the head, one on the face and one around the neck", "Each item is fitted to every character, baby and grown", "Items that do not fit a character are locked for that character"]}, {"v": "v3.0.6", "d": "Nov 22, 2026", "t": "New look", "i": ["10 illustrated backgrounds with falling snow, petals, leaves, fireflies and stars", "Snow piles up on your Mojimo until it shakes it off", "Rounded, cosy style closer to the original Mojimo", "Tall characters no longer get cut off on Home"]}, {"v": "v3.0.5", "d": "Nov 22, 2026", "t": "Hangout", "i": ["A place where all your Mojimo spend time together", "Choose who hangs out, or everyone", "Dance party: everyone dances together to a beat"]}, {"v": "v3.0.4", "d": "Nov 22, 2026", "t": "Grown forms", "i": ["Every Mojimo grows from egg to baby to grown", "Choose the Baby or Grown look once all forms are unlocked"]}, {"v": "v3.0.3", "d": "Nov 22, 2026", "t": "Polish", "i": ["Original colour scheme and a more compact layout", "Capsule rewards now appear at the top of the screen", "Feeding no longer plays the \"bingo\" sound"]}, {"v": "v3.0.2", "d": "Nov 22, 2026", "t": "Sound", "i": ["Character voices play instantly when you tap", "Tap your Mojimo's name to hear it say its name", "\"Bingo\" plays before the answer is read aloud"]}, {"v": "v3.0.1", "d": "Nov 22, 2026", "t": "Launch", "i": ["English, 日本語 and Bahasa Indonesia", "Romaji on all Japanese, tutorials and gentle background music", "Pixel icons and the original character voices"]}];
 function openChangelog(){
   const list=el('div',{class:'clog'});
   CHANGELOG.forEach((c,ix)=>{const box=el('div',{class:'clog-item'+(ix===0?' new':'')},el('div',{class:'clog-h'},el('b',{},c.t),el('span',{},`${c.v} · ${c.d}`)),el('ul',{},...c.i.map(x=>el('li',{},x))));list.append(box)});
@@ -2153,6 +2216,7 @@ $('stage').onclick=(e)=>{
     renderHome();anim($('petBody'),pp.taps>=5?'anim-shakeoff':'anim-squish',pp.taps>=5?750:360);emote($('petWrap'),pp.taps>=5?'excl':'dots',1200);return}
   if(st==='egg'){anim(im,'anim-squish',360);S.mood=Math.min(100,S.mood+3);{const il=idleLine();talk(il,id)}emote($('petWrap'),Math.random()<.5?'dots':'question');save();return}
   if(S.resting){toggleRest();return}
+  if(Life.handleTap(e))return;
   const flv=frLevel(id);const pool=[...persona().tap,'name',...Object.keys(FR_LINES).filter(l=>+l<=flv).map(l=>FR_LINES[l])];tapIdx=(tapIdx+1)%pool.length;const pick=pool[tapIdx];addFriend(id,1,'tap');
   if(pick==='name'){const p=PET[id];speak([p.kana+'！',p.name]);petVoice(id);emote($('petWrap'),'excl')}
   else{if(voiceNow)voiceNow.stop();talk(pick,id);emote($('petWrap'),Math.random()<.4?'heart':moodEmote())}
@@ -2292,13 +2356,114 @@ function openFeed(){
       S.treats[t.id]--;S.mood=Math.min(100,S.mood+15);save();addFriend(S.active,3,'feed');
       const l=persona().feed;bubble.replaceChildren(l[0],el('small',{},`(${l[1]}) Mood up`));say(l[0],p.id);emote(fs,'love');
       tray.querySelectorAll('button').forEach(x=>x.disabled=true);
-      setTimeout(()=>{closeOverlays();renderHome();anim($('petBody'),'anim-hop',520);hearts(5);emote($('petWrap'),'heart')},1200);
+      setTimeout(()=>{closeOverlays();renderHome();setTimeout(()=>Life.chomp(t.pic),250)},1200);
     };
     tray.append(b);
   });
   overlay(el('div',{class:'modal'},el('h3',{},'Treat time'),el('p',{},`${p.name} tells you what it wants. Read it and pick the right treat.`),fs,tray,el('button',{class:'link',onclick:closeOverlays},'Not now')));
   say(`${want.k}が たべたい`,p.id);
 };
+
+
+/* ================= HOME LIFE: wander, habits, moods, petting, ball ================= */
+const Life=(()=>{
+  const R=(a,b)=>a+Math.random()*(b-a);
+  const ACTS=['life-stretch','life-sit','life-sniff','life-wiggle','life-lookup','life-doze','life-shiver','life-chomp','life-kick','walking'];
+  let t=null,busy=false,px=0,face=1,lastTouch=Date.now(),lastId=null,gen=0;
+  const zone=()=>$('petzone'),body=()=>$('petBody');
+  const blocked=()=>current!=='home'||document.hidden||$('overlayHost').children.length>0||!S.active||stageOf(S.active)==='egg'||S.resting||!!document.querySelector('.tour')||introBusy;
+  const range=()=>{const st=$('stage').clientWidth,pw=$('pet').offsetWidth||120;return Math.max(0,Math.min(st*.32,st/2-pw/2-22))};
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  function setFace(f){face=f;$('pet').style.setProperty('--face',f)}
+  function place(x,ms){const z=zone();z.style.setProperty('--wt',ms+'ms');z.style.setProperty('--px',x.toFixed(1)+'px');z.classList.toggle('onright',x>20);px=x}
+  function walkTo(x,speed=55){const g=gen;return new Promise(res=>{const r=range();x=Math.max(-r,Math.min(r,x));const d=Math.abs(x-px);if(d<6){res();return}setFace(x>px?1:-1);const ms=d/speed*1000;place(x,ms);const b=body();b.classList.add('walking');setTimeout(()=>{if(g===gen)b.classList.remove('walking');res()},ms)})}
+  function act(cls,ms){const b=body(),g=gen;b.classList.remove(...ACTS);void b.offsetWidth;b.classList.add(cls);return new Promise(r=>setTimeout(()=>{if(g===gen)b.classList.remove(cls);r()},ms))}
+  function hop(){anim(body(),'anim-hop',560);return wait(560)}
+  function night(){const sc=sceneOf(S.decor.wall||'bd-auto'),h=new Date().getHours();return !!sc.night||h>=21||h<6}
+  function weather(){const sc=sceneOf(S.decor.wall||'bd-auto');return sc.fx==='rain'||sc.fx==='snow'}
+  function mood(){const b=body();if(!b)return;b.classList.remove('mood-happy','mood-low','mood-sleepy');if(stageOf(S.active||'')==='egg'||S.resting)return;b.classList.add(night()?'mood-sleepy':S.mood>=70?'mood-happy':S.mood<35?'mood-low':'mood-ok')}
+  const HABITS=[
+    {w:()=>4,run:async()=>{await walkTo(R(-range(),range()));if(Math.random()<.4){await wait(400);setFace(-face);await wait(700);setFace(-face)}}},
+    {w:()=>2,run:async()=>{setFace(-face);await wait(900);setFace(-face);await wait(500)}},
+    {w:()=>2,run:async()=>{await act('life-stretch',1500);if(Math.random()<.4)emote($('petWrap'),'sparkle',1400)}},
+    {w:()=>1.5,run:async()=>{await act('life-sit',2800)}},
+    {w:()=>1.5,run:async()=>{if(Math.random()<.4)emote($('petWrap'),'question',1500);await act('life-sniff',1700)}},
+    {w:()=>S.mood>=60?2.5:1,run:async()=>{await act('life-wiggle',1000);if(Math.random()<.5)emote($('petWrap'),'music2',1400)}},
+    {w:()=>(night()?4:0)+(Date.now()-lastTouch>90000?3:.4),run:async()=>{emote($('petWrap'),'zzz',2600);await act('life-doze',3400)}},
+    {w:()=>(document.querySelector('#s-home .sc-deco g')?2.5:.5),run:async()=>{await act('life-lookup',1400);emote($('petWrap'),Math.random()<.5?'excl':'sparkle',1300);if(Math.random()<.6){await walkTo(px+(Math.random()<.5?-1:1)*R(40,90),90);await hop()}}},
+    {w:()=>weather()?3:0,run:async()=>{emote($('petWrap'),'sweat',1300);await act('life-shiver',1300)}},
+    {w:()=>S.mood<35?3:0,run:async()=>{emote($('petWrap'),rnd(['sweat','dots']),1500);await act('life-sit',2400)}},
+  ];
+  async function behave(){
+    if(blocked()||busy)return;busy=true;const g=gen;
+    try{const ws=HABITS.map(h=>Math.max(0,h.w()));let r=Math.random()*ws.reduce((a,b)=>a+b,0);let h=HABITS[0];for(let i=0;i<HABITS.length;i++){r-=ws[i];if(r<=0){h=HABITS[i];break}}await h.run()}catch(e){}
+    if(g===gen)busy=false;mood();
+  }
+  function loop(){clearTimeout(t);t=setTimeout(async()=>{await behave();loop()},R(6000,12000))}
+  function reset(){gen++;busy=false;const z=zone();if(!z)return;place(0,0);setFace(1);body().classList.remove(...ACTS)}
+  function sync(){const id=S.active,egg=!id||stageOf(id)==='egg';if(id!==lastId||egg||S.resting){reset();lastId=id}mood()}
+  /* ---- touch: petting + call-over ---- */
+  let rub=null,suppress=0,lastPet=0;
+  function petRect(){return $('pet').getBoundingClientRect()}
+  function inPet(x,y,m=14){const r=petRect();return x>r.left-m&&x<r.right+m&&y>r.top-m&&y<r.bottom+m}
+  function petted(){
+    const id=S.active;lastTouch=Date.now();hearts(3);emote($('petWrap'),'love',1400);act('life-wiggle',900);
+    if(Date.now()-lastPet>3500){lastPet=Date.now();addFriend(id,1,'pet');S.mood=Math.min(100,S.mood+5);save();if(voiceNow)voiceNow.stop();talk(rnd(persona().tap),id)}
+  }
+  function bindTouch(){
+    const st=$('stage');
+    st.addEventListener('pointerdown',e=>{if(blocked()||busy&&!rub)return;if(!inPet(e.clientX,e.clientY))return;rub={x:e.clientX,dir:0,last:e.clientX,rev:0,t:Date.now(),fired:0}},{passive:true});
+    st.addEventListener('pointermove',e=>{if(!rub)return;const dx=e.clientX-rub.last;if(Math.abs(dx)<10)return;const d=dx>0?1:-1;if(rub.dir&&d!==rub.dir)rub.rev++;rub.dir=d;rub.last=e.clientX;
+      if(rub.rev>=3&&Date.now()-rub.fired>1200){rub.fired=Date.now();rub.rev=0;suppress=Date.now();petted()}},{passive:true});
+    const end=()=>{if(rub&&rub.fired)suppress=Date.now();rub=null};st.addEventListener('pointerup',end);st.addEventListener('pointercancel',end);st.addEventListener('pointerleave',end);
+  }
+  function handleTap(e){
+    /* returns true when handled here (petting tail or call-over) */
+    if(Date.now()-suppress<400)return true;
+    lastTouch=Date.now();
+    if(blocked()||stageOf(S.active)==='egg'||S.resting)return false;
+    if(inPet(e.clientX,e.clientY,22))return false;
+    const sr=$('stage').getBoundingClientRect();if(e.clientY<sr.top+sr.height*.35)return false;
+    const x=e.clientX-(sr.left+sr.width/2);gen++;busy=true;const g=gen;body().classList.remove(...ACTS);emote($('petWrap'),'excl',900);
+    (async()=>{await walkTo(x-(x>px?30:-30),150);if(g!==gen)return;await hop();setFace(x>px?1:-1);if(g===gen){busy=false;mood()}})();
+    return true;
+  }
+  /* ---- feeding: treat flies in, chomp ---- */
+  async function chomp(pic){
+    gen++;busy=true;const g=gen;const st=$('stage'),sr=st.getBoundingClientRect(),pr=petRect();
+    const tr=el('span',{class:'flytreat'},pixImg(pic));st.append(tr);
+    const tx=pr.left+pr.width/2-sr.left,ty=pr.top+pr.height*.45-sr.top;
+    tr.style.setProperty('--x0',(sr.width-30)+'px');tr.style.setProperty('--y0',(sr.height*.35)+'px');tr.style.setProperty('--x1',(tx-14)+'px');tr.style.setProperty('--y1',(ty-14)+'px');
+    await wait(650);tr.remove();
+    await act('life-chomp',1000);hearts(5);emote($('petWrap'),'love',1500);await hop();
+    if(g===gen){busy=false;mood()}
+  }
+  /* ---- ball game ---- */
+  async function ball(){
+    if(stageOf(S.active)==='egg'){toast('Hatch your egg first!');return}
+    if(S.resting){S.resting=false;save();renderHome()}
+    gen++;busy=true;const g=gen;body().classList.remove(...ACTS);
+    const st=$('stage'),pz=zone();const floor=parseFloat(getComputedStyle(pz).bottom)||96;
+    const b=el('span',{class:'toyball'});b.innerHTML='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#FF8AA8" stroke="#2B211D" stroke-width="2"/><path d="M3 10c4 2 14 2 18 0M5 17c4-2 10-2 14 0" stroke="#FFFFFF" stroke-width="2.4" fill="none"/><circle cx="8.5" cy="7.5" r="2" fill="#fff" opacity=".7"/></svg>';
+    b.style.bottom=floor+'px';st.append(b);
+    const W2=st.clientWidth/2,r=range();
+    const throwTo=(x,ms,h)=>{b.style.setProperty('--bx',(W2+x-14)+'px');b.style.setProperty('--bh',h+'px');b.style.setProperty('--bt',ms+'ms');b.classList.remove('fly');void b.offsetWidth;b.classList.add('fly');return wait(ms)};
+    b.style.setProperty('--bx',(W2+(Math.random()<.5?-1:1)*(W2+30))+'px');
+    let bx=(Math.random()<.5?-1:1)*R(r*.6,r+30);
+    await throwTo(bx,700,90);
+    talk(rnd(persona().tap),S.active);
+    for(let i=0;i<3&&g===gen;i++){
+      emote($('petWrap'),'excl',800);
+      await walkTo(bx-(bx>px?34:-34),170);if(g!==gen)break;
+      setFace(bx>px?1:-1);await act('life-kick',420);
+      bx=bx>0?-R(r*.5,r+20):R(r*.5,r+20);await throwTo(bx,800,120+Math.random()*40);
+    }
+    if(g===gen){await walkTo(bx-(bx>px?34:-34),170);await hop();hearts(5);emote($('petWrap'),'love',1600);addFriend(S.active,2,'play');S.mood=Math.min(100,S.mood+8);save();
+      b.classList.add('pop');await wait(400);busy=false;mood()}
+    b.remove();
+  }
+  return {start:loop,sync,reset,mood,bindTouch,handleTap,chomp,ball,touch:()=>{lastTouch=Date.now()}};
+})();
 
 /* ---- decorate ---- */
 function openShop(){
@@ -2911,6 +3076,34 @@ const CLOUD=(x,y,s,d,o=.9)=>`<g class="sc-cloud" style="animation-duration:${d}s
 const PINE=(x,y,s)=>`<g transform="translate(${x} ${y}) scale(${s})"><rect x="-3" y="0" width="6" height="10" fill="#7A5A44"/><path d="M0-46L18-14H-18Z" fill="#4E7A68"/><path d="M0-34L22 2H-22Z" fill="#45705F"/><path d="M0-46L9-30C4-27-4-27-9-30Z" fill="#fff"/><path d="M-12-14C-6-10 6-10 12-14L16-8C6-4-6-4-16-8Z" fill="#fff" opacity=".9"/></g>`;
 const TREE=(x,y,s,c1,c2)=>`<g transform="translate(${x} ${y}) scale(${s})"><rect x="-3" y="-8" width="6" height="22" fill="#8A5A3C"/><circle cx="0" cy="-22" r="20" fill="${c1}"/><circle cx="-12" cy="-12" r="12" fill="${c2}"/><circle cx="12" cy="-14" r="13" fill="${c2}"/></g>`;
 const BLOSSOM=(flip)=>`<g transform="${flip?'translate(400 0) scale(-1 1)':''}"><path d="M-10 28C40 34 80 50 128 46M70 44C84 30 96 24 112 22" stroke="#8A5A4C" stroke-width="5" fill="none" stroke-linecap="round"/>${[[20,26,13],[46,40,15],[78,50,13],[104,40,12],[122,50,10],[100,20,11],[62,30,10]].map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#F7B6C8"/><circle cx="${x-3}" cy="${y-3}" r="${r*.55}" fill="#FCD6E0"/>`).join('')}</g>`;
+/* animated layers for backdrops (SVG + SMIL, 400x300 view; centre x 90-310 shows on Home) */
+const AN=(()=>{
+  const R=(a,b)=>a+Math.random()*(b-a);
+  const reduce=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cloudG=(s,col)=>`<g transform="scale(${s})"><circle cx="0" cy="8" r="13" fill="${col}"/><circle cx="16" cy="0" r="17" fill="${col}"/><circle cx="34" cy="6" r="13" fill="${col}"/><rect x="-4" y="8" width="42" height="12" rx="6" fill="${col}"/><circle cx="12" cy="-3" r="5" fill="#fff" opacity=".7"/></g>`;
+  const drift=(inner,y,dur,from=-80,to=480)=>`<g><animateTransform attributeName="transform" type="translate" values="${from} ${y};${to} ${y}" dur="${dur}s" begin="-${R(0,dur).toFixed(1)}s" repeatCount="indefinite"/>${inner}</g>`;
+  const clouds=(n=3,col='#FFFFFF',op=.9)=>{let o='';for(let i=0;i<n;i++)o+=`<g opacity="${op}">${drift(cloudG(R(.7,1.1),col),R(14,70),R(70,110))}</g>`;return o};
+  const bird=(col='#4A3B36')=>`<path d="M-8 0 Q-4 -5 0 0 Q4 -5 8 0" fill="none" stroke="${col}" stroke-width="1.8" stroke-linecap="round"><animate attributeName="d" values="M-8 0 Q-4 -5 0 0 Q4 -5 8 0;M-8 -2 Q-4 2 0 0 Q4 2 8 -2;M-8 0 Q-4 -5 0 0 Q4 -5 8 0" dur=".6s" repeatCount="indefinite"/></path>`;
+  const birds=(n=3,col)=>{let o='';const y=R(40,90),dur=R(22,30);for(let i=0;i<n;i++)o+=`<g transform="translate(${i*14} ${(i%2)*8})">${drift(bird(col),y,dur,-60,460)}</g>`;return o};
+  const butterfly=(col)=>{const x=R(110,290),y=R(170,240),d=R(9,14);return `<g><animateTransform attributeName="transform" type="translate" values="${x} ${y};${x+40} ${y-30};${x-20} ${y-50};${x-40} ${y-10};${x} ${y}" dur="${d}s" repeatCount="indefinite"/><g><path d="M0 0 C-7 -9 -12 -2 -6 3Z M0 0 C7 -9 12 -2 6 3Z" fill="${col}" stroke="#5A3E38" stroke-width=".8"><animateTransform attributeName="transform" type="scale" values="1 1;.3 1;1 1" dur=".35s" repeatCount="indefinite"/></path></g></g>`};
+  const butterflies=(cols=['#FFB3D6','#FFE07A','#B9A6F5'])=>cols.map(butterfly).join('');
+  const rise=(make,n,y0=320,y1=-40,dmin=16,dmax=26)=>{let o='';for(let i=0;i<n;i++){const x=R(70,330),d=R(dmin,dmax),sw=R(6,14);o+=`<g><animateTransform attributeName="transform" type="translate" values="${x} ${y0};${x+sw} ${(y0+y1)/2};${x-sw} ${y1}" dur="${d}s" begin="-${R(0,d).toFixed(1)}s" repeatCount="indefinite"/>${make(i)}</g>`}return o};
+  const skyLantern=i=>`<g><ellipse cx="0" cy="2" rx="12" ry="10" fill="#FFB35B" opacity=".35"/><path d="M-5 -6 H5 L7 6 H-7Z" fill="#FFC870" stroke="#B5662E" stroke-width="1"/><rect x="-3" y="2" width="6" height="3" fill="#FFF3C4"/></g>`;
+  const balloon=i=>{const c=['#FF8AB8','#8AD6F0','#FFC35B','#B79AF0','#9AE0A0'][i%5];return `<g><path d="M0 9 q-3 8 1 16" stroke="#C9A6B6" stroke-width="1" fill="none"/><ellipse cx="0" cy="0" rx="8" ry="10" fill="${c}" stroke="#5A3E38" stroke-width="1"/><ellipse cx="-3" cy="-4" rx="2" ry="3" fill="#fff" opacity=".7"/></g>`};
+  const bubbles=n=>rise(()=>`<circle r="${R(2,5).toFixed(1)}" fill="none" stroke="#E8F8FF" stroke-width="1.2" opacity=".9"/>`,n,300,-20,8,14);
+  const fish=(n=4)=>{let o='';for(let i=0;i<n;i++){const y=R(110,230),d=R(14,22),dir=i%2?1:-1,c=['#FFB13D','#FF7FA8','#7FD6F0','#FFFFFF'][i%4];const f=`<g transform="scale(${dir} 1)"><path d="M-9 0 Q0 -6 8 0 Q0 6 -9 0Z" fill="${c}" stroke="#5A3E38" stroke-width=".9"/><path d="M-9 0 L-15 -4 L-15 4Z" fill="${c}" stroke="#5A3E38" stroke-width=".9"/><circle cx="4" cy="-1" r="1" fill="#2B211D"/></g>`;o+=dir>0?drift(f,y,d,-30,430):drift(f,y,d,430,-30)}return o};
+  const shooting=()=>{let o='';for(let i=0;i<2;i++){const d=R(5,8),x=R(150,330),y=R(15,60);o+=`<g opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0;.05;.15;1" dur="${d}s" begin="${R(0,d).toFixed(1)}s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="${x} ${y};${x-90} ${y+45};${x-90} ${y+45}" keyTimes="0;.15;1" dur="${d}s" begin="${R(0,d).toFixed(1)}s" repeatCount="indefinite"/><path d="M0 0 L26 -12" stroke="#FFF7D6" stroke-width="2" stroke-linecap="round"/><circle r="2.2" fill="#FFFFFF"/></g>`}return o};
+  const ufo=()=>`<g><animateTransform attributeName="transform" type="translate" values="60 70;320 55;200 90;60 70" dur="26s" repeatCount="indefinite"/><ellipse cx="0" cy="3" rx="16" ry="5" fill="#9AD2F0" stroke="#4A5C9A" stroke-width="1.2"/><path d="M-7 1 Q0 -10 7 1Z" fill="#E9FBFF" stroke="#4A5C9A" stroke-width="1.2"/><circle cx="-8" cy="4" r="1.3" fill="#FFE07A"><animate attributeName="opacity" values="1;.2;1" dur="1s" repeatCount="indefinite"/></circle><circle cx="8" cy="4" r="1.3" fill="#FFE07A"><animate attributeName="opacity" values=".2;1;.2" dur="1s" repeatCount="indefinite"/></circle></g>`;
+  const shimmer=()=>{let o='';for(let i=0;i<5;i++){const y=150+i*9,w=30+i*14,d=R(2.5,4);o+=`<path d="M${200-w} ${y} H${200+w}" stroke="#FFF3C4" stroke-width="2" stroke-linecap="round" opacity=".7"><animate attributeName="opacity" values=".15;.8;.15" dur="${d}s" begin="-${R(0,d).toFixed(1)}s" repeatCount="indefinite"/></path>`}return o};
+  const wrap=f=>()=>reduce()?'':f();
+  return {
+    fuji:wrap(()=>clouds(3)+birds(3)),shrine:wrap(()=>clouds(2,'#FFF4EE')+butterflies(['#FFB3D6','#FFFFFF'])),castle:wrap(()=>clouds(3)+birds(3)),
+    koi:wrap(()=>clouds(2)+butterflies(['#FFE07A','#FFB3D6'])),city:wrap(()=>clouds(3,'#FFE3D6')+birds(4,'#6B4A55')),sunflower:wrap(()=>clouds(3)+butterflies(['#FFFFFF','#FFB3D6','#FFE07A'])),
+    lavender:wrap(()=>clouds(3)+butterflies(['#FFE07A','#FFFFFF','#B9A6F5'])),ajisai:wrap(()=>clouds(4,'#E3E9F0',.95)),station:wrap(()=>clouds(3)+birds(3)),
+    sunset:wrap(()=>clouds(2,'#FFD9C2')+birds(3,'#7A4A4A')+shimmer()),candy:wrap(()=>clouds(2)+rise(balloon,5,320,-40,18,28)),
+    lanterns:wrap(()=>rise(skyLantern,7,320,-40,20,32)),ocean:wrap(()=>fish(5)+bubbles(10)),space:wrap(()=>shooting()+ufo()),mushroom:wrap(()=>butterflies(['#FFFFFF','#FFB3D6','#B9A6F5'])),
+  };
+})();
 const SCENES={
   'bd-auto':{art:'meadow',deco:()=>'',fx:'fluff'},
   'bd-dawn':{art:'beach',deco:()=>'',fx:'spark'},
@@ -2922,6 +3115,21 @@ const SCENES={
   'bd-snow':{art:'onsen',deco:()=>'',fx:'snow',cover:'snow'},
   'bd-rain':{art:'fireflies',night:true,deco:()=>'',fx:'firefly'},
   'bd-autumn':{art:'autumn',deco:()=>'',fx:'leaf',leaf:['#E8833A','#D35A3A','#F2B33D','#C7552F']},
+  'bd-fuji':{art:'fuji',deco:AN.fuji,fx:'mote'},
+  'bd-shrine':{art:'shrine',deco:AN.shrine,fx:'petal'},
+  'bd-castle':{art:'castle',deco:AN.castle,fx:'petal'},
+  'bd-koi':{art:'koi',deco:AN.koi,fx:'leaf',leaf:['#E86A55','#F2B33D','#9CC97A']},
+  'bd-city':{art:'city',deco:AN.city,fx:'spark'},
+  'bd-sunflower':{art:'sunflower',deco:AN.sunflower,fx:'spark'},
+  'bd-lavender':{art:'lavender',deco:AN.lavender,fx:'petal'},
+  'bd-ajisai':{art:'ajisai',deco:AN.ajisai,fx:'rain'},
+  'bd-station':{art:'station',deco:AN.station,fx:'fluff'},
+  'bd-sunset':{art:'sunset',deco:AN.sunset,fx:'spark'},
+  'bd-candy':{art:'candy',deco:AN.candy,fx:'spark'},
+  'bd-lanterns':{art:'lanterns',night:true,deco:AN.lanterns,fx:'firefly'},
+  'bd-ocean':{art:'ocean',deco:AN.ocean,fx:'mote'},
+  'bd-space':{art:'space',night:true,deco:AN.space,fx:'star'},
+  'bd-mushroom':{art:'mushroom',deco:AN.mushroom,fx:'firefly'},
 };
 const sceneOf=id=>SCENES[id]||SCENES['bd-auto'];
 const sceneArt=n=>assetURL(`assets/bg/${n}.webp`);
@@ -3061,6 +3269,7 @@ function playMenu(){
   if(S.resting){S.resting=false;save();renderHome()}
   const card=(icon,title,sub,fn)=>{const b=el('button',{class:'playopt'},el('span',{class:'mic'}),el('div',{},el('b',{},title),el('small',{},sub)));b.firstChild.innerHTML=svgI(icon);b.onclick=()=>{closeOverlays();fn()};return b};
   overlay(el('div',{class:'modal'},el('h3',{},'Play'),el('div',{class:'playopts'},
+    card('spark','Play ball','Throw a ball and watch your Mojimo chase it',()=>{go('home');setTimeout(()=>Life.ball(),350)}),
     card('egg','Hangout','Spend time with all your Mojimo, or start a dance party',openHangout),
     card('repeat','Word rush','Pick the meaning in 30 seconds',openRush)),
     el('button',{class:'link',onclick:closeOverlays},'Close')));
@@ -3368,6 +3577,7 @@ else if(S.active&&(S.swapped||S.refund)){const sw=(S.swapped||[]).filter(x=>PET[
   el('button',{class:'bigbtn',onclick:()=>{delete S.swapped;delete S.refund;save();closeOverlays();renderHome()}},'Yay!'))),600)}
 trTree(document.body);
 setInterval(()=>{if(current==='home'){tick();save()}},60000);
+Life.bindTouch();Life.start();
 })();
 </script>
 </body>
