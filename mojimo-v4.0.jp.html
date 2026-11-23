@@ -3030,7 +3030,6 @@ else if(S.active&&(S.swapped||S.refund)){const sw=(S.swapped||[]).filter(x=>PET[
   el('button',{class:'bigbtn',onclick:()=>{delete S.swapped;delete S.refund;save();closeOverlays();renderHome()}},'Yay!'))),600)}
 trTree(document.body);
 setInterval(()=>{if(current==='home'){tick();save()}},60000);
-window.__mojimo={S,pet,save,go,closeOverlays,evolve,stageOf};//TESTHOOK
 })();
 </script>
 </body>
