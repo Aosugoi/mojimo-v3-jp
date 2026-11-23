@@ -1101,6 +1101,56 @@ button:focus:not(:focus-visible){outline:none}
 .co-name.mythcard{box-shadow:0 0 0 3px #E2A31F,0 3px 0 #B57C12;background:linear-gradient(135deg,#FFFDF5,#F6EEFF)}
 .co-name.mythcard .co-nt b{background:linear-gradient(90deg,#9B4FD8,#E2A31F);-webkit-background-clip:text;background-clip:text;color:transparent}
 .co-name.mythcard .co-buddy{background:linear-gradient(90deg,#9B4FD8,#E2A31F);color:#fff;box-shadow:none}
+/* crane game */
+.gacha.crane-mode{padding:12px 0 26px;background:radial-gradient(130% 55% at 50% 0%,#61407F 0%,#3E2558 52%,#2B1A40 100%);color:#2B211D}
+.gacha.crane-mode:after{content:"";position:fixed;left:0;right:0;bottom:0;height:120px;pointer-events:none;opacity:.18;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20'%3E%3Cg fill='none' stroke='%23E9D3FF' stroke-width='1.6'%3E%3Ccircle cx='20' cy='20' r='18'/%3E%3Ccircle cx='20' cy='20' r='12'/%3E%3Ccircle cx='20' cy='20' r='6'/%3E%3Ccircle cx='0' cy='20' r='18'/%3E%3Ccircle cx='40' cy='20' r='18'/%3E%3C/g%3E%3C/svg%3E")}
+.crane-mode>.ghead{width:calc(100% - 28px);position:relative;z-index:2}
+.crane-mode .gclose{background:#FFF6E0;box-shadow:0 0 0 3px #E2A31F,0 4px 0 3px #8C5A1C;color:#4A2D63}
+.crane-mode .coinpill{background:#FFF6E0;box-shadow:0 0 0 3px #E2A31F,0 4px 0 3px #8C5A1C}
+.cr-title{justify-self:center;background:linear-gradient(#4A2D66,#35204C);border-radius:16px;padding:4px 18px 5px;box-shadow:0 0 0 3px #E2A31F,0 4px 0 3px #8C5A1C}
+.crane-mode .gen{color:#FFF3D6;font-size:19px}
+.crane-mode .gjp{color:#F3D9A0}
+.crane-mode .gjp rt,.crane-mode .gjp .rm{color:#F3D9A0}
+.cr-box{position:relative;width:100%;margin-top:-16px;flex-shrink:0;z-index:1}
+.crane{position:relative;width:100%;aspect-ratio:807/710;user-select:none;-webkit-user-select:none;touch-action:none}
+.cr-frame{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 5%,#000 95%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 5%,#000 95%,transparent 100%)}
+.cr-int{position:absolute;left:20.07%;top:35.21%;width:59.73%;height:45.07%;overflow:hidden;cursor:grab;transition:opacity .25s}
+.cr-int.restock{opacity:.35}
+.cr-svg{display:block;width:100%;height:100%}
+.cr-glow{filter:drop-shadow(0 0 6px var(--gc)) drop-shadow(0 0 3px #FFF)}
+.cr-go{position:absolute;left:40.27%;top:81.97%;width:19.83%;height:12.68%;pointer-events:none;transition:transform .12s,filter .12s;transform-origin:50% 60%}
+.cr-go.press{transform:scale(.9) translateY(3%);filter:brightness(1.15)}
+.cr-gohit{position:absolute;left:40.27%;top:80%;width:19.83%;height:15%;background:none;border-radius:40%;animation:gopulse 1.6s ease-in-out infinite}
+@keyframes gopulse{0%,100%{box-shadow:0 0 0 0 rgba(246,203,78,0)}50%{box-shadow:0 0 14px 4px rgba(246,203,78,.55)}}
+.cr-joy{position:absolute;top:86%;width:7.4%;aspect-ratio:1;border-radius:50%;background:rgba(255,246,224,.92);box-shadow:0 0 0 2px #E2A31F;color:#4A2D63;font-size:9px;display:grid;place-items:center;padding:0}
+.cr-joy.l{left:18.6%}.cr-joy.r{left:32%}
+.cr-joy:active{transform:scale(.9)}
+.cr-lamp{position:absolute;width:13%;aspect-ratio:1;top:33.7%;border-radius:50%;background:radial-gradient(circle,rgba(255,196,110,.55),rgba(255,196,110,0) 70%);mix-blend-mode:screen;pointer-events:none;animation:lamp 2.8s ease-in-out infinite}
+.cr-lamp.l{left:3.2%}.cr-lamp.r{left:83.8%;animation-delay:-1.4s}
+@keyframes lamp{0%,100%{opacity:.55;transform:scale(.92)}50%{opacity:1;transform:scale(1.08)}}
+.cr-hint{width:calc(100% - 40px);text-align:center;font-size:12.5px;font-weight:700;color:#EBDDF8;margin:6px 0 10px;line-height:1.4;position:relative;z-index:1}
+.crane-mode .gpity{width:calc(100% - 32px);background:#FFF6E0;box-shadow:0 0 0 3px #E2A31F,0 5px 0 3px #8C5A1C;margin:0 0 18px;position:relative;z-index:1}
+.gstars{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin-top:8px;justify-items:center}
+.gstars i{width:22px;height:22px;display:block}
+.gstars svg{width:100%;height:100%;fill:#FFFFFF;stroke:#2B211D;stroke-width:1.8;stroke-linejoin:round}
+.gstars i.on svg{fill:#F6CB4E}
+.crane-mode .bigbtn.gold{width:calc(100% - 32px);background:linear-gradient(180deg,#7A4AA3,#52306F);color:#FFF3D6;box-shadow:0 0 0 3px #E2A31F,0 6px 0 3px #8C5A1C;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;z-index:1}
+.crane-mode .bigbtn.gold:disabled{opacity:.6}
+.crane-mode .bigbtn .paw svg{width:22px;height:22px;fill:#F6CB4E;display:block}
+.crane-mode .link{color:#E9D6FF;margin-top:14px;position:relative;z-index:1}
+.crane-mode .oddsbox{width:calc(100% - 32px);background:#FFF6E0;box-shadow:0 0 0 3px #E2A31F;margin-top:14px;position:relative;z-index:1}
+.crane-mode .gresult{position:absolute;left:16px;right:16px;top:24px;margin:0;z-index:5;max-width:none;width:auto;background:#FFF8EA;box-shadow:0 0 0 3px #E2A31F,0 6px 0 3px #8C5A1C,0 0 40px rgba(246,203,78,.35)}
+.crane-mode.revealed .gresult{margin:0}
+.crane-mode.revealed .cr-hint{visibility:hidden}
+.crane-mode .gresult:before{display:none}
+.crane-mode .gresult .bigbtn{background:linear-gradient(180deg,#FFD978,#F2B33D)}
+.cr-ok{display:block;margin:10px auto 0;color:#7A5A50!important}
+.crane-mode .pagetip{width:calc(100% - 32px);position:relative;z-index:2}
+.cr-petals{position:absolute;left:0;right:0;top:0;height:100%;min-height:100%;pointer-events:none;overflow:hidden;z-index:0}
+.cr-petals i{position:absolute;top:-16px;width:11px;height:8px;background:#F7B8C2;border-radius:80% 0 80% 0;opacity:.75;animation:petal linear infinite}
+@keyframes petal{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(-70px,105vh) rotate(560deg)}}
+@media (prefers-reduced-motion:reduce){.cr-petals,.cr-lamp,.cr-gohit{animation:none}.cr-petals{display:none}}
+
 </style>
 </head>
 <body>
@@ -1312,7 +1362,6 @@ const MYTHS = [
 const ALLP=[...PETS,...MYTHS];
 const isMyth=id=>!!(PET[id]&&PET[id].myth);
 const PET = Object.fromEntries(ALLP.map(p=>[p.id,p]));
-const STARTERS=['slot01','slot02','slot03'];
 const EGG_OF={"slot51": "Kitsune","slot52": "Tengu","slot53": "Kappa","slot54": "Oni","slot55": "Ryū","slot56": "Jorōgumo","slot57": "Yuki-onna","slot58": "Nekomata","slot59": "Tsuchinoko","slot60": "Nurikabe","slot01": "Ahirun", "slot02": "Azarun", "slot03": "Butamaru", "slot04": "Eichimaru", "slot05": "Fukumaru", "slot06": "Goromaru", "slot07": "Harimaru", "slot08": "Hitsujin", "slot09": "Hiyomaru", "slot10": "Inokimaru", "slot11": "Inumaru", "slot12": "Irukamaru", "slot13": "Kabamaru", "slot14": "Kamemaru", "slot15": "Kangakamaru", "slot16": "Kapimaru", "slot17": "Kawamochi", "slot18": "Kayamaru", "slot19": "Kemomaru", "slot20": "Kijimaru", "slot21": "Kirarin", "slot22": "Kitsumaru", "slot23": "Kitsunerin", "slot24": "Koaron", "slot25": "Koumaru", "slot26": "Kujiramaru", "slot27": "Kumapon", "slot28": "Kumorin", "slot29": "Nekorin", "slot30": "Nezumaru", "slot31": "Ookamaru", "slot32": "Penmaru", "slot33": "Raikamaru", "slot34": "Ressapon", "slot35": "Risumaru", "slot36": "Saimaru", "slot37": "Sakanamaru", "slot38": "Samemaru", "slot39": "Sarumaru", "slot40": "Shikamaru", "slot41": "Shiromaru", "slot42": "Takopon", "slot43": "Tokimaru", "slot44": "Toramaru", "slot45": "Torimaru", "slot46": "Umimaru", "slot47": "Upamaru", "slot48": "Usamochi", "slot49": "Ushimaru", "slot50": "Zoumaru"};
 const OLDCAST=["inumaru", "nekorin", "usamochi", "kitsumaru", "ookamaru", "kumapon", "kumorin", "ressapon", "tanukichi", "kawamochi", "azarun", "irukamaru", "kujiramaru", "kamemaru", "penmaru", "fukumaru", "eichimaru", "takamaru", "karasumaru", "hatomaru", "oumaru", "kibatan", "furamin", "sagimaru", "kawasemin", "kitsutsun", "hachidori", "ahirun", "ganpon", "hakumaru", "shikamaru", "herajika", "wapimaru", "tonamaru", "inomaru", "risumaru", "shimarin", "harimaru", "sukapon", "anagumaru", "komorun", "kangkamaru", "koaron", "wonmaru", "kapimaru", "arupapon", "ramamaru", "yakumaru", "zoumaru", "kirarin"];
 const OFIT={"slot11":[1.081,1.34],"slot29":[1.014,1.157],"slot48":[0.993,1.2],"slot24":[1.007,1.191],"slot39":[1.103,1.29],"slot08":[1.062,1.269],"slot27":[0.993,1.191],"slot21":[0.955,1.225],"slot32":[0.964,1.333],"slot22":[1.06,1.273],"slot34":[1.133,1.279],"slot17":[1.085,1.308],"slot14":[1.045,1.353],"slot07":[1.038,1.234],"slot02":[1.198,1.484],"slot47":[1.122,1.305],"slot42":[1.045,1.245],"slot16":[1.046,1.295],"slot06":[1.069,1.273],"slot40":[1.03,1.228],"slot44":[1.145,1.352],"slot33":[1.07,1.25],"slot31":[1.123,1.302],"slot28":[1.008,1.234],"slot04":[1.095,1.353],"slot05":[1.047,1.212],"slot09":[1.04,1.343],"slot01":[1.082,1.295],"slot03":[1.07,1.308],"slot49":[1.113,1.359],"slot46":[1.248,1.379],"slot38":[1.269,1.458],"slot12":[1.266,1.34],"slot26":[1.212,1.292],"slot43":[1.278,1.353],"slot20":[1.216,1.33],"slot13":[1.22,1.427],"slot50":[1.212,1.347],"slot36":[1.259,1.458],"slot15":[1.168,1.308],"slot25":[1.474,1.291],"slot41":[1.231,1.373],"slot23":[1.272,1.314],"slot19":[1.25,1.245],"slot30":[1.225,1.34],"slot35":[1.231,1.311],"slot10":[1.327,1.317],"slot45":[1.206,1.32],"slot37":[1.35,1.261],"slot18":[1.356,1.228]};
@@ -1625,7 +1674,7 @@ const TR={
 'Aurora':['オーロラ','Aurora'],'Golden hour':['夕暮れ','Senja keemasan'],'Flower':['お花','Bunga'],'Crown':['王冠','Mahkota'],'Scarf':['マフラー','Syal'],'Star pin':['星のピン','Jepit bintang'],'Glasses':['メガネ','Kacamata'],
 'Owned':['所持','Dimiliki'],'In use':['使用中','Dipakai'],'Capsule only':['ガチャ限定','Hanya dari kapsul'],
 // gacha
-'Lucky meter':['ラッキーメーター','Meteran keberuntungan'],'Spin · first one free':['回す · 初回無料','Putar · pertama gratis'],'See odds':['確率を見る','Lihat peluang'],
+'Move the claw, then press GO for a surprise. The plushies marked NEW are friends you have not met yet. Every 10th play is guaranteed to be an egg.':['クレーンをうごかして GO をおそう。NEW のぬいぐるみは まだ会っていない友だち。10回に1回は かならずたまごが出るよ。','Gerakkan capit, lalu tekan GO untuk kejutan. Boneka bertanda NEW adalah teman yang belum kamu temui. Setiap main ke-10 pasti dapat telur.'],'Crane game':['クレーンゲーム','Mesin capit'],'Lucky stars':['ラッキースター','Bintang keberuntungan'],'Play · first one free':['あそぶ · 初回無料','Main · pertama gratis'],'Move the claw with the stick or drag it, then press GO.':['スティックかドラッグでクレーンをうごかして、GO をおしてね。','Gerakkan capit dengan tuas atau geser, lalu tekan GO.'],'Keep playing':['つづける','Main lagi'],'Not enough coins yet. Lessons earn more!':['コインがたりないよ。レッスンでかせごう！','Koin belum cukup. Pelajaran memberi lebih banyak!'],'Where the claw drops does not change the odds: the prize is decided when you press GO, and the claw always catches it.':['クレーンの位置で確率は変わりません。GO をおした時に景品が決まり、クレーンは必ずつかみます。','Posisi capit tidak mengubah peluang: hadiah ditentukan saat kamu menekan GO, dan capit selalu menangkapnya.'],'Move claw left':['クレーンを左へ','Gerakkan capit ke kiri'],'Move claw right':['クレーンを右へ','Gerakkan capit ke kanan'],'Lucky meter':['ラッキーメーター','Meteran keberuntungan'],'Spin · first one free':['回す · 初回無料','Putar · pertama gratis'],'See odds':['確率を見る','Lihat peluang'],
 'Super rare · 12%':['スーパーレア · 12%','Super langka · 12%'],'Rare · 30%':['レア · 30%','Langka · 30%'],'Common · 58%':['ノーマル · 58%','Biasa · 58%'],
 'A new egg':['新しいたまご','Telur baru'],'An accessory or backdrop you don\'t own':['持っていないアクセサリーか背景','Aksesori atau latar yang belum kamu punya'],'2–3 treats, or 10–40 coins back':['おやつ2〜3個、または10〜40コイン','2–3 camilan, atau 10–40 koin kembali'],
 'Common':['ノーマル','Biasa'],'Rare':['レア','Langka'],'Super rare':['スーパーレア','Super langka'],'Legendary':['レジェンド','Legendaris'],
@@ -1753,6 +1802,9 @@ const PAT=[
  [/^Sakura Village · World gate$/,()=>({ja:'さくら村 · ワールドゲート',id:'Desa Sakura · Gerbang dunia'})],
  [/^Sakura Village · Lesson (\d+)$/,m=>({ja:`さくら村 · レッスン ${m[1]}`,id:`Desa Sakura · Pelajaran ${m[1]}`})],
  [/^Say "(.+)" to me!$/,m=>({ja:`「${m[1]}」って言って！`,id:`Bilang "${m[1]}" padaku!`})],
+ [/^Play · (\d+) coins$/,m=>({ja:`あそぶ · ${m[1]}コイン`,id:`Main · ${m[1]} koin`})],
+ [/^(.+)'s egg$/,m=>({ja:`${T(m[1])}のたまご`,id:`Telur ${T(m[1])}`})],
+ [/^(.+) · not met yet$/,m=>({ja:`${T(m[1])} · まだ会っていない`,id:`${T(m[1])} · belum bertemu`})],
  [/^Spin · (\d+) coins$/,m=>({ja:`回す · ${m[1]}コイン`,id:`Putar · ${m[1]} koin`})],
  [/^Tap to play · rub to pet (.+)$/,m=>({ja:`タップであそぶ・なでて${m[1]}をかわいがろう`,id:`Ketuk untuk bermain · usap untuk membelai ${m[1]}`})],
  [/^Tap to play with (.+)$/,m=>({ja:`タップして${m[1]}とあそぶ`,id:`Ketuk untuk bermain dengan ${m[1]}`})],
@@ -2056,7 +2108,7 @@ function runTour(steps=TOUR,onDone){
 const EX_TIPS={intro:'Tap the speaker to hear it again. Take your time.',recog:'Pick the meaning. Wrong answers come back at the end, and you never lose lives.',trans:'Choose the Japanese for this word.',ask:'Your Mojimo is asking. Pick the Japanese it wants to hear.',listen:'Tap the big speaker as often as you like.',listenK:'Tap the big speaker as often as you like.',kana:'Choose how this character is read.',kanaRev:'Find the character that makes this sound.',match:'Tap one on the left, then its partner on the right.',build:'Tap the tiles in order. Tap a placed tile to take it back.',recall:'Type what you remember in romaji, for example konnichiwa.',feed:'Read what your Mojimo wants to eat, then tap that food.',tf:'Your Mojimo sometimes tries to trick you. Is the meaning right?'};
 function exTip(t){if(!EX_TIPS[t]||(S.hints||{})['ex_'+t])return null;S.hints=S.hints||{};S.hints['ex_'+t]=1;save();
   const tip=el('div',{class:'tipbar'});const ic=el('span',{class:'tipic'});ic.innerHTML=svgI('bulb');tip.append(ic,el('div',{},el('b',{},'Tip'),' ',EX_TIPS[t]));return tip}
-const PAGE_TIPS={hangout:'Every Mojimo you have unlocked hangs out here. Tap one to say hi, change the scene below, or press Dance party.',journey:'Lessons unlock in order. The highlighted one is up next.',review:'Words you learn land here. When some are due, review them to keep them fresh and earn XP.',collection:'Tap a friend to make it your companion. New eggs come from milestones and capsules.',gacha:'Tap Spin for a surprise. Every 10th spin is guaranteed to be an egg.'};
+const PAGE_TIPS={hangout:'Every Mojimo you have unlocked hangs out here. Tap one to say hi, change the scene below, or press Dance party.',journey:'Lessons unlock in order. The highlighted one is up next.',review:'Words you learn land here. When some are due, review them to keep them fresh and earn XP.',collection:'Tap a friend to make it your companion. New eggs come from milestones and capsules.',gacha:'Move the claw, then press GO for a surprise. The plushies marked NEW are friends you have not met yet. Every 10th play is guaranteed to be an egg.'};
 function pageTip(key){if((S.hints||{})['pg_'+key])return null;const box=el('div',{class:'pagetip'});const ic=el('span',{class:'tipic'});ic.innerHTML=svgI('bulb');
   const x=el('button',{class:'pagetip-x','aria-label':'Dismiss'});x.innerHTML=svgI('x');x.onclick=()=>{S.hints=S.hints||{};S.hints['pg_'+key]=1;save();box.remove()};
   box.append(ic,el('div',{class:'pagetip-t'},PAGE_TIPS[key]),x);return box}
@@ -2266,7 +2318,7 @@ function openCompanion(){
     isMyth(id)?el('button',{class:'bigbtn mythbtn',style:'margin-top:16px',onclick:()=>{closeOverlays();openLore(id)}},'Legend & power'):null,
     rest,el('button',{class:'link',onclick:closeOverlays},'Close')));
 }
-const CHANGELOG=[{"v":"v4.0","d":"Nov 23, 2026","t":"Build 4.0","i":["Cleaner pictures for all 50 Mojimo: no more card edges, white specks or clipped tails on the grown, outfit and colour looks","Cleaner mythical creature pictures: no more cream halos, missing tails or odd cuts","10 mythical creatures in the capsule machine: Kitsune, Tengu, Kappa, Oni, Ryū, Jorōgumo, Yuki-onna, Nekomata, Tsuchinoko and Nurikabe, each with its own spirit-echo voice, golden aura and reveal","New capsule prize: colours! Every Mojimo has a recoloured baby look with a matching sleeping look; switch with the new Colour option on the companion card","New \"Can't listen now\" button on listening questions: it swaps them for reading questions for 15 minutes, with no penalty","Your Mojimo comes alive on Home: it wanders, looks around, stretches, sits, sniffs, wiggles, dozes, watches the scene and shivers in the rain, and its mood shows in how it moves","Rub your Mojimo to pet it, tap the ground to call it over, watch it munch treats, and try the new Play ball game","15 new backdrops: Mt. Fuji, Shrine gate, Castle, Koi pond, City sunset, Sunflower field, Lavender hills, Rainy garden, Country station, Sunset beach and Candy land in the Style shop, plus Lantern festival, Under the sea, Moon walk and Mushroom forest from capsules","Fix: the Dance party button in Hangout is always visible, even with the tip showing on small phones","New Review screen: a summary of your words by mastery level, a clearer Review button, and tidier word cards; the explanation moved behind the ? button","Flags on the language buttons in the menu","Fix: the Home scene could get stuck scrolled halfway during the tutorial, hiding the name card and showing an empty pink area","Shorter menu: Capsule machine, Hangout and Style as big buttons, language and Romaji, Music and Sound toggles on one screen","Fixes: long names no longer get cut off on Home, tips stretch to the full width, and lessons fit better on small phones","Removed the \"3–5 min\" lesson length from the Journey and the tips","New sticker-style icons for Feed, Play, Rest, Style and the Home, Journey, Review and Collection tabs","New capsule prize: outfits! Every one of the 50 Mojimo has its own outfit, with a matching sleeping look","Put an outfit on from the companion card with the new Outfit look; it works for Baby and Grown Mojimo","New Home: your Mojimo's scene fills the top, with its name, XP and mood, your streak, coins and menu, and Feed, Play, Rest and Style all inside the scene","The next lesson card now shows today's goals; Word of the day and the season event sit side by side below it","New Journey: switch worlds with chips at the top; each world shows a picture banner and a compact lesson list with your Mojimo on the next lesson","New lessons: the lesson takes place in the world's scene, and your Mojimo asks each question in a big speech bubble with combo hearts below it","New Collection: your companion is featured on its backdrop, with a row of round friend portraits (See all for the full grid) and milestones shown as badges","All characters were removed to make room for a new cast","50 placeholder Mojimo hold their places, each with its own colour and voice","New egg designs for all 50 Mojimo","New baby, sleeping and grown art for all 50 Mojimo","Baby and sleeping Mojimo now wear their signature accessory too","Grown Mojimo wear two accessories each","Your friends keep their XP, growth and friendship while the new art is made","Every Mojimo has its real name again","Prototype tools: unlock all characters and all forms","Grown Mojimo curl up with their own grown sleeping art","Every Mojimo has a child voice as a baby and an adult voice when grown (boys, girls, men and women)","Your recorded name voices are back for the original 19 Mojimo","The other 31 Mojimo say their names in their own playful way","Fixed: Mojimo no longer jump out of the XP circle when they level up","Fixed: Mojimo sometimes used the robotic browser voice instead of their AI voice","Sleeping Mojimo make soft sleepy sounds in their own voice","When an egg is ready to hatch, Home shows a tap hint","A newly chosen Mojimo always says its name first, with no other sounds on top","Speech bubbles now appear when the voice starts and stay as long as the line"]},{"v":"v3.3.1","d":"Nov 23, 2026","t":"A voice for every Mojimo","i":["Every Mojimo now has its own natural Japanese AI voice, with its own pitch: big friends sound deeper, tiny ones higher","Each Mojimo says its name in its own voice","Lessons are still read by the same teacher voice"]},{"v":"v3.3.0","d":"Nov 22, 2026","t":"50 new Mojimo","i":["A brand-new cast of 50 Mojimo, each with egg, baby and grown art","Mojimo curl up with their own sleeping art when they rest","Sarumaru, Hitsujin, Upamaru, Takopon and Goromaru have moved on. If you had one, a new friend took its place with all its XP","Accessories were removed for now and refunded as coins"]},{"v":"v3.2.0","d":"Nov 22, 2026","t":"Learn with your Mojimo","i":["Your Mojimo joins every lesson and cheers you on in its own voice","Combo hearts: get answers right in a row to fill them up, with sparkles and spins","Feeding time: read what your Mojimo wants to eat and tap the right food","Is it right?: your Mojimo sometimes tries to trick you, so catch its mistakes","Help: tap Help once per lesson (twice at friendship level 3) and your Mojimo crosses out a wrong answer","A victory spin after a perfect lesson"]},{"v":"v3.1.1","d":"Nov 22, 2026","t":"Fixes","i":["Every answer shows romaji: picking the Japanese, listening, matching pairs and sentence tiles","When your egg reaches 50 XP, tap it 8 times on Home to hatch it"]},{"v":"v3.1.0","d":"Nov 22, 2026","t":"Five new worlds","i":["Mochi Meadow, Neko Town, Festival Street, Moonlight Forest and Tokyo Adventure are now playable: 38 new lessons","All of hiragana, plus katakana lessons and katakana words","Sentence building in every world, and Mojimo chat in full sentences you have learned","Daily treat from your Mojimo, streak rewards at 3, 7 and 30 days, and streak freezes","Friendship levels that unlock special lines and emotes","Your Mojimo reacts when you choose it as your companion","Photo mode in the Hangout: save or share a picture","Seasonal events with limited items: Snow Festival, Hanami, Tanabata and Tsukimi"]},{"v":"v3.0.10","d":"Nov 22, 2026","t":"Natural voices","i":["Lessons are read by a natural Japanese AI voice (VOICEVOX)","Each Mojimo personality has its own voice for all its lines, emotes and Hangout chats","Voice credits: VOICEVOX:四国めたん, ずんだもん, 春日部つむぎ, 雨晴はう"]},{"v": "v3.0.9", "d": "Nov 22, 2026", "t": "Emotes", "i": ["Tap the emote button on Home to make your Mojimo express itself", "Each emote on Home gets one of three spoken replies", "Emotes pop up on their own and never cover the talk bubble"]}, {"v": "v3.0.8", "d": "Nov 22, 2026", "t": "Hangout chats", "i": ["Mojimo chat with each other using the words you have learned", "Tap a speech bubble in the Hangout to hear it read aloud"]}, {"v": "v3.0.7", "d": "Nov 22, 2026", "t": "Accessories", "i": ["30 new accessories in the same pixel style as the Mojimo", "Wear one on the head, one on the face and one around the neck", "Each item is fitted to every character, baby and grown", "Items that do not fit a character are locked for that character"]}, {"v": "v3.0.6", "d": "Nov 22, 2026", "t": "New look", "i": ["10 illustrated backgrounds with falling snow, petals, leaves, fireflies and stars", "Snow piles up on your Mojimo until it shakes it off", "Rounded, cosy style closer to the original Mojimo", "Tall characters no longer get cut off on Home"]}, {"v": "v3.0.5", "d": "Nov 22, 2026", "t": "Hangout", "i": ["A place where all your Mojimo spend time together", "Choose who hangs out, or everyone", "Dance party: everyone dances together to a beat"]}, {"v": "v3.0.4", "d": "Nov 22, 2026", "t": "Grown forms", "i": ["Every Mojimo grows from egg to baby to grown", "Choose the Baby or Grown look once all forms are unlocked"]}, {"v": "v3.0.3", "d": "Nov 22, 2026", "t": "Polish", "i": ["Original colour scheme and a more compact layout", "Capsule rewards now appear at the top of the screen", "Feeding no longer plays the \"bingo\" sound"]}, {"v": "v3.0.2", "d": "Nov 22, 2026", "t": "Sound", "i": ["Character voices play instantly when you tap", "Tap your Mojimo's name to hear it say its name", "\"Bingo\" plays before the answer is read aloud"]}, {"v": "v3.0.1", "d": "Nov 22, 2026", "t": "Launch", "i": ["English, 日本語 and Bahasa Indonesia", "Romaji on all Japanese, tutorials and gentle background music", "Pixel icons and the original character voices"]}];
+const CHANGELOG=[{"v":"v4.0","d":"Nov 23, 2026","t":"Build 4.0","i":["Your first three eggs are now picked at random from all 50 Mojimo, so every player starts differently","New capsule machine: a crane game! Slide the claw and press GO. Plushies of friends you have not met yet sit inside, marked NEW, and the claw never misses","Cleaner pictures for all 50 Mojimo: no more card edges, white specks or clipped tails on the grown, outfit and colour looks","Cleaner mythical creature pictures: no more cream halos, missing tails or odd cuts","10 mythical creatures in the capsule machine: Kitsune, Tengu, Kappa, Oni, Ryū, Jorōgumo, Yuki-onna, Nekomata, Tsuchinoko and Nurikabe, each with its own spirit-echo voice, golden aura and reveal","New capsule prize: colours! Every Mojimo has a recoloured baby look with a matching sleeping look; switch with the new Colour option on the companion card","New \"Can't listen now\" button on listening questions: it swaps them for reading questions for 15 minutes, with no penalty","Your Mojimo comes alive on Home: it wanders, looks around, stretches, sits, sniffs, wiggles, dozes, watches the scene and shivers in the rain, and its mood shows in how it moves","Rub your Mojimo to pet it, tap the ground to call it over, watch it munch treats, and try the new Play ball game","15 new backdrops: Mt. Fuji, Shrine gate, Castle, Koi pond, City sunset, Sunflower field, Lavender hills, Rainy garden, Country station, Sunset beach and Candy land in the Style shop, plus Lantern festival, Under the sea, Moon walk and Mushroom forest from capsules","Fix: the Dance party button in Hangout is always visible, even with the tip showing on small phones","New Review screen: a summary of your words by mastery level, a clearer Review button, and tidier word cards; the explanation moved behind the ? button","Flags on the language buttons in the menu","Fix: the Home scene could get stuck scrolled halfway during the tutorial, hiding the name card and showing an empty pink area","Shorter menu: Capsule machine, Hangout and Style as big buttons, language and Romaji, Music and Sound toggles on one screen","Fixes: long names no longer get cut off on Home, tips stretch to the full width, and lessons fit better on small phones","Removed the \"3–5 min\" lesson length from the Journey and the tips","New sticker-style icons for Feed, Play, Rest, Style and the Home, Journey, Review and Collection tabs","New capsule prize: outfits! Every one of the 50 Mojimo has its own outfit, with a matching sleeping look","Put an outfit on from the companion card with the new Outfit look; it works for Baby and Grown Mojimo","New Home: your Mojimo's scene fills the top, with its name, XP and mood, your streak, coins and menu, and Feed, Play, Rest and Style all inside the scene","The next lesson card now shows today's goals; Word of the day and the season event sit side by side below it","New Journey: switch worlds with chips at the top; each world shows a picture banner and a compact lesson list with your Mojimo on the next lesson","New lessons: the lesson takes place in the world's scene, and your Mojimo asks each question in a big speech bubble with combo hearts below it","New Collection: your companion is featured on its backdrop, with a row of round friend portraits (See all for the full grid) and milestones shown as badges","All characters were removed to make room for a new cast","50 placeholder Mojimo hold their places, each with its own colour and voice","New egg designs for all 50 Mojimo","New baby, sleeping and grown art for all 50 Mojimo","Baby and sleeping Mojimo now wear their signature accessory too","Grown Mojimo wear two accessories each","Your friends keep their XP, growth and friendship while the new art is made","Every Mojimo has its real name again","Prototype tools: unlock all characters and all forms","Grown Mojimo curl up with their own grown sleeping art","Every Mojimo has a child voice as a baby and an adult voice when grown (boys, girls, men and women)","Your recorded name voices are back for the original 19 Mojimo","The other 31 Mojimo say their names in their own playful way","Fixed: Mojimo no longer jump out of the XP circle when they level up","Fixed: Mojimo sometimes used the robotic browser voice instead of their AI voice","Sleeping Mojimo make soft sleepy sounds in their own voice","When an egg is ready to hatch, Home shows a tap hint","A newly chosen Mojimo always says its name first, with no other sounds on top","Speech bubbles now appear when the voice starts and stay as long as the line"]},{"v":"v3.3.1","d":"Nov 23, 2026","t":"A voice for every Mojimo","i":["Every Mojimo now has its own natural Japanese AI voice, with its own pitch: big friends sound deeper, tiny ones higher","Each Mojimo says its name in its own voice","Lessons are still read by the same teacher voice"]},{"v":"v3.3.0","d":"Nov 22, 2026","t":"50 new Mojimo","i":["A brand-new cast of 50 Mojimo, each with egg, baby and grown art","Mojimo curl up with their own sleeping art when they rest","Sarumaru, Hitsujin, Upamaru, Takopon and Goromaru have moved on. If you had one, a new friend took its place with all its XP","Accessories were removed for now and refunded as coins"]},{"v":"v3.2.0","d":"Nov 22, 2026","t":"Learn with your Mojimo","i":["Your Mojimo joins every lesson and cheers you on in its own voice","Combo hearts: get answers right in a row to fill them up, with sparkles and spins","Feeding time: read what your Mojimo wants to eat and tap the right food","Is it right?: your Mojimo sometimes tries to trick you, so catch its mistakes","Help: tap Help once per lesson (twice at friendship level 3) and your Mojimo crosses out a wrong answer","A victory spin after a perfect lesson"]},{"v":"v3.1.1","d":"Nov 22, 2026","t":"Fixes","i":["Every answer shows romaji: picking the Japanese, listening, matching pairs and sentence tiles","When your egg reaches 50 XP, tap it 8 times on Home to hatch it"]},{"v":"v3.1.0","d":"Nov 22, 2026","t":"Five new worlds","i":["Mochi Meadow, Neko Town, Festival Street, Moonlight Forest and Tokyo Adventure are now playable: 38 new lessons","All of hiragana, plus katakana lessons and katakana words","Sentence building in every world, and Mojimo chat in full sentences you have learned","Daily treat from your Mojimo, streak rewards at 3, 7 and 30 days, and streak freezes","Friendship levels that unlock special lines and emotes","Your Mojimo reacts when you choose it as your companion","Photo mode in the Hangout: save or share a picture","Seasonal events with limited items: Snow Festival, Hanami, Tanabata and Tsukimi"]},{"v":"v3.0.10","d":"Nov 22, 2026","t":"Natural voices","i":["Lessons are read by a natural Japanese AI voice (VOICEVOX)","Each Mojimo personality has its own voice for all its lines, emotes and Hangout chats","Voice credits: VOICEVOX:四国めたん, ずんだもん, 春日部つむぎ, 雨晴はう"]},{"v": "v3.0.9", "d": "Nov 22, 2026", "t": "Emotes", "i": ["Tap the emote button on Home to make your Mojimo express itself", "Each emote on Home gets one of three spoken replies", "Emotes pop up on their own and never cover the talk bubble"]}, {"v": "v3.0.8", "d": "Nov 22, 2026", "t": "Hangout chats", "i": ["Mojimo chat with each other using the words you have learned", "Tap a speech bubble in the Hangout to hear it read aloud"]}, {"v": "v3.0.7", "d": "Nov 22, 2026", "t": "Accessories", "i": ["30 new accessories in the same pixel style as the Mojimo", "Wear one on the head, one on the face and one around the neck", "Each item is fitted to every character, baby and grown", "Items that do not fit a character are locked for that character"]}, {"v": "v3.0.6", "d": "Nov 22, 2026", "t": "New look", "i": ["10 illustrated backgrounds with falling snow, petals, leaves, fireflies and stars", "Snow piles up on your Mojimo until it shakes it off", "Rounded, cosy style closer to the original Mojimo", "Tall characters no longer get cut off on Home"]}, {"v": "v3.0.5", "d": "Nov 22, 2026", "t": "Hangout", "i": ["A place where all your Mojimo spend time together", "Choose who hangs out, or everyone", "Dance party: everyone dances together to a beat"]}, {"v": "v3.0.4", "d": "Nov 22, 2026", "t": "Grown forms", "i": ["Every Mojimo grows from egg to baby to grown", "Choose the Baby or Grown look once all forms are unlocked"]}, {"v": "v3.0.3", "d": "Nov 22, 2026", "t": "Polish", "i": ["Original colour scheme and a more compact layout", "Capsule rewards now appear at the top of the screen", "Feeding no longer plays the \"bingo\" sound"]}, {"v": "v3.0.2", "d": "Nov 22, 2026", "t": "Sound", "i": ["Character voices play instantly when you tap", "Tap your Mojimo's name to hear it say its name", "\"Bingo\" plays before the answer is read aloud"]}, {"v": "v3.0.1", "d": "Nov 22, 2026", "t": "Launch", "i": ["English, 日本語 and Bahasa Indonesia", "Romaji on all Japanese, tutorials and gentle background music", "Pixel icons and the original character voices"]}];
 function openChangelog(){
   const list=el('div',{class:'clog'});
   CHANGELOG.forEach((c,ix)=>{const box=el('div',{class:'clog-item'+(ix===0?' new':'')},el('div',{class:'clog-h'},el('b',{},c.t),el('span',{},`${c.v} · ${c.d}`)),el('ul',{},...c.i.map(x=>el('li',{},x))));list.append(box)});
@@ -2345,7 +2397,7 @@ function rollGacha(){
   S.g.spins++;
   {const ml=mythsLeft();S.g.myMiss=(S.g.myMiss||0)+1;if(ml.length&&((S.myTicket||0)>0||Math.random()<.02||S.g.myMiss>=MYTH_PITY)){if(S.myTicket>0)S.myTicket--;S.g.myMiss=0;const id=rnd(ml);giveMyth(id);return {kind:'myth',id,rar:'my',name:PET[id].name,desc:`A mythical ${PET[id].en} has chosen you! Power: ${MYLORE[id].power[1]}`}}}
   const left=eggsLeft();const gorilla=false;const r=Math.random();
-  if((left.length||gorilla)&&(S.g.miss>=pityMax()-1||r<.12)){S.g.miss=0;const id=gorilla?'goromaru':rnd(left);S.owned.push(id);pet(id);
+  if((left.length||gorilla)&&(S.g.miss>=pityMax()-1||r<.12)){S.g.miss=0;const id=gorilla?'goromaru':rnd((()=>{const c=(typeof CRANE_PLUSH!=='undefined'?CRANE_PLUSH:[]).filter(x=>left.includes(x));return c.length?c:left})());S.owned.push(id);pet(id);
     return {kind:'egg',id,rar:gorilla?'lr':'sr',name:'A new egg',desc:gorilla?'The secret friend has appeared.':'Something is sleeping inside. Make it your companion from Collection.'}}
   S.g.miss++;
   const rl=recolorsLeft();
@@ -2375,73 +2427,167 @@ function machineSVG(){
   <rect x="140" y="214" width="26" height="36" rx="10" fill="#30201F"/>
   </svg>`;
 }
+/* ---- capsule machine: crane game ---- */
+const CRA=p=>(typeof assetURL==='function'?assetURL:(x=>x))('assets/crane/'+p);
+let CRANE_PLUSH=[];
+const PAWSVG='<svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="16" rx="5.5" ry="4.5"/><circle cx="6" cy="10" r="2.3"/><circle cx="9.6" cy="6.3" r="2.3"/><circle cx="14.4" cy="6.3" r="2.3"/><circle cx="18" cy="10" r="2.3"/></svg>';
+const CR={W:482,H:320,top:42,minX:56,maxX:356,chuteX:431};
+function temariSVG(r,col,band,gold){
+  const o='#2B211D';const g=gold?'#F6CB4E':col;
+  const fl=[-0.55,0,0.55].map(k=>`<circle cx="${k*r}" cy="${r*0.08}" r="${r*0.13}" fill="#FFFFFF"/><circle cx="${k*r}" cy="${r*0.08}" r="${r*0.05}" fill="${gold?'#E26A5A':'#F59AA8'}"/>`).join('');
+  return `<circle r="${r}" fill="${g}"/><path d="M${-r} ${-r*0.12}Q0 ${-r*0.32} ${r} ${-r*0.12}V${r*0.26}Q0 ${r*0.06} ${-r} ${r*0.26}Z" fill="${band}" clip-path="circle(${r}px)"/>${fl}`+
+    `<ellipse cx="${-r*0.38}" cy="${-r*0.5}" rx="${r*0.26}" ry="${r*0.13}" transform="rotate(-30 ${-r*0.38} ${-r*0.5})" fill="#FFFFFF" opacity=".75"/>`+
+    (gold?`<text y="${r*0.18}" text-anchor="middle" font-size="${r*0.8}" font-weight="900" fill="${o}" font-family="M PLUS Rounded 1c,sans-serif">?</text>`:'')+
+    `<circle r="${r}" fill="none" stroke="${o}" stroke-width="3.2"/>`;
+}
+function cranePile(){
+  const unowned=shuffle(eggsLeft()).slice(0,4);
+  const fill=shuffle(PETS.map(p=>p.id).filter(id=>S.owned.includes(id)&&!unowned.includes(id))).slice(0,Math.max(0,3-unowned.length));
+  CRANE_PLUSH=unowned.slice();
+  const plush=[...unowned.map(id=>({id,neu:true})),...fill.map(id=>({id,neu:false}))];
+  const COLS=[['#F7B8C2','#C9A8EE'],['#BFD3F7','#F59AA8'],['#C9A8EE','#F6CB6E'],['#F6E1A8','#F59AA8'],['#B9E3CA','#F7B8C2'],['#F7B8C2','#9DB8F2'],['#DCCBF6','#F6CB6E']];
+  const items=[];
+  // back row balls
+  [[34,262,30],[92,252,32],[150,262,30],[208,250,32],[268,260,31],[330,252,32]].forEach(([x,y,r],i)=>items.push({t:'ball',x,y,r,c:COLS[i%7]}));
+  // plushies sit on the back row
+  const px=[48,128,212,296,170].slice(0,plush.length);
+  plush.forEach((p,i)=>items.push({t:'plush',x:px[i]+(Math.random()*10-5),y:238,id:p.id,neu:p.neu}));
+  // front row balls
+  [[22,302,30],[78,298,32],[138,304,31],[198,298,32],[258,304,31],[318,298,32],[372,304,24]].forEach(([x,y,r],i)=>items.push({t:'ball',x,y,r,c:COLS[(i+3)%7]}));
+  if(mythsLeft().length)items.splice(6,0,{t:'ball',x:250,y:226,r:24,c:['#F6CB4E','#FFF2C2'],gold:true});
+  return items;
+}
+function craneSVG(items){
+  const o='#2B211D';
+  const sp=(x,y,s,c)=>`<path transform="translate(${x} ${y}) scale(${s})" d="M0-10C1.5-3 3-1.5 10 0C3 1.5 1.5 3 0 10C-1.5 3-3 1.5-10 0C-3-1.5-1.5-3 0-10Z" fill="${c}" opacity=".85"/>`;
+  const parts=items.map((it,i)=>{
+    if(it.t==='ball')return `<g class="cr-it" data-i="${i}" transform="translate(${it.x} ${it.y})">${temariSVG(it.r,it.c[0],it.c[1],it.gold)}</g>`;
+    return `<g class="cr-it cr-plush" data-i="${i}" transform="translate(${it.x} ${it.y})"><ellipse cx="0" cy="40" rx="30" ry="6" fill="#000" opacity=".12"/><image href="${img(it.id,'baby')}" x="-48" y="-58" width="96" height="100" preserveAspectRatio="xMidYMax meet"/>${it.neu?`<g transform="translate(30 -46)"><rect x="-16" y="-9" width="32" height="18" rx="9" fill="#F6CB4E" stroke="${o}" stroke-width="2.4"/><text y="4.5" text-anchor="middle" font-size="10.5" font-weight="900" fill="${o}" font-family="M PLUS Rounded 1c,sans-serif">NEW</text></g>`:''}</g>`;
+  }).join('');
+  return `<svg viewBox="0 0 ${CR.W} ${CR.H}" preserveAspectRatio="none" class="cr-svg" aria-hidden="true">
+<defs><linearGradient id="crbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D9C6F2"/><stop offset=".55" stop-color="#EBD7F3"/><stop offset="1" stop-color="#F8D8E6"/></linearGradient><radialGradient id="crglow"><stop offset="0" stop-color="#FFF6C8" stop-opacity=".95"/><stop offset="1" stop-color="#FFF6C8" stop-opacity="0"/></radialGradient></defs>
+<rect width="${CR.W}" height="${CR.H}" fill="url(#crbg)"/>
+<circle cx="78" cy="70" r="24" fill="#FFF4D6" opacity=".75"/>
+<path d="M0 190L60 138 108 170 170 112 238 168 300 126 360 160 420 120 482 150V320H0Z" fill="#CDB7E8" opacity=".55"/>
+<g fill="#BFA7DE" opacity=".6"><path d="M392 168h40l-8-10h-24zM398 158h28l-6-9h-16zM404 149h16l-5-8h-6zM395 168h34v30h-34z"/></g>
+${sp(150,58,.7,'#FFFFFF')}${sp(300,84,.5,'#FFFFFF')}${sp(250,40,.45,'#FFF4D6')}
+<g class="cr-chute"><rect x="392" y="210" width="80" height="112" rx="8" fill="#FFFFFF" fill-opacity=".38" stroke="${o}" stroke-width="3"/><rect x="386" y="202" width="92" height="16" rx="8" fill="#F6CB4E" stroke="${o}" stroke-width="3"/><circle class="cr-flash" cx="432" cy="262" r="44" fill="url(#crglow)" opacity="0"/><text x="432" y="246" text-anchor="middle" font-size="13" font-weight="900" fill="#7A4FA8" font-family="M PLUS Rounded 1c,sans-serif" opacity=".8">でぐち</text></g>
+<g class="cr-pile">${parts}</g>
+<rect x="0" y="6" width="${CR.W}" height="8" rx="4" fill="#E2A31F" stroke="${o}" stroke-width="2.5"/>
+<g class="cr-carry"></g>
+<g class="cr-claw"><line class="cr-cable" x1="0" y1="10" x2="0" y2="${CR.top}" stroke="${o}" stroke-width="6"/><line class="cr-cable2" x1="0" y1="10" x2="0" y2="${CR.top}" stroke="#E26A5A" stroke-width="3"/><rect x="-16" y="2" width="32" height="16" rx="5" fill="#F6CB4E" stroke="${o}" stroke-width="3"/>
+<g class="cr-head" transform="translate(0 ${CR.top})"><image class="cr-al" href="${CRA('arm_l.webp')}" x="-60" y="-13" width="120" height="118.5"/><image class="cr-ar" href="${CRA('arm_r.webp')}" x="-60" y="-13" width="120" height="118.5"/><image href="${CRA('hub.webp')}" x="-60" y="-13" width="120" height="118.5"/></g></g>
+<path d="M30 0L-40 140M70 0L10 110" stroke="#FFFFFF" stroke-width="14" opacity=".22" stroke-linecap="round"/>
+</svg>`;
+}
+const tween=(ms,fn,ease=(t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2))=>new Promise(res=>{const t0=performance.now();const f=now=>{const t=Math.min(1,(now-t0)/ms);fn(ease(t));t<1?requestAnimationFrame(f):res()};requestAnimationFrame(f)});
 function openGacha(){
   if(S.resting){S.resting=false;save();renderHome()}
-  const wrap=el('div',{class:'gacha'});
+  const wrap=el('div',{class:'gacha crane-mode'});
   const coinsEl=el('b',{},String(S.coins));
-  const machine=el('div',{class:'gmachine'});machine.innerHTML=machineSVG();
-  const stage=el('div',{class:'gstage'},machine);
+  const crane=el('div',{class:'crane'});
+  const inner=el('div',{class:'cr-int'});
+  const frame=el('img',{class:'cr-frame',src:CRA('frame.webp'),alt:'',draggable:'false'});
+  const goImg=el('img',{class:'cr-go',src:CRA('go.webp'),alt:'',draggable:'false'});
+  const goBtn=el('button',{class:'cr-gohit','aria-label':'GO'});
+  const joyL=el('button',{class:'cr-joy l','aria-label':'Move claw left'},'◀');
+  const joyR=el('button',{class:'cr-joy r','aria-label':'Move claw right'},'▶');
+  crane.append(inner,frame,el('span',{class:'cr-lamp l'}),el('span',{class:'cr-lamp r'}),goImg,goBtn,joyL,joyR);
+  let items=[],svg,claw,head,armL,armR,carry,cx=206,busy=false,headY=CR.top,open=0;
+  const setClaw=()=>{claw.setAttribute('transform',`translate(${cx} 0)`);head.setAttribute('transform',`translate(0 ${headY})`);claw.querySelectorAll('line').forEach(l=>l.setAttribute('y2',headY+2));armL.setAttribute('transform',`rotate(${open*16} -17 45)`);armR.setAttribute('transform',`rotate(${-open*16} 17 45)`)};
+  const build=()=>{items=cranePile();inner.innerHTML=craneSVG(items);svg=inner.firstChild;claw=svg.querySelector('.cr-claw');head=svg.querySelector('.cr-head');armL=svg.querySelector('.cr-al');armR=svg.querySelector('.cr-ar');carry=svg.querySelector('.cr-carry');open=0.25;setClaw();
+    svg.querySelectorAll('.cr-plush').forEach(g=>{const it=items[+g.dataset.i];g.style.cursor='pointer';g.addEventListener('click',e=>{if(busy)return;e.stopPropagation();toast(it.neu?`${PET[it.id].name} · not met yet`:PET[it.id].name)})})};
+  build();
+  const move=d=>{if(busy)return;cx=Math.max(CR.minX,Math.min(CR.maxX,cx+d));setClaw()};
+  const hold=(b,d)=>{let iv;const stop=()=>{clearInterval(iv)};b.addEventListener('pointerdown',e=>{e.preventDefault();move(d);iv=setInterval(()=>move(d),40)});['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,stop))};
+  hold(joyL,-8);hold(joyR,8);
+  inner.addEventListener('pointerdown',e=>{if(busy)return;const r=inner.getBoundingClientRect();const go=ev=>{cx=Math.max(CR.minX,Math.min(CR.maxX,(ev.clientX-r.left)/r.width*CR.W));setClaw()};go(e);inner.setPointerCapture(e.pointerId);const mv=ev=>go(ev);const up=()=>{inner.removeEventListener('pointermove',mv);inner.removeEventListener('pointerup',up)};inner.addEventListener('pointermove',mv);inner.addEventListener('pointerup',up)});
+  const keyH=e=>{if(!document.body.contains(wrap)){document.removeEventListener('keydown',keyH);return}if(e.key==='ArrowLeft')move(-14);if(e.key==='ArrowRight')move(14)};document.addEventListener('keydown',keyH);
+  // idle sway
+  let swayT=0;const sway=()=>{if(!document.body.contains(wrap))return;if(!busy){swayT+=.05;claw.setAttribute('transform',`translate(${cx} 0) rotate(${Math.sin(swayT)*1.6} 0 10)`)}requestAnimationFrame(sway)};requestAnimationFrame(sway);
   const ticketTag=()=>(S.myTicket||0)>0?el('div',{class:'myticket'},`✦ Mythic ticket: your next spin is a mythical creature`):null;
   const pityN=()=>Math.min(pityMax(),S.g.miss);
   const pity=el('div',{class:'gpity'});
-  const drawPity=()=>{const left=Math.max(1,pityMax()-pityN());pity.replaceChildren(...[ticketTag()].filter(Boolean),el('div',{class:'gpl'},el('span',{},'Lucky meter'),el('span',{},`Egg guaranteed within ${left} spin${left===1?'':'s'}`)),el('div',{class:'gdots'},...Array.from({length:PITY},(_,i)=>el('i',{class:i<pityN()?'on':''}))))};
+  const star=on=>{const s=el('i',{class:on?'on':''});s.innerHTML='<svg viewBox="0 0 20 20"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z"/></svg>';return s};
+  const drawPity=()=>{const left=Math.max(1,pityMax()-pityN());pity.replaceChildren(...[ticketTag()].filter(Boolean),el('div',{class:'gpl'},el('span',{},'Lucky stars'),el('span',{},`Egg guaranteed within ${left} spin${left===1?'':'s'}`)),el('div',{class:'gstars'},...Array.from({length:PITY},(_,i)=>star(i<pityN()))))};
   drawPity();
   const spin=el('button',{class:'bigbtn gold'});
-  const drawBtn=()=>{const free=S.g.free>0;spin.textContent=free?'Spin · first one free':`Spin · ${gachaCost()} coins`;spin.disabled=!free&&S.coins<gachaCost();coinsEl.textContent=S.coins};
+  const drawBtn=()=>{const free=S.g.free>0;spin.innerHTML='';spin.append(el('span',{class:'paw'}),free?'Play · first one free':`Play · ${gachaCost()} coins`);spin.querySelector('.paw').innerHTML=PAWSVG;spin.disabled=!free&&S.coins<gachaCost();coinsEl.textContent=S.coins};
   drawBtn();
+  const hint=el('div',{class:'cr-hint'},'Move the claw with the stick or drag it, then press GO.');
   const odds=el('button',{class:'link'},'See odds');
   odds.onclick=()=>odds.replaceWith(el('div',{class:'oddsbox'},
     el('div',{},el('b',{style:`color:${RARITY.my.col}`},'Mythic · 2%  '),'One of 10 mythical creatures, already hatched'),
     el('div',{},el('b',{style:`color:${RARITY.sr.col}`},'Super rare · 12%  '),'A new egg'),
     el('div',{},el('b',{style:`color:${RARITY.r.col}`},'Rare · 30%  '),'New colours or an outfit for one of your friends, or a backdrop you don\'t own'),
     el('div',{},el('b',{style:`color:${RARITY.c.col}`},'Common · 58%  '),'2–3 treats, or 10–40 coins back'),
-    el('div',{class:'oddsnote'},`An egg is guaranteed by every ${PITY}th spin, and a mythical creature by every ${MYTH_PITY}th. Coins come only from studying; nothing here costs real money.`)));
+    el('div',{class:'oddsnote'},`An egg is guaranteed by every ${PITY}th spin, and a mythical creature by every ${MYTH_PITY}th. Coins come only from studying; nothing here costs real money.`),
+    el('div',{class:'oddsnote'},'Where the claw drops does not change the odds: the prize is decided when you press GO, and the claw always catches it.')));
   const result=el('div',{class:'gresult hidden'});
   const close=el('button',{class:'gclose','aria-label':'Close'});close.innerHTML=svgI('x');close.onclick=()=>{wrap.remove();renderHome()};
   const cp=el('span',{class:'coinpill'});cp.innerHTML=svgI('coin');cp.firstChild.style.color='#E2A31F';cp.append(coinsEl);
-  wrap.append(el('div',{class:'ghead'},close,el('div',{},el('div',{class:'gen'},'Capsule machine'),el('div',{class:'gjp',lang:'ja'},'もちもち ガチャ')),cp),result,stage,pity,spin,odds);
-  {const pt=pageTip('gacha');if(pt)wrap.insertBefore(pt,stage)}
+  const petals=el('div',{class:'cr-petals'});for(let i=0;i<9;i++){const p=el('i');p.style.left=(i*11+Math.random()*8)+'%';p.style.animationDelay=(-Math.random()*9)+'s';p.style.animationDuration=(7+Math.random()*5)+'s';petals.append(p)}
+  wrap.append(petals,el('div',{class:'ghead'},close,el('div',{class:'cr-title'},el('div',{class:'gen'},'Crane game'),el('div',{class:'gjp',lang:'ja'},'クレーン ゲーム')),cp),el('div',{class:'cr-box'},crane,result),hint,pity,spin,odds);
+  {const pt=pageTip('gacha');if(pt)wrap.insertBefore(pt,wrap.querySelector('.cr-box'))}
   $('overlayHost').append(wrap);
-  let busy=false;
-  spin.onclick=()=>{
-    if(busy)return;const free=S.g.free>0;if(!free&&S.coins<gachaCost())return;
-    busy=true;if(free)S.g.free--;else S.coins-=gachaCost();
-    const prize=rollGacha();save();drawBtn();spin.disabled=true;result.classList.add('hidden');stage.classList.remove('hidden');wrap.classList.remove('revealed');
-    const knob=machine.querySelector('#gknob');knob.style.transform='rotate(0deg)';void knob.getBoundingClientRect();knob.style.transform='rotate(360deg)';
-    machine.classList.add('shake');play('level');
-    setTimeout(()=>{
-      machine.classList.remove('shake');knob.style.transition='none';knob.style.transform='rotate(0deg)';void knob.getBoundingClientRect();knob.style.transition='';
-      const R=RARITY[prize.rar];
-      const cap=el('button',{class:'gcap'+(prize.kind==='myth'?' mythcap':''),'aria-label':'Open capsule',style:`--cc:${R.col}`},el('span',{class:'top'}),el('span',{class:'bot'}),el('span',{class:'tap'},'Tap to open'));
-      stage.append(cap);
-      cap.onclick=()=>{
-        cap.classList.add('open');play(prize.rar==='c'?'correct':'winner');
-        setTimeout(()=>{
-          cap.remove();
-          let art;
-          if(prize.kind==='myth'){art=el('div',{class:'mythart'},el('span',{class:'mray'}),el('img',{src:img(prize.id,'baby'),alt:PET[prize.id].name,class:'gart'}),el('span',{class:'mkana',lang:'ja'},PET[prize.id].kana));setTimeout(()=>{try{introduce(prize.id,()=>talk(PERSONA[PET[prize.id].type].intro,prize.id,6000))}catch(e){}},500)}
-          else if(prize.kind==='egg')art=el('img',{src:img(prize.id,'egg'),alt:'Egg',class:'gart'});
-          else if(prize.kind==='outfit')art=el('img',{src:outfitArt(prize.id),alt:'',class:'gart'});
-          else if(prize.kind==='recolor')art=el('img',{src:recolorArt(prize.id),alt:'',class:'gart'});
-          else if(prize.kind==='item')art=prize.it.grad?el('span',{class:'gsw',style:`background:radial-gradient(circle at 50% 80%,${prize.it.grad[1]},${prize.it.grad[0]})`}):el('span',{class:'gpic'},pixImg(prize.it.pic));
-          else if(prize.kind==='treat')art=el('span',{class:'gpic'},pixImg(prize.t.pic));
-          else art=el('span',{class:'gpic'},pixImg('coin'));
-          const btns=el('div',{class:'gbtns'});
-          if(prize.kind==='myth'){const raise=el('button',{class:'bigbtn mythbtn'},'Make it your companion');raise.onclick=()=>{S.active=prize.id;S.resting=false;save();wrap.remove();go('home')};btns.append(raise);wrap.classList.add('mythwin')}
-          if(prize.kind==='egg'){const raise=el('button',{class:'bigbtn'},'Raise it now');raise.onclick=()=>{S.active=prize.id;S.resting=false;save();wrap.remove();go('home')};btns.append(raise)}
-          if(prize.kind==='recolor'&&S.owned.includes(prize.id)&&stageOf(prize.id)!=='egg'){const use=el('button',{class:'bigbtn'},'Try it on');use.onclick=()=>{pet(prize.id).form='recolor';save();wrap.remove();go(S.active===prize.id?'home':'collection');if(S.active===prize.id)anim($('petBody'),'anim-hop',520)};btns.append(use)}
-          if(prize.kind==='outfit'&&S.owned.includes(prize.id)&&stageOf(prize.id)!=='egg'){const use=el('button',{class:'bigbtn'},'Put it on');use.onclick=()=>{pet(prize.id).form='outfit';save();wrap.remove();go(S.active===prize.id?'home':'collection');if(S.active===prize.id)anim($('petBody'),'anim-hop',520)};btns.append(use)}
-          if(prize.kind==='item'){const use=el('button',{class:'bigbtn white'},'Use it');use.onclick=()=>{const it=prize.it;if(it.cat==='Accessory')wearAcc(S.active,it.id,false);else S.decor.wall=it.id;save();wrap.remove();go('home');anim($('petBody'),'anim-hop',520)};btns.append(use)}
-          result.replaceChildren(el('div',{class:'grar',style:`color:${R.col}`},R.name),art,el('div',{class:'gname'},prize.name),el('div',{class:'gdesc'},prize.desc),btns);
-          result.classList.remove('hidden');result.style.setProperty('--rc',R.col);stage.classList.add('hidden');wrap.classList.add('revealed');{const pt=wrap.querySelector('.pagetip');if(pt)pt.remove()}wrap.scrollTo({top:0,behavior:'smooth'});
-          if(prize.rar==='sr'||prize.rar==='lr'||prize.rar==='my')for(let i=0;i<(prize.rar==='my'?40:18);i++){const c=el('span',{class:'confetti'},'●');c.style.left=Math.random()*100+'%';c.style.color=['#F7A08C','#F6CB6E','#9DB8F2','#9ED6B4'][i%4];c.style.fontSize=(6+Math.random()*8)+'px';c.style.animationDuration=(1.6+Math.random()*1.4)+'s';wrap.append(c);setTimeout(()=>c.remove(),3400)}
-          drawPity();drawBtn();busy=false;
-        },420);
-      };
-    },1050);
+  const reveal=prize=>{
+    const R=RARITY[prize.rar];play(prize.rar==='c'?'correct':'winner');
+    let art;
+    if(prize.kind==='myth'){art=el('div',{class:'mythart'},el('span',{class:'mray'}),el('img',{src:img(prize.id,'baby'),alt:PET[prize.id].name,class:'gart'}),el('span',{class:'mkana',lang:'ja'},PET[prize.id].kana));setTimeout(()=>{try{introduce(prize.id,()=>talk(PERSONA[PET[prize.id].type].intro,prize.id,6000))}catch(e){}},500)}
+    else if(prize.kind==='egg')art=el('img',{src:img(prize.id,'egg'),alt:'Egg',class:'gart'});
+    else if(prize.kind==='outfit')art=el('img',{src:outfitArt(prize.id),alt:'',class:'gart'});
+    else if(prize.kind==='recolor')art=el('img',{src:recolorArt(prize.id),alt:'',class:'gart'});
+    else if(prize.kind==='item')art=prize.it.grad?el('span',{class:'gsw',style:`background:radial-gradient(circle at 50% 80%,${prize.it.grad[1]},${prize.it.grad[0]})`}):el('span',{class:'gpic'},pixImg(prize.it.pic));
+    else if(prize.kind==='treat')art=el('span',{class:'gpic'},pixImg(prize.t.pic));
+    else art=el('span',{class:'gpic'},pixImg('coin'));
+    const btns=el('div',{class:'gbtns'});
+    if(prize.kind==='myth'){const raise=el('button',{class:'bigbtn mythbtn'},'Make it your companion');raise.onclick=()=>{S.active=prize.id;S.resting=false;save();wrap.remove();go('home')};btns.append(raise);wrap.classList.add('mythwin')}
+    if(prize.kind==='egg'){const raise=el('button',{class:'bigbtn'},'Raise it now');raise.onclick=()=>{S.active=prize.id;S.resting=false;save();wrap.remove();go('home')};btns.append(raise)}
+    if(prize.kind==='recolor'&&S.owned.includes(prize.id)&&stageOf(prize.id)!=='egg'){const use=el('button',{class:'bigbtn'},'Try it on');use.onclick=()=>{pet(prize.id).form='recolor';save();wrap.remove();go(S.active===prize.id?'home':'collection');if(S.active===prize.id)anim($('petBody'),'anim-hop',520)};btns.append(use)}
+    if(prize.kind==='outfit'&&S.owned.includes(prize.id)&&stageOf(prize.id)!=='egg'){const use=el('button',{class:'bigbtn'},'Put it on');use.onclick=()=>{pet(prize.id).form='outfit';save();wrap.remove();go(S.active===prize.id?'home':'collection');if(S.active===prize.id)anim($('petBody'),'anim-hop',520)};btns.append(use)}
+    if(prize.kind==='item'){const use=el('button',{class:'bigbtn white'},'Use it');use.onclick=()=>{const it=prize.it;if(it.cat==='Accessory')wearAcc(S.active,it.id,false);else S.decor.wall=it.id;save();wrap.remove();go('home');anim($('petBody'),'anim-hop',520)};btns.append(use)}
+    const ok=el('button',{class:'link cr-ok'},'Keep playing');ok.onclick=()=>{result.classList.add('hidden');wrap.classList.remove('revealed','mythwin')};btns.append(ok);
+    const nm=prize.kind==='egg'?`${PET[prize.id].name}'s egg`:prize.name;
+    result.replaceChildren(el('div',{class:'grar',style:`color:${R.col}`},R.name),art,el('div',{class:'gname'},nm),el('div',{class:'gdesc'},prize.desc),btns);
+    result.classList.remove('hidden');result.style.setProperty('--rc',R.col);wrap.classList.add('revealed');{const pt=wrap.querySelector('.pagetip');if(pt)pt.remove()}
+    if(prize.rar==='sr'||prize.rar==='lr'||prize.rar==='my')for(let i=0;i<(prize.rar==='my'?40:18);i++){const c=el('span',{class:'confetti'},'●');c.style.left=Math.random()*100+'%';c.style.color=['#F7A08C','#F6CB6E','#9DB8F2','#9ED6B4'][i%4];c.style.fontSize=(6+Math.random()*8)+'px';c.style.animationDuration=(1.6+Math.random()*1.4)+'s';wrap.append(c);setTimeout(()=>c.remove(),3400)}
   };
+  const run=async()=>{
+    if(busy)return;const free=S.g.free>0;if(!free&&S.coins<gachaCost()){toast('Not enough coins yet. Lessons earn more!');return}
+    busy=true;if(free)S.g.free--;else S.coins-=gachaCost();
+    result.classList.add('hidden');wrap.classList.remove('revealed','mythwin');
+    goImg.classList.add('press');setTimeout(()=>goImg.classList.remove('press'),180);play('level');
+    const prize=rollGacha();save();drawBtn();spin.disabled=true;
+    // pick the target
+    let ti=-1;
+    if(prize.kind==='egg')ti=items.findIndex(it=>it.t==='plush'&&it.id===prize.id);
+    if(prize.kind==='myth')ti=items.findIndex(it=>it.gold);
+    if(ti<0){let best=1e9;items.forEach((it,i)=>{if(it.t==='ball'&&!it.gold&&it.y<290){const d=Math.abs(it.x-cx);if(d<best){best=d;ti=i}}})}
+    const it=items[ti];const node=svg.querySelector(`.cr-it[data-i="${ti}"]`);
+    const tx=Math.max(CR.minX,Math.min(CR.maxX,it.x));const grabY=(it.t==='plush'?it.y-82:it.y-it.r-58);
+    claw.setAttribute('transform',`translate(${cx} 0)`);
+    open=0.25;await tween(240,t=>{open=0.25+t*0.75;setClaw()});
+    const x0=cx;await tween(Math.min(700,200+Math.abs(tx-x0)*3),t=>{cx=x0+(tx-x0)*t;setClaw()});
+    await tween(700,t=>{headY=CR.top+(grabY-CR.top)*t;setClaw()});
+    await tween(260,t=>{open=1-t*0.85;setClaw()});
+    play('correct');
+    // move node into carry group
+    carry.append(node);const offY=it.y-grabY;
+    const place=()=>node.setAttribute('transform',`translate(${cx} ${headY+offY})`);place();
+    if(prize.rar!=='c')node.classList.add('cr-glow'),node.style.setProperty('--gc',RARITY[prize.rar].col);
+    await tween(700,t=>{headY=grabY+(CR.top+12-grabY)*t;setClaw();place()});
+    const x1=cx;await tween(650,t=>{cx=x1+(CR.chuteX-x1)*t;setClaw();place()});
+    await tween(200,t=>{open=0.15+t*0.85;setClaw()});
+    const y0=headY+offY;await tween(420,t=>{node.setAttribute('transform',`translate(${cx} ${y0+(268-y0)*t}) scale(${1-t*0.35})`);node.style.opacity=1-t*0.6},t=>t*t);
+    node.remove();const fl=svg.querySelector('.cr-flash');fl.style.transition='opacity .25s';fl.style.opacity='1';setTimeout(()=>fl.style.opacity='0',500);
+    reveal(prize);
+    // return claw and refresh the machine for the next round
+    const x2=cx;await tween(500,t=>{cx=x2+(206-x2)*t;open=1-t*0.75;setClaw()});
+    headY=CR.top;drawPity();busy=false;drawBtn();
+    inner.classList.add('restock');setTimeout(()=>{build();inner.classList.remove('restock')},260)
+  };
+  spin.onclick=run;goBtn.onclick=run;
 }
-
 
 
 function checkQuests(){ // returns XP earned from newly completed quests
@@ -3255,7 +3401,9 @@ function evolve(id,kind,done){
 /* ================= FIRST RUN ================= */
 function firstRun(){
   let chosen=null;const grid=el('div',{class:'eggpick'});const btn=el('button',{class:'bigbtn',disabled:''},'Choose this egg');
-  STARTERS.forEach(id=>{const b=el('button',{class:'eggopt','aria-pressed':'false'},el('img',{src:img(id,'egg'),alt:'Egg'}),'???');
+  const pool=PETS.map(p=>p.id).filter(id=>id!=='goromaru');
+  if(!Array.isArray(S.starterOpts)||S.starterOpts.length!==3||!S.starterOpts.every(id=>pool.includes(id))){S.starterOpts=pick(pool,3);save()}
+  S.starterOpts.forEach(id=>{const b=el('button',{class:'eggopt','aria-pressed':'false'},el('img',{src:img(id,'egg'),alt:'Egg'}),'???');
     b.onclick=()=>{grid.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');chosen=id;btn.disabled=false;b.querySelector('img').animate([{transform:'rotate(0)'},{transform:'rotate(-8deg)'},{transform:'rotate(8deg)'},{transform:'rotate(0)'}],{duration:400})};grid.append(b)});
   btn.onclick=()=>{S.active=chosen;S.owned=[chosen];pet(chosen);save();closeOverlays();go('home');setTimeout(()=>{if(!S.tour)runTour();else toast('Finish lessons to hatch it: 50 XP')},500)};
   overlay(el('div',{class:'modal'},langSeg(),el('div',{class:'kicker',style:'margin-top:14px'},'もじも · MOJIMO'),el('h3',{},'Choose your first egg'),el('p',{},'Something is sleeping inside. Learn Japanese together and watch it grow. Only your active companion earns XP.'),grid,btn),false);
