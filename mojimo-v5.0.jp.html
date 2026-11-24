@@ -4838,7 +4838,7 @@ openGacha=function(){
 // Remove wearable shop entries and clear equipped costume looks; keep growth and ownership.
 for(let i=SHOP.length-1;i>=0;i--)if(SHOP[i].cat==='Accessory')SHOP.splice(i,1);
 Object.values(S.pets||{}).forEach(p=>{delete p.acc;delete p.accs;if(p.form==='outfit'||p.form==='recolor')p.form=p.stage==='young'?'grown':'baby'});
-lrInit();$('spotDress').lastElementChild.textContent=T('Rooms');RENDER.journey=lrRenderJourney;
+lrInit();$('spotDress').replaceChildren(el('span',{class:'ai'},lrPixelImg('plant')),el('span',{},'Rooms'));RENDER.journey=lrRenderJourney;
 CHANGELOG.unshift({v:'v5.0-little-room',d:'Nov 24, 2026',t:'Little Room',i:['New pixel rooms, new pixel friends, the same lessons and voices.']});
 
 /* Seasonal progress is keyed by festival/year. Winter December belongs to next year's festival. */
