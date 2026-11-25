@@ -1872,6 +1872,7 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
     <button data-tool="coins">+1000 coins</button>
     <button data-tool="arcadecoins">+100 Arcade Tickets</button>
     <button data-tool="unlock">Unlock all lessons</button>
+    <button data-tool="completeLessons">Complete all lessons</button>
     <button data-tool="allpets">Unlock all characters</button>
     <button data-tool="allforms">Unlock all forms (baby + grown)</button>
     <button data-tool="altstyles">Unlock all alternate styles</button>
@@ -4543,6 +4544,10 @@ $('toolsX').onclick=e=>{e.stopPropagation();$('tools').classList.add('hidden')};
 document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>{
   const t=b.dataset.tool,id=S.active;$('tools').classList.add('hidden');
   if(t==='arcadecoins'){S.arcadeCoins=pgArcadeBalance()+100;save();toast(T('+100 Arcade Tickets'));return}
+  if(t==='completeLessons'){
+    S.done=[...new Set([...S.done,...WORLDS.flatMap(world=>world.lessons.map(lesson=>lesson.id))])];
+    save();RENDER[current]?.();toast(T('All lessons marked complete'));return;
+  }
   if(t==='xp50'&&id){const pp=pet(id);const st=pp.stage;pp.xp+=50;save();
     if(st==='egg'&&pp.xp>=HATCH){go('home');return}
     if(st==='baby'&&pp.xp>=YOUNG&&pp.xp-50<YOUNG&&!isMyth(id)){go('home');askEvolve(id);return}}
@@ -6668,6 +6673,8 @@ ttsPreload=function(words,who){
 };
 
 Object.assign(TR,{
+ 'Complete all lessons':['すべての レッスンを クリア','Selesaikan semua pelajaran'],
+ 'All lessons marked complete':['すべての レッスンを クリアしました','Semua pelajaran ditandai selesai'],
  'Skip question':['もんだいを スキップ','Lewati soal'],
  'Skipped · Added to Review':['スキップ · ふくしゅうに ついか','Dilewati · Ditambahkan ke Ulasan'],
  'Skipped · Correct answer':['スキップ · こたえ','Dilewati · Jawaban benar'],
