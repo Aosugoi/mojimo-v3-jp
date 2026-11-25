@@ -1458,10 +1458,11 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
 .tray .snack .pic .pocket-icon{width:38px;height:38px;object-fit:contain;image-rendering:pixelated}
 
 .pocket-flag{width:30px;height:20px;object-fit:contain;image-rendering:pixelated}
-.pocket-first-language{margin-bottom:12px;display:grid;gap:7px}
-.pocket-first-language .langseg{display:flex;width:100%;box-sizing:border-box}
-.pocket-first-language .langseg button{flex:1;min-width:0;min-height:58px;display:grid;justify-items:center;align-content:center;padding:5px 4px;gap:3px;font-size:13px;line-height:1.15;text-align:center}
-.pocket-first-language .langseg button.on{background:#d5e9da;color:#184c40}
+.pocket-first-language{text-align:center}
+.pocket-language-options{display:grid;gap:9px;margin:14px 0 4px}
+.pocket-language-options button{display:flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:8px 12px;border:1px solid #b79a72;border-radius:12px;background:#fff5df;box-shadow:0 2px #deca9f;color:#49301e;font:inherit;font-weight:800;cursor:pointer}
+.pocket-language-options button:focus-visible{outline:2px solid #258576;outline-offset:2px}
+.pocket-language-options button:active{background:#d5e9da;color:#184c40}
 
 #stage #spotGacha,#stage #emoBtn,#stage .pocket-care-links button{
  width:52px;height:52px;display:grid;place-items:center;
@@ -4559,13 +4560,14 @@ function evolve(id,kind,done){
 
 /* ================= FIRST RUN ================= */
 function firstRun(){
+  if(!S.onboardingLanguageChosen){pocketChooseLanguage();return}
   let chosen=null;const grid=el('div',{class:'eggpick'});const btn=el('button',{class:'bigbtn',disabled:''},'Choose this egg');
   const pool=PETS.map(p=>p.id).filter(id=>id!=='goromaru');
   if(!Array.isArray(S.starterOpts)||S.starterOpts.length!==3||!S.starterOpts.every(id=>pool.includes(id))){S.starterOpts=pick(pool,3);save()}
   S.starterOpts.forEach(id=>{const b=el('button',{class:'eggopt','aria-pressed':'false'},el('img',{src:img(id,'egg'),alt:'Egg'}),'???');
     b.onclick=()=>{grid.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');chosen=id;btn.disabled=false;b.querySelector('img').animate([{transform:'rotate(0)'},{transform:'rotate(-8deg)'},{transform:'rotate(8deg)'},{transform:'rotate(0)'}],{duration:400})};grid.append(b)});
   btn.onclick=()=>{S.active=chosen;S.owned=[chosen];pet(chosen);save();closeOverlays();go('home');pocketOpenPlacement(true)};
-  overlay(el('div',{class:'modal pocket-first-egg'},el('div',{class:'pocket-first-language'},el('b',{},'Language'),langSeg(null,true)),el('div',{class:'kicker',style:'margin-top:14px'},'もじも · MOJIMO'),el('h3',{},'Choose your first egg'),el('p',{},'Something is sleeping inside. Learn Japanese together and watch it grow. Only your active companion earns XP.'),grid,btn),false);
+  overlay(el('div',{class:'modal pocket-first-egg'},el('div',{class:'kicker',style:'margin-top:14px'},'もじも · MOJIMO'),el('h3',{},'Choose your first egg'),el('p',{},'Something is sleeping inside. Learn Japanese together and watch it grow. Only your active companion earns XP.'),grid,btn),false);
 }
 
 /* ================= TOOLS ================= */
@@ -5597,6 +5599,20 @@ Object.assign(TR,{'Placement test':['レベルチェック','Tes penempatan']});
 function pocketStartFirstTour(){
  if(!S.pocketFirstTour||S.tour||current!=='home'||$('overlayHost').children.length||document.querySelector('.tour'))return;
  runTour(TOUR,()=>{delete S.pocketFirstTour;save();maybeDailyGift()});
+}
+Object.assign(TR,{'Choose your language':['言語をえらぶ','Pilih bahasa']});
+function pocketChooseLanguage(){
+ const options=LANGS.map(([code,name])=>el('button',{type:'button',lang:code,'data-noromaji':'','data-nofuri':'',onclick:()=>{
+  S.onboardingLanguageChosen=true;
+  setLang(code);
+  closeOverlays();
+  firstRun();
+  document.querySelector('.pocket-first-egg .eggopt')?.focus();
+ }},pocketIcon('flag-'+code,'pocket-flag'),name));
+ overlay(el('div',{class:'modal pocket-first-language',role:'dialog','aria-modal':'true','aria-labelledby':'pocketLanguageTitle'},
+  el('div',{class:'kicker'},'もじも · MOJIMO'),
+  el('h3',{id:'pocketLanguageTitle'},'Choose your language'),
+  el('div',{class:'pocket-language-options'},...options)),false);
 }
 function pocketOpenPlacement(first=false){
  function choose(start){
