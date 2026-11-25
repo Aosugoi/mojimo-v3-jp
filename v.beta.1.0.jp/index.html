@@ -1556,7 +1556,7 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
 #pocketPhoneButton>.pocket-icon{width:27px;height:27px}
 #s-home{position:relative}
 .pocket-phone-chat{position:absolute;z-index:22;left:7px;right:7px;bottom:0;display:flex;flex-direction:column;height:min(360px,54%);min-height:160px;padding:7px 7px 6px;overflow:hidden;border:3px solid #51321f;border-radius:18px 18px 6px 6px;background:repeating-linear-gradient(91deg,#0000 0 13px,#68371f2b 14px 16px,#0000 17px 25px),linear-gradient(#d9a66a 0%,#be7e49 65%,#a96a3d 100%);box-shadow:inset 0 0 0 2px #f4c789,0 -4px 0 #704a31,0 -7px 18px #412b2250;color:#51301f}
-.pocket-phone-chat header{flex:none;display:grid;grid-template-columns:36px minmax(0,1fr) 44px;align-items:center;gap:8px;padding:2px 4px 5px;margin-bottom:5px;border:2px solid #4f301f;border-radius:10px 10px 5px 5px;background:linear-gradient(#49998a 0 14%,#338477 15% 88%,#226458 89%);box-shadow:inset 0 1px #b1d2ab,0 2px 0 #805031;color:#fff3d8;line-height:1.15}
+.pocket-phone-chat header{position:relative;z-index:1;flex:none;display:grid;grid-template-columns:36px minmax(0,1fr) 44px;align-items:center;gap:8px;padding:2px 4px 5px;margin-bottom:5px;border:2px solid #4f301f;border-radius:10px 10px 5px 5px;background:linear-gradient(#49998a 0 14%,#338477 15% 88%,#226458 89%);box-shadow:inset 0 1px #b1d2ab,0 2px 0 #805031;color:#fff3d8;line-height:1.15}
 .pocket-phone-chat header>.pocket-icon{width:31px;height:34px;justify-self:center;object-fit:contain;image-rendering:pixelated}
 .pocket-phone-name{min-width:0;text-shadow:0 2px #214f45}
 .pocket-phone-name b,.pocket-phone-name small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -1568,6 +1568,7 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
 .pocket-phone-history{min-height:0;flex:1;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;align-items:flex-start;gap:7px;padding:9px 6px}
 .pocket-phone-message{max-width:88%;flex:none;border-radius:11px 11px 11px 3px;padding:7px 9px;background:#f9e5bc;border:1px solid #b99b69;box-shadow:0 1px #d6b685;font-size:13px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
 .pocket-phone-message.player{align-self:flex-end;border-radius:11px 11px 3px 11px;background:#d9ebe1;border-color:#8faf9e;box-shadow:0 1px #a4bfaa}
+.pocket-phone-message .speak{position:static;display:flex;margin:5px 0 0}
 .pocket-phone-message .link{display:block;margin-top:3px;text-align:left;padding:3px 0;color:#12685c;font-weight:850}
 .pocket-phone-actions{flex:none;display:flex;flex-wrap:wrap;gap:6px;padding:6px;border-top:2px solid #b69563;background:#f5dfb3;max-height:112px;overflow:auto;overscroll-behavior:contain}
 .pocket-phone-actions:empty{display:none}
