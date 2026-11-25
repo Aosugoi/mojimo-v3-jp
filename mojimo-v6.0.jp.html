@@ -5178,9 +5178,41 @@ function pgMemory(g){const words=pick(g.pool,6),cards=shuffle(words.flatMap(w=>[
  });}
 const PG_CHAIN_EXTRAS=[['こい','koi','koi fish','ikan koi'],['ぬの','nuno','cloth','kain'],['のり','nori','seaweed','rumput laut'],['りす','risu','squirrel','tupai'],['しま','shima','island','pulau'],['まど','mado','window','jendela'],['どうぶつ','doubutsu','animal','hewan'],['ごま','goma','sesame','wijen'],['まめ','mame','beans','kacang'],['めがね','megane','glasses','kacamata'],['えき','eki','station','stasiun'],['き','ki','tree','pohon'],['くま','kuma','bear','beruang'],['まくら','makura','pillow','bantal'],['らっぱ','rappa','trumpet','terompet'],['ぱん','pan','bread','roti']].map(([jp,r,en,id])=>({k:jp,jp,r,en,id}));
 function pgChainPool(){const nouns=['ねこ','いぬ','とり','さかな','いえ','はな','たいよう','つき','みず','ほん','ともだち','がっこう','りんご','おちゃ','コーヒー','ごはん','ざっし','でんわ','かぞく','あたま','みみ','くち','あし','やま','うみ','きもの','すし','くすり'];return [...nouns.filter(k=>I[k]).map(k=>({k,jp:k,r:I[k].r[0],en:I[k].en})),...PG_CHAIN_EXTRAS]}
-function pgShiritori(g){g.chainPool=pgChainPool();g.used=[];g.turns=0;let currentWord=g.chainPool.find(x=>x.k==='ねこ');const show=()=>{g.body.replaceChildren(el('p',{class:'sub'},'A word ending in ん ends the chain. Do not repeat a word.'));pgPrompt(g,currentWord.jp,currentWord.r);const required=PG_RULES.edge(currentWord.k,true);g.body.append(el('h3',{},T('Start with this kana')+'：'+required));const inp=el('input',{'aria-label':T('Your word in kana or romaji'),placeholder:T('Your word in kana or romaji'),autocomplete:'off'}),suggestions=g.chainPool.filter(x=>PG_RULES.edge(x.k)===required&&!g.used.includes(x.k));const submit=(value)=>{const clean=PG_RULES.kana(value),w=g.chainPool.find(x=>PG_RULES.kana(x.k)===clean||x.r.toLowerCase().replace(/\s/g,'')===value.toLowerCase().replace(/\s/g,''));const status=PG_RULES.chain(w?.k,required,g.used);if(status!=='ok'){if(status==='unknown'){pgFeedback(g,false,T('That word is not in this practice dictionary. Try a suggestion.'));return}pgMark(g,false,w?.k);const message={used:'That word was already used.',head:'The first kana does not match.',n:'It ends in ん. Chain finished!'}[status];pgFeedback(g,false,T(message));if(status==='n'||g.wrong>=3)pgLater(g,()=>pgFinish(g,T(message)),900);return}
+Object.assign(TR,{
+ 'Choose a Shiritori mode':['しりとりの モードを えらぼう','Pilih mode Shiritori'],
+ 'Choose an answer':['こたえを えらぶ','Pilih jawaban'],
+ 'Type your answer':['こたえを にゅうりょく','Ketik jawaban'],
+ 'Pick a word from the choices.':['えらんで こたえよう。','Pilih kata dari pilihan yang tersedia.'],
+ 'Advanced · Type kana or romaji without hints.':['じょうきゅう・ヒントなしで かなか ローマじを いれよう。','Lanjutan · Ketik kana atau romaji tanpa petunjuk.'],
+ 'That word is not in this practice dictionary. Try another word.':['れんしゅうじしょに ない ことばです。べつの ことばを ためそう。','Kata itu belum ada di kamus latihan. Coba kata lain.']
+});
+function pgShiritori(g){
+ g.body.append(el('h3',{},'Choose a Shiritori mode'));
+ const modes=[
+   ['choices','Choose an answer','Pick a word from the choices.'],
+   ['typed','Type your answer','Advanced · Type kana or romaji without hints.']
+ ];
+ const grid=el('div',{class:'pg-options'});
+ for(const [mode,title,description] of modes){
+   grid.append(el('button',{onclick:()=>{g.shiritoriMode=mode;pgShiritoriRound(g)}},title,el('small',{},description)));
+ }
+ g.body.append(grid);
+}
+function pgShiritoriRound(g){g.chainPool=pgChainPool();g.used=[];g.turns=0;let currentWord=g.chainPool.find(x=>x.k==='ねこ');const show=()=>{g.body.replaceChildren(el('p',{class:'sub'},'A word ending in ん ends the chain. Do not repeat a word.'));pgPrompt(g,currentWord.jp,currentWord.r);const required=PG_RULES.edge(currentWord.k,true);g.body.append(el('h3',{},T('Start with this kana')+'：'+required));const inp=el('input',{'aria-label':T('Your word in kana or romaji'),placeholder:T('Your word in kana or romaji'),autocomplete:'off'}),suggestions=g.chainPool.filter(x=>PG_RULES.edge(x.k)===required&&!g.used.includes(x.k));const submit=(value)=>{const clean=PG_RULES.kana(value),w=g.chainPool.find(x=>PG_RULES.kana(x.k)===clean||x.r.toLowerCase().replace(/\s/g,'')===value.toLowerCase().replace(/\s/g,''));if(g.chainEnded)return;const status=PG_RULES.chain(w?.k,required,g.used);if(status!=='ok'){if(status==='unknown'){pgFeedback(g,false,T('That word is not in this practice dictionary. Try another word.'));return}pgMark(g,false,w?.k);const message={used:'That word was already used.',head:'The first kana does not match.',n:'It ends in ん. Chain finished!'}[status];pgFeedback(g,false,T(message));if(status==='n'||g.wrong>=3){g.chainEnded=true;pgLater(g,()=>pgFinish(g,T(message)),900);}return}
  g.used.push(w.k);pgMark(g,true,w.k);g.turns++;const last=PG_RULES.edge(w.k,true),replies=g.chainPool.filter(x=>PG_RULES.edge(x.k)===last&&!g.used.includes(x.k)&&PG_RULES.edge(x.k,true)!=='ん'),ranked=replies.filter(x=>g.chainPool.some(y=>PG_RULES.edge(y.k)===PG_RULES.edge(x.k,true)&&!g.used.includes(y.k)&&y.k!==x.k));const response=rnd(ranked.length?ranked:replies);if(!response){pgFinish(g,T('Your friend has no word left. You win!'));return}g.used.push(response.k);currentWord=response;if(g.turns>=8)pgFinish(g);else show();};
- const form=el('form',{class:'pg-input-row',onsubmit:e=>{e.preventDefault();submit(inp.value)}},inp,el('button',{type:'submit',class:'bigbtn'},'Send'));g.body.append(form);const grid=el('div',{class:'pg-options'});suggestions.slice(0,6).forEach(w=>grid.append(el('button',{onclick:()=>submit(w.k)},pgWord(w),el('small',{},pgMeaning(w)))));g.body.append(grid);g.foot.replaceChildren(el('button',{class:'link',onclick:()=>pgFinish(g)},'Finish'));};g.used.push(currentWord.k);show()}
+ if(g.shiritoriMode==='typed'){
+   g.body.append(el('form',{class:'pg-input-row',onsubmit:e=>{e.preventDefault();submit(inp.value)}},inp,el('button',{type:'submit',class:'bigbtn'},'Send')));
+ }else{
+   const valid=suggestions.filter(w=>PG_RULES.edge(w.k,true)!=='ん');
+   if(!valid.length){pgFinish(g,T('Round complete'));return}
+   const distractors=g.chainPool.filter(w=>PG_RULES.edge(w.k)!==required&&!g.used.includes(w.k));
+   const grid=el('div',{class:'pg-options'});
+   for(const word of shuffle([rnd(valid),...pick(distractors,3)])){
+     grid.append(el('button',{onclick:()=>submit(word.k)},pgWord(word),el('small',{},pgMeaning(word))));
+   }
+   g.body.append(grid);
+ }
+ g.foot.replaceChildren(el('button',{class:'link',onclick:()=>pgFinish(g)},'Finish'));};g.used.push(currentWord.k);show()}
 const PG_SOUND_PAIRS=[['おばさん','obasan',false],['おばあさん','obaasan',true],['おじさん','ojisan',false],['おじいさん','ojiisan',true],['ゆき','yuki',false],['ゆうき','yuuki',true],['ここ','koko',false],['こうこう','koukou',true],['とる','toru',false],['とおる','tooru',true],['びる','biru',false],['ビール','biiru',true]];
 function pgSort(g){g.body.append(el('h3',{},'Choose a sound challenge'));for(const kind of ['dakuten','length'])g.body.append(el('button',{class:'bigbtn',onclick:()=>{g.sortKind=kind;pgClock(g,60);draw()}},kind==='dakuten'?T('Dakuten')+' / '+T('No dakuten'):T('Long vowel')+' / '+T('Short vowel')));
  const draw=()=>{g.body.replaceChildren();const pair=g.sortKind==='length'?rnd(PG_SOUND_PAIRS):null,w=pair?{jp:pair[0],r:pair[1]}:rnd(g.pool),flag=pair?pair[2]:PG_RULES.dakuten(I[w.k]?.rd||w.k);pgPrompt(g,w.jp,w.r);const options=el('div',{class:'pg-options'});[false,true].forEach(v=>options.append(el('button',{onclick:()=>{options.querySelectorAll('button').forEach(b=>b.disabled=true);pgMark(g,v===flag,w.k);pgFeedback(g,v===flag,w.jp+' · '+w.r+' · '+T(g.sortKind==='length'?(flag?'Long vowel':'Short vowel'):(flag?'Dakuten':'No dakuten')));pgLater(g,draw,450)}},g.sortKind==='length'?(v?'Long vowel':'Short vowel'):(v?'Dakuten':'No dakuten'))));g.body.append(options)};
