@@ -1607,6 +1607,16 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
 .speakbig{border-radius:16px}
 .cantlisten svg image,.speak svg image,.speakbig svg image{image-rendering:pixelated}
 
+#s-home .hud-stats .pill.streak{border-radius:12px;background:#f9ead4;box-shadow:inset 0 0 0 1px #e2c59a}
+#s-home .hud-stats .pill.streak.pocket-streak-done{background:#ffe9bb;box-shadow:inset 0 0 0 1px #d7a45c}
+.pocket-lesson-streak:not(.hidden){display:flex;align-items:center;justify-content:center;gap:12px;margin:6px auto 10px;padding:8px 16px;width:fit-content;max-width:100%;border:1px solid #c99d5d;border-radius:16px;background:#fff0ce;box-shadow:0 3px 0 #e4c999;text-align:start;color:#59351f}
+.pocket-lesson-streak b,.pocket-lesson-streak small{display:block;line-height:1.25}
+.pocket-lesson-streak b{font-size:clamp(17px,4vw,22px)}
+.pocket-lesson-streak small{font-size:13px;color:#765538}
+.pocket-streak-art{width:36px;height:36px;flex:none;image-rendering:pixelated}
+@media(prefers-reduced-motion:no-preference){.pocket-streak-art{animation:pocket-streak-pop .55s ease-out both}}
+@keyframes pocket-streak-pop{0%{opacity:0;transform:translateY(8px) scale(.6)}65%{transform:translateY(-3px) scale(1.14)}100%{opacity:1;transform:none}}
+
 /* Spaced, independently scrolling sticker tiles: no row compression. */
 .modal.pocket-stickers{display:flex;flex-direction:column;width:min(100%,480px);padding:16px;max-height:88dvh;overflow:hidden;box-sizing:border-box}.pocket-sticker-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}.pocket-sticker-heading h3{margin:0;font-size:23px}.pocket-sticker-heading .iconbtn{width:38px;height:38px;border:1px solid var(--hair);border-radius:11px;font-size:25px;flex-shrink:0}.pocket-stickers>.sub{margin:6px 0 13px;flex-shrink:0}.pocket-sticker-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:max-content;align-content:start;gap:10px;overflow-y:auto;overscroll-behavior:contain;min-height:0;padding:2px 4px 8px 2px;scrollbar-width:thin}.pocket-sticker-grid>button{position:relative;display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:1.12;height:auto;min-height:0;min-width:0;padding:5px;background:#fff9eb;border:1px solid #cfbc99;border-radius:13px;box-sizing:border-box;overflow:hidden}.pocket-sticker-grid img{display:block;width:100%;height:100%;max-height:100%;object-fit:contain;image-rendering:pixelated;position:static;margin:0}.pocket-sticker-grid>button.locked img{opacity:.35;filter:grayscale(.8)}.pocket-sticker-grid>button:active{background:#e0eee0}.pocket-sticker-lock{position:absolute;bottom:3px;right:4px;font-size:10px;background:#f9ecd4;border:1px solid #c7b28a;border-radius:7px;padding:0 4px;color:#6f543a}.pocket-sticker-grid button:focus-visible{outline-offset:-3px}.pocket-stickers .pocket-sticker-grid button:disabled{opacity:1}
 /* Crisp pixel particles rather than glow, smooth curves, or full-screen rays. */
@@ -3134,7 +3144,7 @@ function renderHome(){
   const id=S.active;if(!id)return;
   const p=PET[id],st=stageOf(id),xp=xpOf(id),pp=pet(id),egg=st==='egg',young=st==='young';
   const g=greeting();$('gEn').textContent=g[1];$('gJp').textContent=g[0];
-  $('coins').textContent=S.coins;$('streak').textContent=S.streak;
+  $('coins').textContent=S.coins;renderHomeStreak();
   const stg=$('stage'),c=stageColors(id),resting=S.resting&&!egg;
   stg.style.setProperty('--c1',c[0]);stg.style.setProperty('--c2',c[1]);stg.classList.toggle('rest',resting);applyHomeScene(id);
   const mw=moodWord();$('moodChip').textContent=mw[0];
@@ -4412,7 +4422,7 @@ function buddyStart(){
 function finish(){
   rollDay();
   if(L.placement){finishPlacement();return}
-  const id=S.active,pp=pet(id),before=pp.xp,perfect=L.mistakes===0,firstToday=S.lastDay!==today();
+  const id=S.active,pp=pet(id),before=pp.xp,perfect=L.mistakes===0;
   let xp=0,coins=0,lines=[];const t=now();
   const tOK=!L.testOut||L.mistakes<=3;
   const isNew=L.lesson&&!S.done.includes(L.lesson.id)&&tOK;
@@ -4438,7 +4448,7 @@ function finish(){
   S.q.newWords+=L.newSeen;
   if(L.listenOk&&!L.listening){} // listening inside lessons doesn't count as the challenge
   const qd=checkQuests();xp+=qd.xp;lines.push(...qd.lines);
-  let usedFreeze=0,sgift=null;if(firstToday){usedFreeze=useFreezes();const y=dayStr(now()-DAY);S.streak=(S.lastDay===y||S.streak===0)?S.streak+1:1;S.lastDay=today();const g=streakGiftFor(S.streak);if(g&&!(S.streakGifts||[]).includes(S.streak)&&!(S.pendingGift&&S.pendingGift.n===S.streak))S.pendingGift=g;if(usedFreeze)lines.push(`Streak freeze used (${usedFreeze} day${usedFreeze>1?'s':''})`)}
+  const streakDay=L.lesson&&tOK?recordLessonStreak(lines):0;
   if(power('xp')&&xp>0){const b=Math.max(1,Math.round(xp*.1));xp+=b;lines.push(`${PET[id].name}'s power +${b} XP`)}
   if(power('review')&&L.review&&xp>0){const b=Math.max(1,Math.round(xp*.5));xp+=b;lines.push(`${PET[id].name}'s power +${b} XP`)}
   if(power('coins')&&coins>0){const b=Math.max(1,Math.round(coins*.1));coins+=b;lines.push(`${PET[id].name}'s power +${b} coins`)}
@@ -4457,11 +4467,12 @@ function finish(){
   if(L.lesson&&L.lesson.note&&!S.gm[L.lesson.note])S.gm[L.lesson.note]={box:1,due:t+DAY};
   if(L.gReview){L.gReview.forEach(g=>{const x=S.gm[g]||(S.gm[g]={box:0,due:t});if(L.gmiss&&L.gmiss.has(g)){x.box=1;x.due=t+DAY}else{x.box=Math.min(5,x.box+1);x.due=t+INTERVALS[x.box]*DAY}})}
   save();
-  showResults({xp,coins,lines,treat,perfect,before,after:pp.xp,gate:isNew&&L.lesson.gate,ups:{...L.ups},sgift});
+  showResults({xp,coins,lines,treat,perfect,before,after:pp.xp,gate:isNew&&L.lesson.gate,ups:{...L.ups},streakDay});
 }
 function rangeFor(st){return st==='egg'?[0,HATCH]:[HATCH,LV_XP[LV_MAX]]}
 function showResults(r){
   go('results');play('level');
+  renderLessonStreak(r.streakDay);
   const id=S.active,p=PET[id],st=stageOf(id);
   $('resTitle').textContent=L.placement?'Placement test done!':r.perfect&&L.lesson?'Perfect lesson!':L.review?'Review complete!':L.listening?'Listening challenge done!':'Lesson complete!';
   $('resLines').replaceChildren(...r.lines.flatMap((l,i)=>i?[el('br'),l]:[l]));
@@ -5000,8 +5011,8 @@ function useFreezes(){ // called before the streak updates on the first lesson o
   if(!S.lastDay||S.streak<1)return 0;
   const missed=Math.round((new Date(today())-new Date(S.lastDay))/DAY)-1;
   if(missed<=0)return 0;
-  if(power('freeze')&&missed<=2){S.lastDay=dayStr(now()-DAY);return missed}
-  if((S.freezes||0)>=missed){S.freezes-=missed;S.lastDay=dayStr(now()-DAY);return missed}
+  if(power('freeze')&&missed<=2){S.lastDay=lessonYesterday();return missed}
+  if((S.freezes||0)>=missed){S.freezes-=missed;S.lastDay=lessonYesterday();return missed}
   return 0;
 }
 const LOGIN_LINES=[['おかえり！','Welcome back!'],['まってたよ！','I was waiting for you!'],['きょうも あえたね！','We meet again today!']];
@@ -5431,6 +5442,54 @@ function pocketPrizeArt(prize){
  const icon=prize.kind==='treat'?'cafe-'+treatArt[prize.t.id]:'capsule-coin';
  return el('span',{class:'gpic'},pocketIcon(icon,'pocket-prize-icon'));
 }
+function lessonYesterday(){
+ const date=new Date(now());
+ date.setDate(date.getDate()-1);
+ return dayStr(date);
+}
+function recordLessonStreak(lines){
+ if(S.lastDay===today())return 0;
+ const usedFreeze=useFreezes();
+ S.streak=S.lastDay===lessonYesterday()?(S.streak||0)+1:1;
+ S.lastDay=today();
+ const gift=streakGiftFor(S.streak);
+ if(gift&&!(S.streakGifts||[]).includes(S.streak)&&S.pendingGift?.n!==S.streak)S.pendingGift=gift;
+ if(usedFreeze)lines.push(`Streak freeze used (${usedFreeze} day${usedFreeze===1?'':'s'})`);
+ return S.streak;
+}
+function lessonStreakIcon(cls){
+ const flame='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges"><path fill="#50311e" d="M8 0h2v2h1v2h1v2h2v2h1v5h-2v2H4v-1H2v-2H1V8h1V6h2v2h1V5h1V3h2z"/><path fill="#db6547" d="M8 3h2v2h1v3h2v1h1v3h-2v2H4v-1H3v-2H2V8h1v2h3V6h1z"/><path fill="#f39b4f" d="M8 6h2v4h1v-1h1v3h-1v2H5v-2H4v-1h2V9h1V7h1z"/><path fill="#ffe29b" d="M8 9h1v2h2v2h-1v1H6v-2h1v-2h1z"/></svg>';
+ return el('img',{class:cls,alt:'',src:'data:image/svg+xml,'+encodeURIComponent(flame)});
+}
+function lessonStreakLabel(days){
+ if(S.lang==='ja')return `${days}日連続`;
+ if(S.lang==='id')return `${days} hari berturut-turut`;
+ return `${days}-day streak`;
+}
+function renderHomeStreak(){
+ const counter=$('streak');
+ const chip=counter.parentElement;
+ const done=S.lastDay===today();
+ const missed=S.lastDay?Math.round((new Date(today())-new Date(S.lastDay))/DAY)-1:0;
+ const protectedStreak=(S.freezes||0)>=missed||(missed<=2&&S.active&&power('freeze'));
+ const count=missed>0&&!protectedStreak?0:S.streak||0;
+ counter.textContent=count;
+ chip.title=lessonStreakLabel(count);
+ chip.setAttribute('aria-label',chip.title);
+ chip.classList.toggle('pocket-streak-done',done);
+}
+function renderLessonStreak(days){
+ const card=$('pocketLessonStreak');
+ card.classList.toggle('hidden',!days);
+ card.replaceChildren();
+ if(!days)return;
+ const message={
+  en:days===1?'Streak started!':'Streak extended!',
+  ja:days===1?'連続学習スタート！':'連続記録を更新！',
+  id:days===1?'Rentetan belajar dimulai!':'Rentetan belajar berlanjut!'
+ }[S.lang];
+ card.append(lessonStreakIcon('pocket-streak-art'),el('div',{},el('b',{},lessonStreakLabel(days)),el('small',{},message)));
+}
 function pocketInit(){
  $('stage').append(pocketBackdropControls());
  const wordIcon=$('scrollWord').querySelector('.hci');
@@ -5442,7 +5501,10 @@ function pocketInit(){
  const home=document.querySelector('#s-home .hscroll');const banner=el('div',{class:'pocket-banner'},pocketIcon('leaf'),el('b',{},'MOJIMO · Pocket Adventure'),pocketIcon('leaf','mirror'));home.prepend(banner);document.querySelector('.lr-headline').remove();
  document.querySelector('.lr-brand').replaceChildren(pocketIcon('mountain'),el('b',{},'MOJIMO'));
  const coin=$('coinBtn').querySelector('.i');if(coin)coin.replaceWith(el('img',{class:'i',src:assetURL('assets/pix/coin.png'),alt:''}));
- const flame=document.querySelector('.hud-stats .pill:not(#coinBtn) .i');if(flame)flame.replaceWith(el('span',{class:'i pocket-flame','aria-hidden':'true'},'🔥'));
+ const streak=$('streak').parentElement;
+ streak.querySelector('svg').replaceWith(lessonStreakIcon('i'));
+ $('resTitle').after(el('div',{id:'pocketLessonStreak',class:'pocket-lesson-streak hidden',role:'status'}));
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&current==='home')renderHomeStreak()});
  $('menuBtn').innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true" class="i"><path fill="currentColor" d="m9 1 6 0 1 4 3-1 3 5-3 3 3 3-3 5-3-1-1 4H9l-1-4-3 1-3-5 3-3-3-3 3-5 3 1z"/><circle cx="12" cy="12" r="4" fill="#fff4df"/></svg>';
 
  for(const [id,key,label]of[['spotFeed','feed','Feed'],['spotPlay','play','Play'],['spotRest','rest','Rest'],['spotDress','style','Style']]){$(id).replaceChildren(el('span',{class:'ai'},pocketIcon(key)),el('span',id==='spotRest'?{id:'restLabel'}:{},label))}
