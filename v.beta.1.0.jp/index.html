@@ -1544,6 +1544,15 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
 .pocket-care-links button:disabled{opacity:.55;cursor:default}
 .pocket-care-links .pocket-icon{width:34px;height:34px;flex:none;object-fit:contain;image-rendering:pixelated}
 
+.pocket-spend-dialog{width:min(360px,calc(100vw - 30px));max-height:calc(100dvh - 24px);margin:auto;padding:18px;border:2px solid #795639;border-radius:19px;background:#fff3db;color:#51301f;text-align:center;box-shadow:0 4px 0 #bd9d6b,0 8px 24px #3d220d55}
+.pocket-spend-dialog::backdrop{background:#3b241d75}
+.pocket-spend-dialog>.pocket-spend-icon{width:58px;height:54px;object-fit:contain;margin:0 auto 6px}
+.pocket-spend-dialog h3{margin:0 0 7px;font-size:21px}
+.pocket-spend-dialog p{margin:0 0 14px}
+.pocket-spend-dialog small{display:block;color:#765d43}
+.pocket-spend-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pocket-spend-actions .bigbtn{margin:0;min-height:44px;padding:6px;line-height:1.25}
+
 /* Spaced, independently scrolling sticker tiles: no row compression. */
 .modal.pocket-stickers{display:flex;flex-direction:column;width:min(100%,480px);padding:16px;max-height:88dvh;overflow:hidden;box-sizing:border-box}.pocket-sticker-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}.pocket-sticker-heading h3{margin:0;font-size:23px}.pocket-sticker-heading .iconbtn{width:38px;height:38px;border:1px solid var(--hair);border-radius:11px;font-size:25px;flex-shrink:0}.pocket-stickers>.sub{margin:6px 0 13px;flex-shrink:0}.pocket-sticker-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:max-content;align-content:start;gap:10px;overflow-y:auto;overscroll-behavior:contain;min-height:0;padding:2px 4px 8px 2px;scrollbar-width:thin}.pocket-sticker-grid>button{position:relative;display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:1.12;height:auto;min-height:0;min-width:0;padding:5px;background:#fff9eb;border:1px solid #cfbc99;border-radius:13px;box-sizing:border-box;overflow:hidden}.pocket-sticker-grid img{display:block;width:100%;height:100%;max-height:100%;object-fit:contain;image-rendering:pixelated;position:static;margin:0}.pocket-sticker-grid>button.locked img{opacity:.35;filter:grayscale(.8)}.pocket-sticker-grid>button:active{background:#e0eee0}.pocket-sticker-lock{position:absolute;bottom:3px;right:4px;font-size:10px;background:#f9ecd4;border:1px solid #c7b28a;border-radius:7px;padding:0 4px;color:#6f543a}.pocket-sticker-grid button:focus-visible{outline-offset:-3px}.pocket-stickers .pocket-sticker-grid button:disabled{opacity:1}
 /* Crisp pixel particles rather than glow, smooth curves, or full-screen rays. */
@@ -3500,10 +3509,10 @@ function openFeed(){
   TREATS.forEach(t=>{
     const b=el('button',{class:'snack','data-noromaji':''},el('span',{class:'pic'},pocketIcon('cafe-'+(t.id==='ichigo'?'strawberry':t.id))),t.k,el('small',{},t.r),el('span',{class:'n'},String(S.treats[t.id]||0)));
     b.disabled=!(S.treats[t.id]>0);
-    b.onclick=()=>{
+    b.onclick=async()=>{
       if(t.id!==want.id){b.classList.remove('wrong');void b.offsetWidth;b.classList.add('wrong');bubble.firstChild.textContent=`ううん、${want.k}！`;play('wrong');setTimeout(()=>say(`ううん、${want.k}！`,p.id),350);emote(fs,Math.random()<.5?'sweat':'anger');return}
       const isFav=fav&&t.id===fav.id;
-      if(!S.treats[t.id]||!pocketConfirmSpend('Use this treat?'))return;S.treats[t.id]--;S.mood=Math.min(100,S.mood+(isFav?30:15));save();addFriend(S.active,isFav?5:3,'feed');
+      if(!S.treats[t.id]||!await pocketConfirmSpend('Use this treat?',null,t)||!b.isConnected||!S.treats[t.id])return;S.treats[t.id]--;S.mood=Math.min(100,S.mood+(isFav?30:15));save();addFriend(S.active,isFav?5:3,'feed');
       const c=CM[S.active];const l=isFav?[`${t.k} だいすき ${c.g}！`,`I love ${t.r}, ${c.r}!`]:persona().feed;bubble.replaceChildren(l[0],el('small',{},`(${l[1]}) ${isFav?'Mood up a lot!':'Mood up'}`));say(l[0],p.id);emote(fs,isFav?'happy':'thanks');
       if(isFav){fs.animate([{transform:'scale(1)'},{transform:'scale(1.04)'},{transform:'scale(1)'}],{duration:500});const s2=cmState(S.active);if(!s2.ft){s2.ft=1;save();setTimeout(()=>toast(`${p.name} loves ${t.k}!`),1700)}setTimeout(()=>anim($('petBody'),'anim-spin',800),2900)}
       tray.querySelectorAll('button').forEach(x=>x.disabled=true);
@@ -3701,7 +3710,7 @@ function openShop(backdropsOnly=false){
     const cp=el('span',{class:'coinpill',style:'margin:0 auto'});cp.innerHTML=svgI('coin');cp.firstChild.style.color='#E2A31F';cp.append(String(S.coins));
     body.replaceChildren(el('p',{},'Personalise your companion. Coins come from studying and never buy XP. Some items only come from capsules.'),cp);
     const fz=S.freezes||0;const fb=el('button',{class:'shopitem freeze'},el('span',{class:'pic'},(()=>{const x=document.createElement('span');x.innerHTML=svgI('flame');x.firstChild.style.cssText='width:34px;height:34px;color:#7FB5E8';return x.firstChild})()),'Streak freeze',el('small',{},fz>=FREEZE_MAX?`Full (${fz}/${FREEZE_MAX})`:`${FREEZE_PRICE} coins · have ${fz}/${FREEZE_MAX}`));
-    fb.disabled=fz>=FREEZE_MAX;fb.onclick=()=>{if(S.coins<FREEZE_PRICE){toast(`You need ${FREEZE_PRICE-S.coins} more coins`);return}if(!pocketConfirmSpend('Streak freeze',FREEZE_PRICE))return;S.coins-=FREEZE_PRICE;S.freezes=fz+1;save();play('correct');toast('Streak freeze ready. It saves your streak if you miss a day.');draw()};
+    fb.disabled=fz>=FREEZE_MAX;fb.onclick=async()=>{if(S.coins<FREEZE_PRICE){toast(`You need ${FREEZE_PRICE-S.coins} more coins`);return}if(!await pocketConfirmSpend('Streak freeze',FREEZE_PRICE)||!fb.isConnected||S.coins<FREEZE_PRICE)return;S.coins-=FREEZE_PRICE;S.freezes=fz+1;save();play('correct');toast('Streak freeze ready. It saves your streak if you miss a day.');draw()};
     if(!backdropsOnly)body.append(el('div',{class:'shophead'},'Streak'),el('p',{class:'shopnote'},'A streak freeze is used automatically if you miss a day, so your streak keeps going.'),el('div',{class:'shop'},fb));
     const worn=accsOf(S.active);
     [['Backdrop','Backdrops',null]].forEach(([cat,title,zone])=>{
@@ -3718,8 +3727,8 @@ function openShop(backdropsOnly=false){
         const b=el('button',{class:'shopitem'+(on?' on':'')+(s.season?' limited':'')},art,s.id==='bd-auto'?'Meadow':s.name,el('small',{},owned?(on?'In use':'Owned'):s.price==null?'Capsule only':`${s.price} coins`));
         if(s.price==null&&!owned)b.disabled=true;
 
-        b.onclick=()=>{
-          if(!owned){if(S.coins<s.price){toast(`You need ${s.price-S.coins} more coins`);return}if(!pocketConfirmSpend(s.name,s.price))return;S.coins-=s.price;S.decor.owned.push(s.id);play('correct')}
+        b.onclick=async()=>{
+          if(!owned){if(S.coins<s.price){toast(`You need ${s.price-S.coins} more coins`);return}if(!await pocketConfirmSpend(s.name,s.price)||!b.isConnected||S.coins<s.price)return;S.coins-=s.price;S.decor.owned.push(s.id);play('correct')}
           if(cat==='Backdrop')S.decor.wall=s.id;else wearAcc(S.active,s.id);
           save();renderHome();draw();
         };
@@ -6611,12 +6620,31 @@ Object.assign(TR,{
  'Coins':['コイン','Koin'],
  'Free spin':['むりょう ガチャ','Putaran gratis'],
  'Use this treat?':['この おやつを つかう？','Gunakan camilan ini?'],
+ 'Use treat':['おやつを あげる','Berikan camilan'],
+ 'Confirm purchase':['こうにゅうする','Beli sekarang'],
+ 'Cancel purchase':['キャンセル','Batal'],
  'Audio could not play. Tap Listen to try again.':['おとが でませんでした。もういちど きいてね。','Audio tidak bisa diputar. Ketuk dengarkan untuk mencoba lagi.'],
  'Your reward is saved. The machine has reset.':['ごほうびを ほぞんしました。ガチャを リセットしました。','Hadiah tersimpan. Mesin sudah diatur ulang.']
 });
-function pocketConfirmSpend(label,amount){
- const cost=amount==null?'':amount>0?'\n'+T('Coins')+' · '+amount:'\n'+T('Free spin');
- return window.confirm(T('Confirm spending')+'\n'+T(label)+cost);
+function pocketConfirmSpend(label,amount,treat){
+ return new Promise(resolve=>{
+  const heading=treat?'Use this treat?':'Confirm spending';
+  const dialog=el('dialog',{class:'pocket-spend-dialog','aria-label':T(heading)},
+   treat?pocketTreatIcon(treat,'pocket-spend-icon'):pocketIcon('capsule-coin','pocket-spend-icon'),
+   el('h3',{},T(heading)),
+   treat?el('p',{},el('b',{lang:'ja'},treat.k+' × 1'),el('small',{},treat.r))
+    :el('p',{},T(label)+' · '+T('Coins')+' '+amount),
+   el('div',{class:'pocket-spend-actions'},
+    el('button',{type:'button',class:'bigbtn white',autofocus:'',onclick:()=>dialog.close()},T('Cancel purchase')),
+    el('button',{type:'button',class:'bigbtn',onclick:()=>dialog.close('confirmed')},T(treat?'Use treat':'Confirm purchase'))));
+  dialog.addEventListener('close',()=>{
+   const accepted=dialog.returnValue==='confirmed';
+   dialog.remove();
+   resolve(accepted);
+  },{once:true});
+  document.body.append(dialog);
+  dialog.showModal();
+ });
 }
 function pocketTreatIcon(treat,cls=''){
  const names={dango:'dango',onigiri:'onigiri',mochi:'mochi',ichigo:'strawberry'};
