@@ -6795,20 +6795,20 @@ RENDER.review=function(){
 
 const PHONE_COPY={
  en:{
-  title:'Mojimo Phone',welcome:'Choose a Journey chapter and ask me a question, or pick a quick chat.',
-  placeholder:'Choose a question…',smallTalk:'Quick chat',math:'Quick math',chapter:'Journey chapter',later:(world,lesson)=>`I think I saw that in ${world}, in “${lesson}”. Let’s study it when we get there!`,about:q=>`What does ${q} mean?`,read:q=>`How do you read ${q}?`,translate:q=>`How do you say “${q}” in Japanese?`,grammar:q=>`How does ${q} work?`,reply:q=>`How should I reply to “${q}”?`,send:'Send',typing:'Typing…',close:'Close chat',
+  title:'Mojimo Phone',welcome:'Choose a question from a completed Journey lesson, or pick a quick chat.',
+  placeholder:'Choose a question…',smallTalk:'Quick chat',math:'Quick math',chapter:'Journey chapter',empty:'Finish a lesson in this chapter to unlock its questions.',later:(world,lesson)=>`I think I saw that in ${world}, in “${lesson}”. Let’s study it when we get there!`,about:q=>`What does ${q} mean?`,read:q=>`How do you read ${q}?`,translate:q=>`How do you say “${q}” in Japanese?`,grammar:q=>`How does ${q} work?`,reply:q=>`How should I reply to “${q}”?`,send:'Send',typing:'Typing…',close:'Close chat',
   learned:(term,reading,gloss)=>`${term}${reading?' ('+reading+')':''} means ${gloss}.`,
   kana:(term,reading)=>`${term} is read “${reading}”.`,example:'Example',jump:'Open in Journey',
  },
  ja:{
-  title:'モジモ フォン',welcome:'たびの チャプターを えらんで しつもんしてね。おはなしも できるよ。',
-  placeholder:'しつもんを えらぼう…',smallTalk:'おはなし',math:'かんたんな さんすう',chapter:'たびの チャプター',later:(world,lesson)=>`${world}の「${lesson}」で みた きがするよ。そこで いっしょに まなぼう！`,about:q=>`「${q}」の いみは？`,read:q=>`「${q}」は どう よむの？`,translate:q=>`「${q}」は にほんごで なんて いうの？`,grammar:q=>`「${q}」は どう つかうの？`,reply:q=>`「${q}」に どう へんじするの？`,send:'おくる',typing:'へんじを かいています…',close:'チャットを とじる',
+  title:'モジモ フォン',welcome:'クリアした レッスンから しつもんを えらんでね。おはなしも できるよ。',
+  placeholder:'しつもんを えらぼう…',smallTalk:'おはなし',math:'かんたんな さんすう',chapter:'たびの チャプター',empty:'この チャプターの レッスンを クリアすると しつもんが ふえるよ。',later:(world,lesson)=>`${world}の「${lesson}」で みた きがするよ。そこで いっしょに まなぼう！`,about:q=>`「${q}」の いみは？`,read:q=>`「${q}」は どう よむの？`,translate:q=>`「${q}」は にほんごで なんて いうの？`,grammar:q=>`「${q}」は どう つかうの？`,reply:q=>`「${q}」に どう へんじするの？`,send:'おくる',typing:'へんじを かいています…',close:'チャットを とじる',
   learned:(term,reading,gloss)=>`「${term}」${reading?'（'+reading+'）':''}の いみは「${gloss}」だよ。`,
   kana:(term,reading)=>`「${term}」は「${reading}」と よむよ。`,example:'れい',jump:'たびで みる',
  },
  id:{
-  title:'Ponsel Mojimo',welcome:'Pilih bab Perjalanan dan ajukan pertanyaan, atau pilih obrolan singkat.',
-  placeholder:'Pilih pertanyaan…',smallTalk:'Obrolan singkat',math:'Hitungan singkat',chapter:'Bab Perjalanan',later:(world,lesson)=>`Sepertinya aku melihatnya di ${world}, dalam pelajaran “${lesson}”. Ayo pelajari saat sampai di sana!`,about:q=>`Apa arti ${q}?`,read:q=>`Bagaimana cara membaca ${q}?`,translate:q=>`Apa bahasa Jepang untuk “${q}”?`,grammar:q=>`Bagaimana cara memakai ${q}?`,reply:q=>`Bagaimana membalas “${q}”?`,send:'Kirim',typing:'Sedang mengetik…',close:'Tutup obrolan',
+  title:'Ponsel Mojimo',welcome:'Pilih pertanyaan dari pelajaran Perjalanan yang sudah selesai, atau pilih obrolan singkat.',
+  placeholder:'Pilih pertanyaan…',smallTalk:'Obrolan singkat',math:'Hitungan singkat',chapter:'Bab Perjalanan',empty:'Selesaikan pelajaran di bab ini untuk membuka pertanyaannya.',later:(world,lesson)=>`Sepertinya aku melihatnya di ${world}, dalam pelajaran “${lesson}”. Ayo pelajari saat sampai di sana!`,about:q=>`Apa arti ${q}?`,read:q=>`Bagaimana cara membaca ${q}?`,translate:q=>`Apa bahasa Jepang untuk “${q}”?`,grammar:q=>`Bagaimana cara memakai ${q}?`,reply:q=>`Bagaimana membalas “${q}”?`,send:'Kirim',typing:'Sedang mengetik…',close:'Tutup obrolan',
   learned:(term,reading,gloss)=>`${term}${reading?' ('+reading+')':''} artinya ${gloss}.`,
   kana:(term,reading)=>`${term} dibaca “${reading}”.`,example:'Contoh',jump:'Buka di Perjalanan',
  }
@@ -6867,6 +6867,7 @@ function phoneQuestionPicker(wi,language,copy,select){
  const gloss=(item)=>index===2?(MEAN_ID[item.en]||item.en):item.en;
  const localized=(tuple)=>tuple[index===1?2:index===2?1:0];
  for(const lesson of world.lessons){
+  if(!S.done.includes(lesson.id))continue;
   const note=GNOTES[lesson.note],entry={world,wi,lesson,note};
   const group=el('optgroup',{label:T(lesson.title)});
   const lessonQuestions=new Set();
@@ -6875,7 +6876,7 @@ function phoneQuestionPicker(wi,language,copy,select){
    lessonQuestions.add(label);
    add(group,label,answer,entry,speech);
   };
-  const sources=lesson.gate?world.lessons.filter(item=>!item.gate):[lesson];
+  const sources=lesson.gate?world.lessons.filter(item=>!item.gate&&S.done.includes(item.id)):[lesson];
   for(const source of sources){
    const grammar=GNOTES[source.note];
    if(grammar){
@@ -6912,6 +6913,7 @@ function phoneQuestionPicker(wi,language,copy,select){
   if(!lessonQuestions.size)ask(T(lesson.title),T(lesson.title));
   select.append(group);
  }
+ if(!questions.length)select.append(el('option',{value:'',disabled:true},copy.empty));
  const smallTalk=el('optgroup',{label:copy.smallTalk});
  for(const [type,labels] of Object.entries(PHONE_PROMPTS))add(smallTalk,labels[index],PHONE_SOCIAL[language][type]);
  const math=el('optgroup',{label:copy.math});
