@@ -1535,6 +1535,8 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
 .pocket-home-extra .chiprow{margin-top:8px}
 .tour{right:auto;bottom:auto;overflow:hidden}
 .pocket-prize-with-bonus{display:grid;justify-items:center;gap:4px}
+.pocket-capsule-notice{position:fixed;z-index:20;top:max(66px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;width:max-content;max-width:calc(100% - 36px);padding:8px 12px;border:1px solid #735339;border-radius:12px;background:#fff3db;color:#51301f;box-shadow:0 2px 0 #735339;font-size:13px;font-weight:800;pointer-events:none}
+.pocket-capsule-notice .pocket-icon{width:20px;height:20px;flex:none;image-rendering:pixelated}
 
 /* Spaced, independently scrolling sticker tiles: no row compression. */
 .modal.pocket-stickers{display:flex;flex-direction:column;width:min(100%,480px);padding:16px;max-height:88dvh;overflow:hidden;box-sizing:border-box}.pocket-sticker-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}.pocket-sticker-heading h3{margin:0;font-size:23px}.pocket-sticker-heading .iconbtn{width:38px;height:38px;border:1px solid var(--hair);border-radius:11px;font-size:25px;flex-shrink:0}.pocket-stickers>.sub{margin:6px 0 13px;flex-shrink:0}.pocket-sticker-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:max-content;align-content:start;gap:10px;overflow-y:auto;overscroll-behavior:contain;min-height:0;padding:2px 4px 8px 2px;scrollbar-width:thin}.pocket-sticker-grid>button{position:relative;display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:1.12;height:auto;min-height:0;min-width:0;padding:5px;background:#fff9eb;border:1px solid #cfbc99;border-radius:13px;box-sizing:border-box;overflow:hidden}.pocket-sticker-grid img{display:block;width:100%;height:100%;max-height:100%;object-fit:contain;image-rendering:pixelated;position:static;margin:0}.pocket-sticker-grid>button.locked img{opacity:.35;filter:grayscale(.8)}.pocket-sticker-grid>button:active{background:#e0eee0}.pocket-sticker-lock{position:absolute;bottom:3px;right:4px;font-size:10px;background:#f9ecd4;border:1px solid #c7b28a;border-radius:7px;padding:0 4px;color:#6f543a}.pocket-sticker-grid button:focus-visible{outline-offset:-3px}.pocket-stickers .pocket-sticker-grid button:disabled{opacity:1}
@@ -1791,6 +1793,7 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
     <button data-tool="day">Pretend it's a new day</button>
     <button data-tool="night">Toggle night</button>
     <button data-tool="coins">+1000 coins</button>
+    <button data-tool="arcadecoins">+100 Arcade Coins</button>
     <button data-tool="unlock">Unlock all lessons</button>
     <button data-tool="allpets">Unlock all characters</button>
     <button data-tool="allforms">Unlock all forms (baby + grown)</button>
@@ -3386,7 +3389,7 @@ function openGacha(){
   {const pt=pageTip('gacha');if(pt)wrap.insertBefore(pt,wrap.querySelector('.cr-box'))}
   $('overlayHost').append(wrap);
   const reveal=prize=>{
-    const R=RARITY[prize.rar];play(['egg','myth','style'].includes(prize.kind)?'winner':'level');
+    const R=RARITY[prize.rar];play(prize.kind==='myth'?'winner':'level');
     let art;
     if(prize.kind==='myth'){art=el('div',{class:'mythart'},el('span',{class:'mray'}),el('img',{src:img(prize.id,'baby'),alt:PET[prize.id].name,class:'gart'}),el('span',{class:'mkana',lang:'ja'},PET[prize.id].kana));setTimeout(()=>{try{introduce(prize.id,()=>talk(PERSONA[PET[prize.id].type].intro,prize.id,6000))}catch(e){}},500)}
     else if(prize.kind==='egg')art=el('img',{src:img(prize.id,'egg'),alt:'Egg',class:'gart'});
@@ -3410,13 +3413,13 @@ function openGacha(){
     if(prize.rar==='sr'||prize.rar==='lr'||prize.rar==='my')for(let i=0;i<(prize.rar==='my'?40:18);i++){const c=el('span',{class:'confetti'},'●');c.style.left=Math.random()*100+'%';c.style.color=['#F7A08C','#F6CB6E','#9DB8F2','#9ED6B4'][i%4];c.style.fontSize=(6+Math.random()*8)+'px';c.style.animationDuration=(1.6+Math.random()*1.4)+'s';wrap.append(c);setTimeout(()=>c.remove(),3400)}
   };
   const run=async()=>{
-    if(busy)return;const free=S.g.free>0;if(!free&&S.coins<gachaCost()){toast('Not enough coins yet. Lessons earn more!');return}
+    if(busy)return;const free=S.g.free>0;if(!free&&S.coins<gachaCost()){pocketCapsuleNotice(wrap,null);return}
     const price=free?0:gachaCost();
-    if(!pocketConfirmSpend('Capsule Club',price))return;
     busy=true;goBtn.disabled=true;spin.disabled=true;
     let prize=null,shown=false;
     try{
     if(free)S.g.free--;else S.coins-=price;
+    pocketCapsuleNotice(wrap,price);
     result.classList.add('hidden');wrap.classList.remove('revealed','mythwin');
     goImg.classList.add('press');setTimeout(()=>goImg.classList.remove('press'),180);play('level');
     prize=rollGacha();pgCapsuleBonus(prize);save();drawBtn();spin.disabled=true;
@@ -4477,6 +4480,7 @@ function firstRun(){
 $('toolsX').onclick=e=>{e.stopPropagation();$('tools').classList.add('hidden')};
 document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>{
   const t=b.dataset.tool,id=S.active;$('tools').classList.add('hidden');
+  if(t==='arcadecoins'){S.arcadeCoins=pgArcadeBalance()+100;save();toast(T('+100 Arcade Coins'));return}
   if(t==='xp50'&&id){const pp=pet(id);const st=pp.stage;pp.xp+=50;save();
     if(st==='egg'&&pp.xp>=HATCH){go('home');return}
     if(st==='baby'&&pp.xp>=YOUNG&&pp.xp-50<YOUNG&&!isMyth(id)){go('home');askEvolve(id);return}}
@@ -6320,6 +6324,10 @@ Object.assign(TR,{
  'Spend 1 Arcade Coin to play':['あそびコイン 1まいで あそぶ','Main dengan 1 Koin Arkade'],
  'You need 1 Arcade Coin.':['あそびコインが 1まい いるよ。','Kamu perlu 1 Koin Arkade.'],
  'Arcade Coin +1':['あそびコイン +1','Koin Arkade +1'],
+ '+100 Arcade Coins':['あそびコイン +100','+100 Koin Arkade'],
+ 'Free pull used':['むりょうで 1かい あそんだ','Putaran gratis digunakan'],
+ 'Capsule coins spent':['カプセルに つかった コイン','Koin untuk kapsul'],
+ 'Not enough coins yet. Lessons earn more!':['コインが たりないよ。レッスンで あつめよう！','Koin belum cukup. Kumpulkan lewat pelajaran!'],
  'Complete these lessons to unlock':['この レッスンを クリアして アンロック','Selesaikan pelajaran ini untuk membuka'],
  'How to play': ['あそびかた','Cara bermain'],
  'Don’t remind me again today':['きょうは もう あそびかたを ひょうじしない','Jangan ingatkan lagi hari ini'],
@@ -6334,6 +6342,14 @@ function pgCapsuleBonus(prize){
  if(Math.random()>=.035)return;
  prize.arcadeBonus=1;
  S.arcadeCoins=pgArcadeBalance()+1;
+}
+function pocketCapsuleNotice(machine,price){
+ machine.querySelector('.pocket-capsule-notice')?.remove();
+ const message=price===null?T('Not enough coins yet. Lessons earn more!')
+  :price===0?T('Free pull used'):T('Capsule coins spent')+' · −'+price;
+ const notice=el('div',{class:'pocket-capsule-notice',role:'status'},pocketIcon('capsule-coin'),el('span',{},message));
+ machine.append(notice);
+ setTimeout(()=>notice.remove(),2100);
 }
 function pgMissingLessons(mode){
  return PG_ENTRY[mode][0].filter(id=>!S.done.includes(id)).map(id=>WORLDS.flatMap(world=>world.lessons).find(lesson=>lesson.id===id));
