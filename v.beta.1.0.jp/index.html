@@ -1607,15 +1607,32 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
 .speakbig{border-radius:16px}
 .cantlisten svg image,.speak svg image,.speakbig svg image{image-rendering:pixelated}
 
-#s-home .hud-stats .pill.streak{border-radius:12px;background:#f9ead4;box-shadow:inset 0 0 0 1px #e2c59a}
-#s-home .hud-stats .pill.streak.pocket-streak-done{background:#ffe9bb;box-shadow:inset 0 0 0 1px #d7a45c}
-.pocket-lesson-streak:not(.hidden){display:flex;align-items:center;justify-content:center;gap:12px;margin:6px auto 10px;padding:8px 16px;width:fit-content;max-width:100%;border:1px solid #c99d5d;border-radius:16px;background:#fff0ce;box-shadow:0 3px 0 #e4c999;text-align:start;color:#59351f}
+#s-home .hud-stats .pill.streak{border-radius:10px;background:#fff6e2;box-shadow:inset 0 0 0 1px #c9ad83,0 2px 0 #dec9a2}
+#s-home .hud-stats .pill.streak.pocket-streak-done{background:#f7e5b9;box-shadow:inset 0 0 0 1px #bd985c,0 2px 0 #d8bb86}
+.pocket-lesson-streak:not(.hidden){display:flex;align-items:center;justify-content:center;gap:12px;margin:6px auto 10px;padding:8px 16px;width:fit-content;max-width:100%;border:1px solid #c9ad83;border-radius:14px;background:#faf1dc;box-shadow:0 3px 0 #dfcba7;text-align:start;color:#59351f}
 .pocket-lesson-streak b,.pocket-lesson-streak small{display:block;line-height:1.25}
 .pocket-lesson-streak b{font-size:clamp(17px,4vw,22px)}
 .pocket-lesson-streak small{font-size:13px;color:#765538}
 .pocket-streak-art{width:36px;height:36px;flex:none;image-rendering:pixelated}
 @media(prefers-reduced-motion:no-preference){.pocket-streak-art{animation:pocket-streak-pop .55s ease-out both}}
 @keyframes pocket-streak-pop{0%{opacity:0;transform:translateY(8px) scale(.6)}65%{transform:translateY(-3px) scale(1.14)}100%{opacity:1;transform:none}}
+.pocket-streak-button{cursor:pointer;font-family:inherit}
+.pocket-streak-button:focus-visible,.pocket-calendar-close:focus-visible{outline:2px solid #258576;outline-offset:2px}
+.pocket-calendar{box-sizing:border-box;width:min(390px,calc(100% - 24px));max-width:none;padding:16px 12px 14px;margin:auto;border:2px solid #694a30;border-radius:20px;background:#fff6e2;color:#442b1b;text-align:center;box-shadow:0 5px 0 #af8860,0 12px 30px #412b243d}
+.pocket-calendar::backdrop{background:#39251980}
+.pocket-calendar h2{margin:1px 0 0;font-size:24px;line-height:1.2}
+.pocket-calendar-subtitle{margin:4px 0 12px;font-size:13px;color:#755d43}
+.pocket-calendar-close{position:absolute;top:8px;right:8px;width:36px;height:36px;border:1px solid #c4ac84;border-radius:50%;background:#fcf0d5;color:inherit;font:inherit;font-size:24px;line-height:1;cursor:pointer}
+.pocket-calendar-flame{width:37px;height:37px}
+.pocket-calendar-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;list-style:none;margin:0;padding:0}
+.pocket-calendar-weekday{display:block;font-size:clamp(10px,3vw,13px);color:#725940;line-height:1.5}
+.pocket-calendar-date{display:flex;flex-direction:column;align-items:center;gap:1px;padding:4px 0;min-height:44px;border:1px solid #dac7a5;border-radius:8px;background:#f5ead2;font-size:14px;font-weight:800;line-height:1.2}
+.pocket-calendar-day.is-today .pocket-calendar-date{border-color:#288576;box-shadow:inset 0 0 0 1px #288576}
+.pocket-calendar-day.is-complete .pocket-calendar-date{background:#f7dfad}
+.pocket-calendar-mark{width:15px;height:15px}
+.pocket-calendar-flame,.pocket-calendar-mark{image-rendering:pixelated}
+.pocket-calendar-key{display:flex;justify-content:center;align-items:center;gap:5px;margin:10px 0 0;font-size:12px;color:#725940}
+.pocket-calendar-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 
 /* Spaced, independently scrolling sticker tiles: no row compression. */
 .modal.pocket-stickers{display:flex;flex-direction:column;width:min(100%,480px);padding:16px;max-height:88dvh;overflow:hidden;box-sizing:border-box}.pocket-sticker-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}.pocket-sticker-heading h3{margin:0;font-size:23px}.pocket-sticker-heading .iconbtn{width:38px;height:38px;border:1px solid var(--hair);border-radius:11px;font-size:25px;flex-shrink:0}.pocket-stickers>.sub{margin:6px 0 13px;flex-shrink:0}.pocket-sticker-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:max-content;align-content:start;gap:10px;overflow-y:auto;overscroll-behavior:contain;min-height:0;padding:2px 4px 8px 2px;scrollbar-width:thin}.pocket-sticker-grid>button{position:relative;display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:1.12;height:auto;min-height:0;min-width:0;padding:5px;background:#fff9eb;border:1px solid #cfbc99;border-radius:13px;box-sizing:border-box;overflow:hidden}.pocket-sticker-grid img{display:block;width:100%;height:100%;max-height:100%;object-fit:contain;image-rendering:pixelated;position:static;margin:0}.pocket-sticker-grid>button.locked img{opacity:.35;filter:grayscale(.8)}.pocket-sticker-grid>button:active{background:#e0eee0}.pocket-sticker-lock{position:absolute;bottom:3px;right:4px;font-size:10px;background:#f9ecd4;border:1px solid #c7b28a;border-radius:7px;padding:0 4px;color:#6f543a}.pocket-sticker-grid button:focus-visible{outline-offset:-3px}.pocket-stickers .pocket-sticker-grid button:disabled{opacity:1}
@@ -5449,22 +5466,67 @@ function lessonYesterday(){
 }
 function recordLessonStreak(lines){
  if(S.lastDay===today())return 0;
+ const lessonDays=S.lessonDays??(S.lastDay?[S.lastDay]:[]);
  const usedFreeze=useFreezes();
  S.streak=S.lastDay===lessonYesterday()?(S.streak||0)+1:1;
  S.lastDay=today();
+ S.lessonDays=[...lessonDays,S.lastDay].slice(-7);
  const gift=streakGiftFor(S.streak);
  if(gift&&!(S.streakGifts||[]).includes(S.streak)&&S.pendingGift?.n!==S.streak)S.pendingGift=gift;
  if(usedFreeze)lines.push(`Streak freeze used (${usedFreeze} day${usedFreeze===1?'':'s'})`);
  return S.streak;
 }
 function lessonStreakIcon(cls){
- const flame='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges"><path fill="#50311e" d="M8 0h2v2h1v2h1v2h2v2h1v5h-2v2H4v-1H2v-2H1V8h1V6h2v2h1V5h1V3h2z"/><path fill="#db6547" d="M8 3h2v2h1v3h2v1h1v3h-2v2H4v-1H3v-2H2V8h1v2h3V6h1z"/><path fill="#f39b4f" d="M8 6h2v4h1v-1h1v3h-1v2H5v-2H4v-1h2V9h1V7h1z"/><path fill="#ffe29b" d="M8 9h1v2h2v2h-1v1H6v-2h1v-2h1z"/></svg>';
+ const flame='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" shape-rendering="crispEdges"><path fill="#49301f" d="M12 1h3v3h2v4h2v2h2v3h2v5h-2v3h-3v2H7v-1H4v-2H2v-3H1v-5h2V9h3v2h2V8h2V5h2z"/><path fill="#b84e34" d="M13 3h1v2h2v4h2v2h2v3h1v4h-2v3H7v-1H5v-2H3v-5h2v-2h1v2h3v-2h2V8h2z"/><path fill="#e47946" d="M13 5h2v5h2v2h3v5h-2v2H7v-1H5v-4h3v2h2v-3h2v-3h1z"/><path fill="#f6ac59" d="M13 11h2v3h2v2h1v3h-2v2H8v-2H7v-2h3v-2h2v-2h1z"/><path fill="#ffe4a2" d="M12 16h3v2h1v2h-6v-2h2zM13 6h1v3h-1zM5 13h1v2H5z"/><path fill="#f9bd71" d="M10 10h1v2h-1zM17 13h2v1h-2z"/></svg>';
  return el('img',{class:cls,alt:'',src:'data:image/svg+xml,'+encodeURIComponent(flame)});
 }
 function lessonStreakLabel(days){
  if(S.lang==='ja')return `${days}日連続`;
  if(S.lang==='id')return `${days} hari berturut-turut`;
  return `${days}-day streak`;
+}
+function lessonWeek(date){
+ const monday=new Date(date);
+ monday.setDate(monday.getDate()-(monday.getDay()+6)%7);
+ return Array.from({length:7},(_,i)=>{
+  const day=new Date(monday);
+  day.setDate(day.getDate()+i);
+  return day;
+ });
+}
+function showLessonCalendar(){
+ renderHomeStreak();
+ const locale={en:'en-US',ja:'ja-JP',id:'id-ID'}[S.lang];
+ const [title,completed,empty,close]={
+  en:['This week','Lesson completed','No lesson completed','Close'],
+  ja:['今週の学習','レッスン完了','レッスン未完了','閉じる'],
+  id:['Minggu ini','Pelajaran selesai','Belum menyelesaikan pelajaran','Tutup']
+ }[S.lang];
+ const week=lessonWeek(new Date(now()));
+ const weekday=new Intl.DateTimeFormat(locale,{weekday:'short'});
+ const dateLabel=new Intl.DateTimeFormat(locale,{dateStyle:'full'});
+ const completedDays=new Set(S.lessonDays??(S.lastDay?[S.lastDay]:[]));
+ const tiles=week.map(date=>{
+  const key=dayStr(date);
+  const done=completedDays.has(key);
+  const isToday=key===today();
+  return el('li',{class:'pocket-calendar-day'+(done?' is-complete':'')+(isToday?' is-today':''),'aria-current':isToday?'date':null},
+   el('span',{class:'pocket-calendar-sr'},dateLabel.format(date)+' · '+(done?completed:empty)),
+   el('span',{class:'pocket-calendar-weekday','aria-hidden':'true'},weekday.format(date)),
+   el('span',{class:'pocket-calendar-date','aria-hidden':'true'},String(date.getDate()),done?lessonStreakIcon('pocket-calendar-mark'):null));
+ });
+ const range=new Intl.DateTimeFormat(locale,{month:'short',day:'numeric'});
+ const dialog=el('dialog',{class:'pocket-calendar','aria-labelledby':'pocketCalendarTitle'},
+  el('button',{type:'button',class:'pocket-calendar-close','aria-label':close},'×'),
+  lessonStreakIcon('pocket-calendar-flame'),
+  el('h2',{id:'pocketCalendarTitle'},title),
+  el('p',{class:'pocket-calendar-subtitle'},range.formatRange(week[0],week[6])+' · '+$('streak').parentElement.title),
+  el('ol',{class:'pocket-calendar-week'},...tiles),
+  el('p',{class:'pocket-calendar-key'},lessonStreakIcon('pocket-calendar-mark'),completed));
+ dialog.querySelector('button').onclick=()=>dialog.close();
+ dialog.addEventListener('close',()=>{dialog.remove();$('streak').parentElement.focus()},{once:true});
+ $('overlayHost').append(dialog);
+ dialog.showModal();
 }
 function renderHomeStreak(){
  const counter=$('streak');
@@ -5502,7 +5564,7 @@ function pocketInit(){
  document.querySelector('.lr-brand').replaceChildren(pocketIcon('mountain'),el('b',{},'MOJIMO'));
  const coin=$('coinBtn').querySelector('.i');if(coin)coin.replaceWith(el('img',{class:'i',src:assetURL('assets/pix/coin.png'),alt:''}));
  const streak=$('streak').parentElement;
- streak.querySelector('svg').replaceWith(lessonStreakIcon('i'));
+ streak.replaceWith(el('button',{type:'button',class:'pill streak pocket-streak-button','aria-haspopup':'dialog',onclick:showLessonCalendar},lessonStreakIcon('i'),$('streak')));
  $('resTitle').after(el('div',{id:'pocketLessonStreak',class:'pocket-lesson-streak hidden',role:'status'}));
  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&current==='home')renderHomeStreak()});
  $('menuBtn').innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true" class="i"><path fill="currentColor" d="m9 1 6 0 1 4 3-1 3 5-3 3 3 3-3 5-3-1-1 4H9l-1-4-3 1-3-5 3-3-3-3 3-5 3 1z"/><circle cx="12" cy="12" r="4" fill="#fff4df"/></svg>';
