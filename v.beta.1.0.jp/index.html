@@ -1575,6 +1575,7 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
 .pocket-phone-action{height:auto;min-height:32px;max-width:100%;padding:4px 8px;border:1px solid #5b7f70;border-radius:8px;background:#d9ebe1;color:#174c44;box-shadow:0 1px #799788;font:inherit;font-size:12px;font-weight:800;white-space:normal;overflow-wrap:anywhere}
 .pocket-phone-action:disabled{opacity:.55}
 .pocket-phone-filters{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.pocket-phone-grammar-filter{grid-template-columns:minmax(0,1fr)}
 .pocket-phone-filters select{min-width:0;height:36px;padding:3px 5px;border:1px solid #b39a73;border-radius:8px;background:#fffaf0;color:inherit;font:inherit;font-size:14px}
 #petWrap>.pocket-phone-emote{position:absolute;z-index:4;top:0;left:85%;width:34px;height:34px;padding:3px;background:#fff3db;border:1px solid #795539;border-radius:9px;pointer-events:none;image-rendering:pixelated}
 @media(max-width:360px){#pocketPhoneButton{width:28px;min-width:28px}#pocketPhoneButton>.pocket-icon{width:23px;height:23px}.pocket-phone-chat{height:min(320px,55%)}}
@@ -6906,6 +6907,11 @@ const PHONE_EXTRA_CHAT=[
  [['Tell me a tiny joke.','ちいさな ジョークを きかせて。','Ceritakan lelucon singkat.'],['What did the mochi say before the quiz? “I hope I don’t get stuck!”','クイズの まえに おもちが いったよ。「こたえに つまらないと いいな！」','Apa kata mochi sebelum kuis? “Semoga aku tidak lengket di satu soal!”']],
  [['Can we practice tomorrow?','あしたも れんしゅう する？','Besok kita latihan lagi?'],['Of course. I’ll be happy to see you again!','もちろん。また あえるのを たのしみに しているね！','Tentu. Aku senang kalau bisa bertemu lagi!']]
 ];
+const PHONE_GRAMMAR_COPY={
+ en:{title:'Grammar Notebook',topic:'Choose a grammar topic…',empty:'Finish a grammar lesson to unlock its topics here.',example:'Show me an example',another:'Another example',pattern:'Show me the pattern'},
+ ja:{title:'ぶんぽう ノート',topic:'ぶんぽうを えらぼう…',empty:'ぶんぽうの レッスンを クリアすると ここに でるよ。',example:'れいを みせて',another:'べつの れい',pattern:'かたちを みせて'},
+ id:{title:'Buku Tata Bahasa',topic:'Pilih topik tata bahasa…',empty:'Selesaikan pelajaran tata bahasa untuk membuka topiknya di sini.',example:'Tunjukkan contoh',another:'Contoh lain',pattern:'Tunjukkan polanya'}
+};
 let phoneSession=null;
 function phoneLessonQuestions(wi,lesson,language,copy){
  const index=language==='ja'?1:language==='id'?2:0;
@@ -6994,8 +7000,10 @@ function phoneOpen(button){
  const language=PHONE_COPY[S.lang]?S.lang:'en',copy=PHONE_COPY[language];
  const history=el('div',{class:'pocket-phone-history',role:'log','aria-live':'polite'});
  const [recentLabel,surpriseLabel,anotherLabel,pickerLabel,homeLabel,empty]=PHONE_ACTIONS[language];
+ const grammar=PHONE_GRAMMAR_COPY[language];
  const controls=el('div',{class:'pocket-phone-actions'});
  const completed=WORLDS.flatMap((world,wi)=>world.lessons.filter(lesson=>S.done.includes(lesson.id)).map(lesson=>({wi,lesson})));
+ const grammarTopics=completed.filter(entry=>GNOTES[entry.lesson.note]);
  const recent=[S.phoneLastLesson,...S.done.slice().reverse()].map(id=>completed.find(entry=>entry.lesson.id===id)).find(Boolean);
  const index=language==='ja'?1:language==='id'?2:0;
  const chatQuestions=[
@@ -7029,7 +7037,7 @@ function phoneOpen(button){
   const options=pool.filter(item=>!played.has(item.label));
   return options.length?options:pool;
  };
- function ask(question,next){
+ function ask(question,next,followUp){
   if(!question)return;
   played.add(question.label);
   append(question.label,'player');
@@ -7047,7 +7055,8 @@ function phoneOpen(button){
      document.querySelector(`[data-lesson="${lesson.id}"]`)?.click();
     }},copy.jump));
    }
-   controls.replaceChildren(action(anotherLabel,next),action(pickerLabel,showPicker,!completed.length),action(homeLabel,showHome));
+   if(followUp)followUp();
+   else controls.replaceChildren(action(anotherLabel,next),action(pickerLabel,showPicker,!completed.length),action(homeLabel,showHome));
    history.scrollTop=history.scrollHeight;
   },3000);
  }
@@ -7075,8 +7084,48 @@ function phoneOpen(button){
   });
   controls.replaceChildren(el('div',{class:'pocket-phone-filters'},chapter,lesson),action(homeLabel,showHome));
  }
+ function showGrammar(){
+  if(!grammarTopics.length){
+   append(grammar.empty,'friend');
+   controls.replaceChildren(action(homeLabel,showHome));
+   return;
+  }
+  const select=el('select',{'aria-label':grammar.topic},el('option',{value:'',disabled:true,selected:true},grammar.topic));
+  for(const wi of new Set(grammarTopics.map(entry=>entry.wi))){
+   const group=el('optgroup',{label:T(WORLDS[wi].name)});
+   for(const entry of grammarTopics.filter(item=>item.wi===wi)){
+    const note=GNOTES[entry.lesson.note];
+    group.append(el('option',{value:entry.lesson.id},note.t[index]+' · '+note.p));
+   }
+   select.append(group);
+  }
+  select.addEventListener('change',()=>{
+   const entry=grammarTopics.find(item=>item.lesson.id===select.value);
+   if(entry)showGrammarTopic(entry);
+  });
+  controls.replaceChildren(el('div',{class:'pocket-phone-filters pocket-phone-grammar-filter'},select),action(homeLabel,showHome));
+ }
+ function showGrammarTopic(entry){
+  const note=GNOTES[entry.lesson.note];
+  const examples=note.x||[];
+  let nextExample=0;
+  const explain=()=>ask({entry,label:copy.grammar(note.p),answer:note.p+'\n'+note.r[index]},null,showFollowUps);
+  const showExample=()=>{
+   const example=examples[nextExample%examples.length];
+   nextExample++;
+   ask({entry,label:nextExample===1?grammar.example:grammar.another,answer:example[0]+(index===1?'':'\n'+example[index===2?2:1]),speech:example[0]},null,showFollowUps);
+  };
+  const showPattern=()=>ask({entry,label:grammar.pattern,answer:note.f.map(([from,to])=>from+' → '+to).join('\n')},null,showFollowUps);
+  function showFollowUps(){
+   controls.replaceChildren(action(copy.grammar(note.p),explain),
+    ...(examples.length?[action(nextExample?grammar.another:grammar.example,showExample)]:[]),
+    ...(note.f?.length?[action(grammar.pattern,showPattern)]:[]),
+    action(grammar.title,showGrammar),action(homeLabel,showHome));
+  }
+  explain();
+ }
  function showHome(){
-  controls.replaceChildren(action(recentLabel,()=>showChoices(questionsFor(recent)),!recent),action(surpriseLabel,surprise,!recent),action(copy.smallTalk,()=>showChoices(chatQuestions)));
+  controls.replaceChildren(action(recentLabel,()=>showChoices(questionsFor(recent)),!recent),action(surpriseLabel,surprise,!recent),action(copy.smallTalk,()=>showChoices(chatQuestions)),action(grammar.title,showGrammar));
   if(recent)for(const question of pick(fresh(questionsFor(recent)),2))controls.append(action(question.label,()=>ask(question,()=>showChoices(questionsFor(recent)))));
  }
  showHome();
