@@ -1565,10 +1565,11 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
 .pocket-phone-message{max-width:88%;flex:none;border-radius:13px;padding:7px 9px;background:#f8e6c6;border:1px solid #d7ba90;font-size:13px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
 .pocket-phone-message.player{align-self:flex-end;background:#d9ebe1;border-color:#8faf9e}
 .pocket-phone-message .link{display:block;margin-top:3px;text-align:left;padding:3px 0;color:#12685c;font-weight:850}
-.pocket-phone-form{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px}
-.pocket-phone-filters{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
-.pocket-phone-form select{min-width:0;flex:1;height:40px;padding:5px 10px;border:1px solid #b39a73;border-radius:12px;background:#fffaf0;color:inherit;font:inherit;font-size:16px}
-.pocket-phone-form .bigbtn{margin:0;min-height:40px;padding:5px 10px;width:auto;font-size:13px}
+.pocket-phone-actions{display:flex;flex-wrap:wrap;gap:5px;padding-top:5px;border-top:1px solid #d6bf9a;max-height:123px;overflow:auto}
+.pocket-phone-action{height:auto;min-height:32px;max-width:100%;padding:5px 9px;border:1px solid #8faf9e;border-radius:12px;background:#d9ebe1;color:#174c44;font:inherit;font-size:12px;font-weight:800;white-space:normal;overflow-wrap:anywhere}
+.pocket-phone-action:disabled{opacity:.5}
+.pocket-phone-filters{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.pocket-phone-filters select{min-width:0;height:36px;padding:3px 5px;border:1px solid #b39a73;border-radius:9px;background:#fffaf0;color:inherit;font:inherit;font-size:14px}
 #petWrap>.pocket-phone-emote{position:absolute;z-index:4;top:0;left:85%;width:34px;height:34px;padding:3px;background:#fff3db;border:1px solid #795539;border-radius:9px;pointer-events:none;image-rendering:pixelated}
 @media(max-width:360px){#pocketPhoneButton{width:28px;min-width:28px}#pocketPhoneButton>.pocket-icon{width:23px;height:23px}.pocket-phone-chat{height:min(320px,55%)}}
 
@@ -4425,7 +4426,7 @@ function finish(){
   if(power('treat')||(cperk('treat')&&Math.random()<.25*cperk('treat'))){const t2=rnd(TREATS);S.treats[t2.id]=(S.treats[t2.id]||0)+1;lines.push(`${PET[id].name} found an extra ${t2.k}`)}
   lrRecordSeasonalLesson(L.lesson,L.testOut,L.mistakes);
   if(isNew)S.done.push(L.lesson.id);
-  if(L.lesson&&tOK){S.arcadeCoins=pgArcadeBalance()+1;lines.push(T('Arcade Ticket +1'))}
+  if(L.lesson&&tOK){S.phoneLastLesson=L.lesson.id;S.arcadeCoins=pgArcadeBalance()+1;lines.push(T('Arcade Ticket +1'))}
   S.gm=S.gm||{};
   if(L.lesson&&L.lesson.note&&!S.gm[L.lesson.note])S.gm[L.lesson.note]={box:1,due:t+DAY};
   if(L.gReview){L.gReview.forEach(g=>{const x=S.gm[g]||(S.gm[g]={box:0,due:t});if(L.gmiss&&L.gmiss.has(g)){x.box=1;x.due=t+DAY}else{x.box=Math.min(5,x.box+1);x.due=t+INTERVALS[x.box]*DAY}})}
@@ -6795,20 +6796,20 @@ RENDER.review=function(){
 
 const PHONE_COPY={
  en:{
-  title:'Mojimo Phone',welcome:'Choose a question from a completed Journey lesson, or pick a quick chat.',
-  placeholder:'Choose a question…',smallTalk:'Quick chat',math:'Quick math',chapter:'Journey chapter',lesson:'Choose a completed lesson…',empty:'Finish a lesson in this chapter to unlock its questions.',later:(world,lesson)=>`I think I saw that in ${world}, in “${lesson}”. Let’s study it when we get there!`,about:q=>`What does ${q} mean?`,read:q=>`How do you read ${q}?`,translate:q=>`How do you say “${q}” in Japanese?`,grammar:q=>`How does ${q} work?`,reply:q=>`How should I reply to “${q}”?`,send:'Send',typing:'Typing…',close:'Close chat',
+  title:'Mojimo Phone',welcome:'Want to review what we just learned?',
+  placeholder:'Choose a question…',smallTalk:'Just chat',chapter:'Journey chapter',lesson:'Choose a completed lesson…',empty:'Finish a lesson in this chapter to unlock its questions.',later:(world,lesson)=>`I think I saw that in ${world}, in “${lesson}”. Let’s study it when we get there!`,about:q=>`What does ${q} mean?`,read:q=>`How do you read ${q}?`,translate:q=>`How do you say “${q}” in Japanese?`,grammar:q=>`How does ${q} work?`,reply:q=>`How should I reply to “${q}”?`,send:'Send',typing:'Typing…',close:'Close chat',
   learned:(term,reading,gloss)=>`${term}${reading?' ('+reading+')':''} means ${gloss}.`,
   kana:(term,reading)=>`${term} is read “${reading}”.`,example:'Example',jump:'Open in Journey',
  },
  ja:{
-  title:'モジモ フォン',welcome:'クリアした レッスンから しつもんを えらんでね。おはなしも できるよ。',
-  placeholder:'しつもんを えらぼう…',smallTalk:'おはなし',math:'かんたんな さんすう',chapter:'たびの チャプター',lesson:'クリアした レッスンを えらぼう…',empty:'この チャプターの レッスンを クリアすると しつもんが ふえるよ。',later:(world,lesson)=>`${world}の「${lesson}」で みた きがするよ。そこで いっしょに まなぼう！`,about:q=>`「${q}」の いみは？`,read:q=>`「${q}」は どう よむの？`,translate:q=>`「${q}」は にほんごで なんて いうの？`,grammar:q=>`「${q}」は どう つかうの？`,reply:q=>`「${q}」に どう へんじするの？`,send:'おくる',typing:'へんじを かいています…',close:'チャットを とじる',
+  title:'モジモ フォン',welcome:'さっき まなんだことを ふくしゅうする？',
+  placeholder:'しつもんを えらぼう…',smallTalk:'おはなし',chapter:'たびの チャプター',lesson:'クリアした レッスンを えらぼう…',empty:'この チャプターの レッスンを クリアすると しつもんが ふえるよ。',later:(world,lesson)=>`${world}の「${lesson}」で みた きがするよ。そこで いっしょに まなぼう！`,about:q=>`「${q}」の いみは？`,read:q=>`「${q}」は どう よむの？`,translate:q=>`「${q}」は にほんごで なんて いうの？`,grammar:q=>`「${q}」は どう つかうの？`,reply:q=>`「${q}」に どう へんじするの？`,send:'おくる',typing:'へんじを かいています…',close:'チャットを とじる',
   learned:(term,reading,gloss)=>`「${term}」${reading?'（'+reading+'）':''}の いみは「${gloss}」だよ。`,
   kana:(term,reading)=>`「${term}」は「${reading}」と よむよ。`,example:'れい',jump:'たびで みる',
  },
  id:{
-  title:'Ponsel Mojimo',welcome:'Pilih pertanyaan dari pelajaran Perjalanan yang sudah selesai, atau pilih obrolan singkat.',
-  placeholder:'Pilih pertanyaan…',smallTalk:'Obrolan singkat',math:'Hitungan singkat',chapter:'Bab Perjalanan',lesson:'Pilih pelajaran yang sudah selesai…',empty:'Selesaikan pelajaran di bab ini untuk membuka pertanyaannya.',later:(world,lesson)=>`Sepertinya aku melihatnya di ${world}, dalam pelajaran “${lesson}”. Ayo pelajari saat sampai di sana!`,about:q=>`Apa arti ${q}?`,read:q=>`Bagaimana cara membaca ${q}?`,translate:q=>`Apa bahasa Jepang untuk “${q}”?`,grammar:q=>`Bagaimana cara memakai ${q}?`,reply:q=>`Bagaimana membalas “${q}”?`,send:'Kirim',typing:'Sedang mengetik…',close:'Tutup obrolan',
+  title:'Ponsel Mojimo',welcome:'Mau mengulang yang baru kita pelajari?',
+  placeholder:'Pilih pertanyaan…',smallTalk:'Obrolan santai',chapter:'Bab Perjalanan',lesson:'Pilih pelajaran yang sudah selesai…',empty:'Selesaikan pelajaran di bab ini untuk membuka pertanyaannya.',later:(world,lesson)=>`Sepertinya aku melihatnya di ${world}, dalam pelajaran “${lesson}”. Ayo pelajari saat sampai di sana!`,about:q=>`Apa arti ${q}?`,read:q=>`Bagaimana cara membaca ${q}?`,translate:q=>`Apa bahasa Jepang untuk “${q}”?`,grammar:q=>`Bagaimana cara memakai ${q}?`,reply:q=>`Bagaimana membalas “${q}”?`,send:'Kirim',typing:'Sedang mengetik…',close:'Tutup obrolan',
   learned:(term,reading,gloss)=>`${term}${reading?' ('+reading+')':''} artinya ${gloss}.`,
   kana:(term,reading)=>`${term} dibaca “${reading}”.`,example:'Contoh',jump:'Buka di Perjalanan',
  }
@@ -6846,6 +6847,11 @@ const PHONE_SOCIAL={
   locked:'Mojimo sedang tidak ingin mengobrol. Coba lagi besok.',
  }
 };
+const PHONE_ACTIONS={
+ en:['Review my last lesson','Surprise me','Another question','Pick a lesson','Chat home','Finish a Journey lesson to start reviewing.'],
+ ja:['さいごの レッスンを ふくしゅう','おまかせ','つぎの しつもん','レッスンを えらぶ','チャットの はじめ','たびの レッスンを クリアしてから ふくしゅうしよう。'],
+ id:['Ulas pelajaran terakhir','Kejutkan aku','Pertanyaan lain','Pilih pelajaran','Awal obrolan','Selesaikan pelajaran Perjalanan untuk mulai mengulas.']
+};
 const PHONE_PROMPTS={
  hello:['Hi!','こんにちは！','Hai!'],
  feel:['How are you feeling?','きぶんは どう？','Bagaimana perasaanmu?'],
@@ -6855,25 +6861,33 @@ const PHONE_PROMPTS={
  thanks:['Thank you!','ありがとう！','Terima kasih!'],
  bye:['See you later!','またね！','Sampai nanti!']
 };
+const PHONE_EXTRA_CHAT=[
+ [['What should we do today?','きょうは なにを しよう？','Hari ini kita mau apa?'],['Let’s learn one new word and then take a little break together.','あたらしい ことばを ひとつ おぼえて、いっしょに ひとやすみ しよう。','Ayo pelajari satu kata baru, lalu istirahat bersama.']],
+ [['What’s your favorite snack?','すきな おやつは？','Camilan favoritmu apa?'],['I’d pick dango today. The little round ones look delicious!','きょうは だんごが いいな。まるくて おいしそう！','Hari ini aku pilih dango. Bulat-bulat dan kelihatan enak!']],
+ [['What sound do you like?','どんな おとが すき？','Suara apa yang kamu suka?'],['I like the soft sound of rain while we’re cozy inside.','おへやで きく やさしい あめのおとが すきだよ。','Aku suka suara hujan pelan saat kita nyaman di dalam.']],
+ [['Would you like to play?','いっしょに あそぶ？','Mau main bersama?'],['Yes! A little playtime sounds fun.','うん！すこし あそんだら たのしそう。','Mau! Main sebentar pasti seru.']],
+ [['What makes you smile?','なにを すると えがおに なる？','Apa yang bikin kamu tersenyum?'],['I smile when we figure out a tricky word together.','むずかしい ことばが いっしょに わかると、えがおに なるよ。','Aku tersenyum saat kita berhasil memahami kata yang sulit.']],
+ [['What season do you like?','どの きせつが すき？','Kamu suka musim apa?'],['I like spring. It’s fun to look for the first flowers.','はるが すきだよ。さいしょの はなを さがすのが たのしいな。','Aku suka musim semi. Seru mencari bunga pertama yang mekar.']],
+ [['Where should we go next?','つぎは どこに いこう？','Selanjutnya kita ke mana?'],['Somewhere we can hear water. A pond would be lovely!','みずの おとが きこえる ところが いいな。いけに いきたい！','Ke tempat yang terdengar suara air. Kolam sepertinya menyenangkan!']],
+ [['I’m tired today.','きょうは つかれたよ。','Hari ini aku capek.'],['Then let’s take it easy. Even a little practice counts.','じゃあ、ゆっくり しよう。すこしの れんしゅうでも いいよ。','Kalau begitu, santai saja. Latihan sebentar pun tetap berarti.']],
+ [['I learned something new!','あたらしい ことを おぼえたよ！','Aku belajar hal baru!'],['Nice work! Try saying it out loud once so it sticks.','やったね！おぼえられるように、こえに だして いってみよう。','Bagus! Coba ucapkan sekali supaya lebih mudah diingat.']],
+ [['Do you want to rest?','すこし やすむ？','Mau istirahat?'],['A short rest sounds nice. I’ll be here when you’re ready.','すこし やすもうかな。じゅんびが できたら また はなそう。','Istirahat sebentar enak juga. Aku di sini kalau kamu sudah siap.']],
+ [['Tell me a tiny joke.','ちいさな ジョークを きかせて。','Ceritakan lelucon singkat.'],['What did the mochi say before the quiz? “I hope I don’t get stuck!”','クイズの まえに おもちが いったよ。「こたえに つまらないと いいな！」','Apa kata mochi sebelum kuis? “Semoga aku tidak lengket di satu soal!”']],
+ [['Can we practice tomorrow?','あしたも れんしゅう する？','Besok kita latihan lagi?'],['Of course. I’ll be happy to see you again!','もちろん。また あえるのを たのしみに しているね！','Tentu. Aku senang kalau bisa bertemu lagi!']]
+];
 let phoneSession=null;
-function phoneQuestionPicker(wi,lesson,language,copy,select){
+function phoneLessonQuestions(wi,lesson,language,copy){
  const index=language==='ja'?1:language==='id'?2:0;
  const world=WORLDS[wi],questions=[];
- select.replaceChildren(el('option',{value:'',disabled:true,selected:true},copy.placeholder));
- const add=(group,label,answer,entry,speech)=>{
-  questions.push({label,answer,entry,speech});
-  group.append(el('option',{value:String(questions.length)},label));
- };
  const gloss=(item)=>index===2?(MEAN_ID[item.en]||item.en):item.en;
  const localized=(tuple)=>tuple[index===1?2:index===2?1:0];
  if(lesson&&S.done.includes(lesson.id)){
   const note=GNOTES[lesson.note],entry={world,wi:Number(wi),lesson,note};
-  const group=el('optgroup',{label:T(lesson.title)});
   const lessonQuestions=new Set();
   const ask=(label,answer,speech)=>{
    if(lessonQuestions.has(label))return;
    lessonQuestions.add(label);
-   add(group,label,answer,entry,speech);
+   questions.push({label,answer,entry,speech});
   };
   const sources=lesson.gate?world.lessons.filter(item=>!item.gate&&S.done.includes(item.id)):[lesson];
   for(const source of sources){
@@ -6910,19 +6924,7 @@ function phoneQuestionPicker(wi,lesson,language,copy,select){
    }
   }
   if(!lessonQuestions.size)ask(T(lesson.title),T(lesson.title));
-  select.append(group);
  }
- if(wi==='chat'){
-  const smallTalk=el('optgroup',{label:copy.smallTalk});
-  for(const [type,labels] of Object.entries(PHONE_PROMPTS))add(smallTalk,labels[index],PHONE_SOCIAL[language][type]);
-  select.append(smallTalk);
- }
- if(wi==='math'){
-  const math=el('optgroup',{label:copy.math});
-  for(const [question,answer] of [['3 + 4','7'],['9 − 3','6'],['8 × 7','56'],['24 ÷ 6','4']])add(math,question+' = ?',question+' = '+answer);
-  select.append(math);
- }
- select.disabled=!questions.length;
  return questions;
 }
 function phoneAnswer(hit,language){
@@ -6960,18 +6962,18 @@ function phoneOpen(button){
  if(!S.active)return;
  const language=PHONE_COPY[S.lang]?S.lang:'en',copy=PHONE_COPY[language];
  const history=el('div',{class:'pocket-phone-history',role:'log','aria-live':'polite'});
- const chapter=el('select',{class:'pocket-phone-chapter','aria-label':copy.chapter});
- WORLDS.forEach((world,wi)=>chapter.append(el('option',{value:String(wi)},T(world.name))));
- chapter.append(el('option',{value:'chat'},copy.smallTalk),el('option',{value:'math'},copy.math));
- chapter.value=String(WORLDS[S.jWorld]?S.jWorld:0);
- const lessonSelect=el('select',{class:'pocket-phone-lesson','aria-label':copy.lesson});
- const select=el('select',{'aria-label':copy.placeholder});
- let questions=[];
- const send=el('button',{type:'submit',class:'bigbtn',disabled:true},copy.send);
- const form=el('form',{class:'pocket-phone-form'},el('div',{class:'pocket-phone-filters'},chapter,lessonSelect),select,send);
+ const [recentLabel,surpriseLabel,anotherLabel,pickerLabel,homeLabel,empty]=PHONE_ACTIONS[language];
+ const controls=el('div',{class:'pocket-phone-actions'});
+ const completed=WORLDS.flatMap((world,wi)=>world.lessons.filter(lesson=>S.done.includes(lesson.id)).map(lesson=>({wi,lesson})));
+ const recent=[S.phoneLastLesson,...S.done.slice().reverse()].map(id=>completed.find(entry=>entry.lesson.id===id)).find(Boolean);
+ const index=language==='ja'?1:language==='id'?2:0;
+ const chatQuestions=[
+  ...Object.entries(PHONE_PROMPTS).map(([key,labels])=>({label:labels[index],answer:PHONE_SOCIAL[language][key]})),
+  ...PHONE_EXTRA_CHAT.map(([labels,answers])=>({label:labels[index],answer:answers[index]}))
+ ];
  const close=el('button',{type:'button',class:'iconbtn','aria-label':copy.close,onclick:()=>phoneClose(true)},'×');
  const panel=el('section',{id:'pocketPhoneChat',class:'pocket-phone-chat','aria-label':copy.title},
-  el('header',{},pocketIcon('mojimo-phone'),el('div',{},el('b',{},copy.title),el('small',{},PET[S.active].name)),close),history,form);
+  el('header',{},pocketIcon('mojimo-phone'),el('div',{},el('b',{},copy.title),el('small',{},PET[S.active].name)),close),history,controls);
  const icon=pocketIcon('mojimo-phone','pocket-phone-emote');
  const session=phoneSession={button,panel,icon,timer:null};
  $('s-home').append(panel);$('s-home').classList.add('pocket-phone-open');
@@ -6982,53 +6984,69 @@ function phoneOpen(button){
  };
  if(S.phoneBoundary?.day===dayStr(Date.now())&&S.phoneBoundary.count>=3){
   append(PHONE_SOCIAL[language].locked,'friend');
-  form.remove();
+  controls.remove();
   return;
  }
- append(copy.welcome,'friend');
+ append(recent?copy.welcome:empty,'friend');
  panel.addEventListener('keydown',event=>{if(event.key==='Escape')phoneClose(true)});
- const refreshQuestions=()=>{
-  const world=WORLDS[chapter.value];
-  const lesson=world?.lessons.find(item=>item.id===lessonSelect.value);
-  questions=phoneQuestionPicker(chapter.value,lesson,language,copy,select);
-  send.disabled=true;
+ const action=(label,onclick,disabled=false)=>el('button',{type:'button',class:'pocket-phone-action',onclick,disabled},label);
+ const questionsFor=entry=>phoneLessonQuestions(entry.wi,entry.lesson,language,copy);
+ const played=new Set();
+ const fresh=pool=>{
+  const options=pool.filter(item=>!played.has(item.label));
+  return options.length?options:pool;
  };
- const refreshLessons=()=>{
-  const completed=WORLDS[chapter.value]?.lessons.filter(item=>S.done.includes(item.id))||[];
-  lessonSelect.replaceChildren(el('option',{value:'',disabled:true,selected:true},completed.length?copy.lesson:WORLDS[chapter.value]?copy.empty:'—'));
-  for(const lesson of completed)lessonSelect.append(el('option',{value:lesson.id},T(lesson.title)));
-  lessonSelect.disabled=!completed.length;
-  refreshQuestions();
- };
- refreshLessons();
- chapter.addEventListener('change',refreshLessons);
- lessonSelect.addEventListener('change',refreshQuestions);
- select.addEventListener('change',()=>{send.disabled=!select.value});
- form.addEventListener('submit',event=>{
-  event.preventDefault();
-  const question=questions[Number(select.value)-1];
-  if(!question||send.disabled)return;
+ function ask(question,next){
+  if(!question)return;
+  played.add(question.label);
   append(question.label,'player');
-  select.value='';select.disabled=true;chapter.disabled=true;lessonSelect.disabled=true;send.disabled=true;
+  controls.replaceChildren();
   const typing=append('...','friend',{'aria-label':copy.typing});
   session.timer=setTimeout(()=>{
    if(phoneSession!==session)return;
    typing.remove();
-   const later=question.entry&&!S.done.includes(question.entry.lesson.id);
-   const answer=later?copy.later(T(question.entry.world.name),T(question.entry.lesson.title)):question.answer;
-   const bubble=append(answer,'friend');
-   if(!later&&question.speech)bubble.append(speakBtn(question.speech));
+   const bubble=append(question.answer,'friend');
+   if(question.speech)bubble.append(speakBtn(question.speech));
    if(question.entry){
     const {wi,lesson}=question.entry;
     bubble.append(el('button',{type:'button',class:'link',onclick:()=>{
      phoneClose();S.jWorld=wi;save();go('journey');
      document.querySelector(`[data-lesson="${lesson.id}"]`)?.click();
     }},copy.jump));
-    history.scrollTop=history.scrollHeight;
    }
-   select.disabled=false;chapter.disabled=false;lessonSelect.disabled=!WORLDS[chapter.value]?.lessons.some(lesson=>S.done.includes(lesson.id));
+   controls.replaceChildren(action(anotherLabel,next),action(pickerLabel,showPicker,!completed.length),action(homeLabel,showHome));
+   history.scrollTop=history.scrollHeight;
   },3000);
- });
+ }
+ function showChoices(pool){
+  controls.replaceChildren(...pick(fresh(pool),3).map(question=>action(question.label,()=>ask(question,()=>showChoices(pool)))),action(anotherLabel,()=>showChoices(pool)),action(homeLabel,showHome));
+ }
+ function surprise(){
+  const entry=rnd(completed);
+  if(entry)ask(rnd(fresh(questionsFor(entry))),surprise);
+ }
+ function showPicker(){
+  const chapter=el('select',{'aria-label':copy.chapter});
+  const lesson=el('select',{'aria-label':copy.lesson});
+  [...new Set(completed.map(entry=>entry.wi))].forEach(wi=>chapter.append(el('option',{value:String(wi)},T(WORLDS[wi].name))));
+  if(recent)chapter.value=String(recent.wi);
+  function fillLessons(){
+   lesson.replaceChildren(el('option',{value:'',disabled:true,selected:true},copy.lesson));
+   completed.filter(entry=>entry.wi===Number(chapter.value)).forEach(entry=>lesson.append(el('option',{value:entry.lesson.id},T(entry.lesson.title))));
+  }
+  fillLessons();
+  chapter.addEventListener('change',fillLessons);
+  lesson.addEventListener('change',()=>{
+   const entry=completed.find(item=>item.lesson.id===lesson.value);
+   if(entry)showChoices(questionsFor(entry));
+  });
+  controls.replaceChildren(el('div',{class:'pocket-phone-filters'},chapter,lesson),action(homeLabel,showHome));
+ }
+ function showHome(){
+  controls.replaceChildren(action(recentLabel,()=>showChoices(questionsFor(recent)),!recent),action(surpriseLabel,surprise,!recent),action(copy.smallTalk,()=>showChoices(chatQuestions)));
+  if(recent)for(const question of pick(fresh(questionsFor(recent)),2))controls.append(action(question.label,()=>ask(question,()=>showChoices(questionsFor(recent)))));
+ }
+ showHome();
 }
 
 /* Beta v1.0: natural VOICEVOX voices for every spoken line, kanji-form aliases, no device text-to-speech */
