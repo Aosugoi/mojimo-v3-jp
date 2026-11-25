@@ -1565,7 +1565,8 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
 .pocket-phone-message{max-width:88%;flex:none;border-radius:13px;padding:7px 9px;background:#f8e6c6;border:1px solid #d7ba90;font-size:13px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
 .pocket-phone-message.player{align-self:flex-end;background:#d9ebe1;border-color:#8faf9e}
 .pocket-phone-message .link{display:block;margin-top:3px;text-align:left;padding:3px 0;color:#12685c;font-weight:850}
-.pocket-phone-form{display:flex;align-items:center;gap:6px}
+.pocket-phone-form{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px}
+.pocket-phone-form .pocket-phone-chapter{grid-column:1/-1}
 .pocket-phone-form select{min-width:0;flex:1;height:40px;padding:5px 10px;border:1px solid #b39a73;border-radius:12px;background:#fffaf0;color:inherit;font:inherit;font-size:16px}
 .pocket-phone-form .bigbtn{margin:0;min-height:40px;padding:5px 10px;width:auto;font-size:13px}
 #petWrap>.pocket-phone-emote{position:absolute;z-index:4;top:0;left:85%;width:34px;height:34px;padding:3px;background:#fff3db;border:1px solid #795539;border-radius:9px;pointer-events:none;image-rendering:pixelated}
@@ -6794,20 +6795,20 @@ RENDER.review=function(){
 
 const PHONE_COPY={
  en:{
-  title:'Mojimo Phone',welcome:'Pick a topic from a Journey lesson you’ve finished, or choose a quick chat.',
-  placeholder:'Choose a question…',smallTalk:'Quick chat',math:'Quick math',empty:'Finish a Journey lesson to unlock study questions.',send:'Send',typing:'Typing…',close:'Close chat',
+  title:'Mojimo Phone',welcome:'Choose a Journey chapter and ask me a question, or pick a quick chat.',
+  placeholder:'Choose a question…',smallTalk:'Quick chat',math:'Quick math',chapter:'Journey chapter',later:(world,lesson)=>`I think I saw that in ${world}, in “${lesson}”. Let’s study it when we get there!`,about:q=>`What does ${q} mean?`,read:q=>`How do you read ${q}?`,translate:q=>`How do you say “${q}” in Japanese?`,grammar:q=>`How does ${q} work?`,reply:q=>`How should I reply to “${q}”?`,send:'Send',typing:'Typing…',close:'Close chat',
   learned:(term,reading,gloss)=>`${term}${reading?' ('+reading+')':''} means ${gloss}.`,
   kana:(term,reading)=>`${term} is read “${reading}”.`,example:'Example',jump:'Open in Journey',
  },
  ja:{
-  title:'モジモ フォン',welcome:'クリアした レッスンの ことばや ぶんぽうを えらぶか、おはなし しよう。',
-  placeholder:'しつもんを えらぼう…',smallTalk:'おはなし',math:'かんたんな さんすう',empty:'レッスンを クリアすると ふくしゅうの しつもんが ふえるよ。',send:'おくる',typing:'へんじを かいています…',close:'チャットを とじる',
+  title:'モジモ フォン',welcome:'たびの チャプターを えらんで しつもんしてね。おはなしも できるよ。',
+  placeholder:'しつもんを えらぼう…',smallTalk:'おはなし',math:'かんたんな さんすう',chapter:'たびの チャプター',later:(world,lesson)=>`${world}の「${lesson}」で みた きがするよ。そこで いっしょに まなぼう！`,about:q=>`「${q}」の いみは？`,read:q=>`「${q}」は どう よむの？`,translate:q=>`「${q}」は にほんごで なんて いうの？`,grammar:q=>`「${q}」は どう つかうの？`,reply:q=>`「${q}」に どう へんじするの？`,send:'おくる',typing:'へんじを かいています…',close:'チャットを とじる',
   learned:(term,reading,gloss)=>`「${term}」${reading?'（'+reading+'）':''}の いみは「${gloss}」だよ。`,
   kana:(term,reading)=>`「${term}」は「${reading}」と よむよ。`,example:'れい',jump:'たびで みる',
  },
  id:{
-  title:'Ponsel Mojimo',welcome:'Pilih topik dari pelajaran Perjalanan yang sudah selesai, atau pilih obrolan singkat.',
-  placeholder:'Pilih pertanyaan…',smallTalk:'Obrolan singkat',math:'Hitungan singkat',empty:'Selesaikan satu pelajaran Perjalanan untuk membuka pertanyaan belajar.',send:'Kirim',typing:'Sedang mengetik…',close:'Tutup obrolan',
+  title:'Ponsel Mojimo',welcome:'Pilih bab Perjalanan dan ajukan pertanyaan, atau pilih obrolan singkat.',
+  placeholder:'Pilih pertanyaan…',smallTalk:'Obrolan singkat',math:'Hitungan singkat',chapter:'Bab Perjalanan',later:(world,lesson)=>`Sepertinya aku melihatnya di ${world}, dalam pelajaran “${lesson}”. Ayo pelajari saat sampai di sana!`,about:q=>`Apa arti ${q}?`,read:q=>`Bagaimana cara membaca ${q}?`,translate:q=>`Apa bahasa Jepang untuk “${q}”?`,grammar:q=>`Bagaimana cara memakai ${q}?`,reply:q=>`Bagaimana membalas “${q}”?`,send:'Kirim',typing:'Sedang mengetik…',close:'Tutup obrolan',
   learned:(term,reading,gloss)=>`${term}${reading?' ('+reading+')':''} artinya ${gloss}.`,
   kana:(term,reading)=>`${term} dibaca “${reading}”.`,example:'Contoh',jump:'Buka di Perjalanan',
  }
@@ -6855,36 +6856,68 @@ const PHONE_PROMPTS={
  bye:['See you later!','またね！','Sampai nanti!']
 };
 let phoneSession=null;
-function phoneQuestionPicker(language,copy){
+function phoneQuestionPicker(wi,language,copy,select){
  const index=language==='ja'?1:language==='id'?2:0;
- const select=el('select',{'aria-label':copy.placeholder});
- select.append(el('option',{value:'',disabled:true,selected:true},copy.placeholder));
- const questions=[];
- let lessonCount=0;
- const add=(group,label,answer,entry)=>{
-  questions.push({label,answer,entry});
+ const world=WORLDS[wi],questions=[];
+ select.replaceChildren(el('option',{value:'',disabled:true,selected:true},copy.placeholder));
+ const add=(group,label,answer,entry,speech)=>{
+  questions.push({label,answer,entry,speech});
   group.append(el('option',{value:String(questions.length)},label));
  };
- WORLDS.forEach((world,wi)=>world.lessons.forEach(lesson=>{
-  if(lesson.gate||!S.done.includes(lesson.id))return;
+ const gloss=(item)=>index===2?(MEAN_ID[item.en]||item.en):item.en;
+ const localized=(tuple)=>tuple[index===1?2:index===2?1:0];
+ for(const lesson of world.lessons){
   const note=GNOTES[lesson.note],entry={world,wi,lesson,note};
-  const group=el('optgroup',{label:T(world.name)+' · '+T(lesson.title)});
-  if(note)add(group,note.p,phoneAnswer({entry,term:null},language),entry);
-  const keys=[...new Set([...(lesson.items||[]),...(lesson.words||[]),...(lesson.kana||[]),...(lesson.kanji||[])])];
-  for(const key of keys){
-   const item=I[key];
-   if(!item?.en&&item?.kind!=='kana')continue;
-   const word=item.w||key,reading=item.r?.[0];
-   add(group,word+(reading?' · '+reading:''),phoneAnswer({entry,term:{item,key}},language),entry);
+  const group=el('optgroup',{label:T(lesson.title)});
+  const lessonQuestions=new Set();
+  const ask=(label,answer,speech)=>{
+   if(lessonQuestions.has(label))return;
+   lessonQuestions.add(label);
+   add(group,label,answer,entry,speech);
+  };
+  const sources=lesson.gate?world.lessons.filter(item=>!item.gate):[lesson];
+  for(const source of sources){
+   const grammar=GNOTES[source.note];
+   if(grammar){
+    ask(copy.grammar(grammar.p),phoneAnswer({entry:{...entry,note:grammar},term:null},language));
+    for(const example of grammar.x||[]){
+     ask(copy.about(example[0]),index===1?example[0]+' · '+example[1]:example[index===2?2:1],example[0]);
+    }
+   }
+   for(const key of [...(source.items||[]),...(source.words||[]),...(source.kana||[]),...(source.kanji||[]),...(source.rev||[])]){
+    const item=I[key];
+    if(!item?.en&&item?.kind!=='kana')continue;
+    const word=item.w||key,reading=item.r?.[0];
+    if(reading)ask(copy.read(word),copy.kana(word,reading),key);
+    if(item.kind!=='kana'){
+     ask(copy.about(word),phoneAnswer({entry,term:{item,key}},language),key);
+     ask(copy.translate(gloss(item)),word+(reading?' · '+reading:''),key);
+    }
+   }
+   for(const id of source.sentences||[]){
+    const sentence=SENTENCES.find(item=>item.id===id);
+    if(!sentence)continue;
+    const line=sentence.tiles.join(' '),translation=index===2?(SENT_ID[sentence.en]||sentence.en):sentence.en;
+    ask(copy.translate(translation),line,line);
+   }
+   for(const line of STORIES[source.story]?.lines||[]){
+    const translation=line[index===2?3:2];
+    ask(copy.about(line[1]),index===1?line[1]+' · '+translation:translation,line[1]);
+   }
+   for(const question of SQS[source.story]||[])ask(localized(question.q),localized(question.o[0]));
+   for(const turn of TALKS[source.talk]||[]){
+    ask(copy.reply(turn.l),turn.ok+(index!==1?' · '+turn.otr[index===2?1:0]:''),turn.ok);
+   }
   }
-  if(group.children.length){select.append(group);lessonCount++}
- }));
+  if(!lessonQuestions.size)ask(T(lesson.title),T(lesson.title));
+  select.append(group);
+ }
  const smallTalk=el('optgroup',{label:copy.smallTalk});
  for(const [type,labels] of Object.entries(PHONE_PROMPTS))add(smallTalk,labels[index],PHONE_SOCIAL[language][type]);
  const math=el('optgroup',{label:copy.math});
  for(const [question,answer] of [['3 + 4','7'],['9 − 3','6'],['8 × 7','56'],['24 ÷ 6','4']])add(math,question+' = ?',question+' = '+answer);
  select.append(smallTalk,math);
- return {select,questions,lessonCount};
+ return questions;
 }
 function phoneAnswer(hit,language){
  const copy=PHONE_COPY[language],index=language==='ja'?1:language==='id'?2:0;
@@ -6921,9 +6954,13 @@ function phoneOpen(button){
  if(!S.active)return;
  const language=PHONE_COPY[S.lang]?S.lang:'en',copy=PHONE_COPY[language];
  const history=el('div',{class:'pocket-phone-history',role:'log','aria-live':'polite'});
- const {select,questions,lessonCount}=phoneQuestionPicker(language,copy);
+ const chapter=el('select',{class:'pocket-phone-chapter','aria-label':copy.chapter});
+ WORLDS.forEach((world,wi)=>chapter.append(el('option',{value:String(wi)},T(world.name))));
+ chapter.value=String(WORLDS[S.jWorld]?S.jWorld:0);
+ const select=el('select',{'aria-label':copy.placeholder});
+ let questions=phoneQuestionPicker(Number(chapter.value),language,copy,select);
  const send=el('button',{type:'submit',class:'bigbtn',disabled:true},copy.send);
- const form=el('form',{class:'pocket-phone-form'},select,send);
+ const form=el('form',{class:'pocket-phone-form'},chapter,select,send);
  const close=el('button',{type:'button',class:'iconbtn','aria-label':copy.close,onclick:()=>phoneClose(true)},'×');
  const panel=el('section',{id:'pocketPhoneChat',class:'pocket-phone-chat','aria-label':copy.title},
   el('header',{},pocketIcon('mojimo-phone'),el('div',{},el('b',{},copy.title),el('small',{},PET[S.active].name)),close),history,form);
@@ -6941,20 +6978,26 @@ function phoneOpen(button){
   return;
  }
  append(copy.welcome,'friend');
- if(!lessonCount)append(copy.empty,'friend');
  panel.addEventListener('keydown',event=>{if(event.key==='Escape')phoneClose(true)});
+ chapter.addEventListener('change',()=>{
+  questions=phoneQuestionPicker(Number(chapter.value),language,copy,select);
+  send.disabled=true;
+ });
  select.addEventListener('change',()=>{send.disabled=!select.value});
  form.addEventListener('submit',event=>{
   event.preventDefault();
   const question=questions[Number(select.value)-1];
   if(!question||send.disabled)return;
   append(question.label,'player');
-  select.value='';select.disabled=true;send.disabled=true;
+  select.value='';select.disabled=true;chapter.disabled=true;send.disabled=true;
   const typing=append('...','friend',{'aria-label':copy.typing});
   session.timer=setTimeout(()=>{
    if(phoneSession!==session)return;
    typing.remove();
-   const bubble=append(question.answer,'friend');
+   const later=question.entry&&!S.done.includes(question.entry.lesson.id);
+   const answer=later?copy.later(T(question.entry.world.name),T(question.entry.lesson.title)):question.answer;
+   const bubble=append(answer,'friend');
+   if(!later&&question.speech)bubble.append(speakBtn(question.speech));
    if(question.entry){
     const {wi,lesson}=question.entry;
     bubble.append(el('button',{type:'button',class:'link',onclick:()=>{
@@ -6963,7 +7006,7 @@ function phoneOpen(button){
     }},copy.jump));
     history.scrollTop=history.scrollHeight;
    }
-   select.disabled=false;
+   select.disabled=false;chapter.disabled=false;
   },3000);
  });
 }
