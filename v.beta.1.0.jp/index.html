@@ -3389,7 +3389,7 @@ function openGacha(){
   {const pt=pageTip('gacha');if(pt)wrap.insertBefore(pt,wrap.querySelector('.cr-box'))}
   $('overlayHost').append(wrap);
   const reveal=prize=>{
-    const R=RARITY[prize.rar];play(prize.kind==='myth'?'winner':'level');
+    const R=RARITY[prize.rar];if(prize.kind==='myth')play('correct');
     let art;
     if(prize.kind==='myth'){art=el('div',{class:'mythart'},el('span',{class:'mray'}),el('img',{src:img(prize.id,'baby'),alt:PET[prize.id].name,class:'gart'}),el('span',{class:'mkana',lang:'ja'},PET[prize.id].kana));setTimeout(()=>{try{introduce(prize.id,()=>talk(PERSONA[PET[prize.id].type].intro,prize.id,6000))}catch(e){}},500)}
     else if(prize.kind==='egg')art=el('img',{src:img(prize.id,'egg'),alt:'Egg',class:'gart'});
@@ -3421,7 +3421,7 @@ function openGacha(){
     if(free)S.g.free--;else S.coins-=price;
     pocketCapsuleNotice(wrap,price);
     result.classList.add('hidden');wrap.classList.remove('revealed','mythwin');
-    goImg.classList.add('press');setTimeout(()=>goImg.classList.remove('press'),180);play('level');
+    goImg.classList.add('press');setTimeout(()=>goImg.classList.remove('press'),180);
     prize=rollGacha();pgCapsuleBonus(prize);save();drawBtn();spin.disabled=true;
     // pick the target
     let ti=-1;
@@ -3435,7 +3435,6 @@ function openGacha(){
     const x0=cx;await tween(Math.min(700,200+Math.abs(tx-x0)*3),t=>{cx=x0+(tx-x0)*t;setClaw()});
     await tween(700,t=>{headY=CR.top+(grabY-CR.top)*t;setClaw()});
     await tween(260,t=>{open=1-t*0.85;setClaw()});
-    play('correct');
     // move node into carry group
     carry.append(node);const offY=it.y-grabY;
     const place=()=>node.setAttribute('transform',`translate(${cx} ${headY+offY})`);place();
