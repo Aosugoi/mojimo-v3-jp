@@ -3390,7 +3390,7 @@ function openGacha(){
   {const pt=pageTip('gacha');if(pt)wrap.insertBefore(pt,wrap.querySelector('.cr-box'))}
   $('overlayHost').append(wrap);
   const reveal=prize=>{
-    const R=RARITY[prize.rar];if(prize.kind==='myth')play('correct');
+    const R=RARITY[prize.rar];if(prize.kind==='myth')play('correct');else pocketCapsuleChime();
     let art;
     if(prize.kind==='myth'){art=el('div',{class:'mythart'},el('span',{class:'mray'}),el('img',{src:img(prize.id,'baby'),alt:PET[prize.id].name,class:'gart'}),el('span',{class:'mkana',lang:'ja'},PET[prize.id].kana));setTimeout(()=>{try{introduce(prize.id,()=>talk(PERSONA[PET[prize.id].type].intro,prize.id,6000))}catch(e){}},500)}
     else if(prize.kind==='egg')art=el('img',{src:img(prize.id,'egg'),alt:'Egg',class:'gart'});
@@ -3420,6 +3420,7 @@ function openGacha(){
     let prize=null,shown=false;
     try{
     if(free)S.g.free--;else S.coins-=price;
+    if(S.sound)unlockVoice();
     pocketCapsuleNotice(wrap,price);
     result.classList.add('hidden');wrap.classList.remove('revealed','mythwin');
     goImg.classList.add('press');setTimeout(()=>goImg.classList.remove('press'),180);
@@ -6342,6 +6343,25 @@ function pgCapsuleBonus(prize){
  if(Math.random()>=.035)return;
  prize.arcadeBonus=1;
  S.arcadeCoins=pgArcadeBalance()+1;
+}
+function pocketCapsuleChime(){
+ if(!S.sound)return;
+ const context=vctx();
+ if(!context||context.state!=='running')return;
+ try{
+  const start=context.currentTime;
+  [659.25,783.99,1046.5].forEach((pitch,i)=>{
+   const at=start+i*.065, end=at+.24;
+   const tone=context.createOscillator(), gain=context.createGain();
+   tone.type='sine';tone.frequency.value=pitch;
+   gain.gain.setValueAtTime(.0001,at);
+   gain.gain.exponentialRampToValueAtTime(.065,at+.012);
+   gain.gain.exponentialRampToValueAtTime(.0001,end);
+   tone.connect(gain);gain.connect(context.destination);
+   tone.onended=()=>{tone.disconnect();gain.disconnect()};
+   tone.start(at);tone.stop(end);
+  });
+ }catch{}
 }
 function pocketCapsuleNotice(machine,price){
  machine.querySelector('.pocket-capsule-notice')?.remove();
