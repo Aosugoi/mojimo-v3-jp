@@ -6800,7 +6800,7 @@ const PHONE_COPY={
   later:(lesson,world)=>`I think I saw that in ${world}, in “${lesson}”. We can learn it when we get there!`,
   learned:(term,reading,gloss)=>`${term}${reading?' ('+reading+')':''} means ${gloss}.`,
   kana:(term,reading)=>`${term} is read “${reading}”.`,example:'Example',jump:'Open in Journey',
-  supported:'English, Japanese, and Bahasa Indonesia are available here. Other languages need a browser with on-device translation.'
+  supported:'Sorry, I’m not sure I understand.'
  },
  ja:{
   title:'モジモ フォン',welcome:'たびで まなぶ ことば、かな、ぶんぽうの ことを きいてね。',
@@ -6809,7 +6809,7 @@ const PHONE_COPY={
   later:(lesson,world)=>`${world}の「${lesson}」で みた きがするよ。そこに ついたら いっしょに まなぼう！`,
   learned:(term,reading,gloss)=>`「${term}」${reading?'（'+reading+'）':''}の いみは「${gloss}」だよ。`,
   kana:(term,reading)=>`「${term}」は「${reading}」と よむよ。`,example:'れい',jump:'たびで みる',
-  supported:'えいご、にほんご、インドネシアごで はなせるよ。ほかの ことばには ブラウザーの ほんやくが ひつようだよ。'
+  supported:'ごめんね。よく わからなかったよ。'
  },
  id:{
   title:'Ponsel Mojimo',welcome:'Tanya aku tentang kosakata, kana, atau tata bahasa Jepang dari Perjalanan.',
@@ -6818,10 +6818,88 @@ const PHONE_COPY={
   later:(lesson,world)=>`Sepertinya aku pernah melihatnya di ${world}, dalam pelajaran “${lesson}”. Kita bisa belajar saat sampai di sana!`,
   learned:(term,reading,gloss)=>`${term}${reading?' ('+reading+')':''} artinya ${gloss}.`,
   kana:(term,reading)=>`${term} dibaca “${reading}”.`,example:'Contoh',jump:'Buka di Perjalanan',
-  supported:'Bahasa Indonesia, Inggris, dan Jepang tersedia di sini. Bahasa lain memerlukan terjemahan di perangkat.'
+  supported:'Maaf, aku belum begitu paham.'
  }
 };
 TR['Mojimo Phone']=[PHONE_COPY.ja.title,PHONE_COPY.id.title];
+const PHONE_SOCIAL={
+ en:{
+  hello:'Hi! I’m glad you stopped by. How are you?',
+  feel:'I’m feeling pretty good today. How are you feeling?',
+  happy:'I’m happy we get to spend time together!',
+  place:'I like it here. It’s a nice place to study together and take a little break.',
+  need:'I’m all set for now. We could play together or do a Journey lesson!',
+  thanks:'You’re welcome! Come chat anytime.',
+  bye:'See you later!',
+  first:'I’m not old enough to talk about that. Let’s talk about something else.',
+  second:'Please stop. If you keep asking about that, I’m leaving the chat.',
+  locked:'Mojimo doesn’t want to chat right now. Try again tomorrow.',
+  zero:'You can’t divide by zero.'
+ },
+ ja:{
+  hello:'こんにちは！あえて うれしいよ。げんき？',
+  feel:'きょうは げんきだよ。きみは どう？',
+  happy:'いっしょに いられて うれしいよ！',
+  place:'ここが すきだよ。いっしょに べんきょうしたり やすんだり できるね。',
+  need:'いまは だいじょうぶ！いっしょに あそぶか、レッスンを しよう。',
+  thanks:'どういたしまして！また はなそうね。',
+  bye:'またね！',
+  first:'その はなしは まだ できないよ。べつの はなしを しよう。',
+  second:'やめてね。つづけたら チャットを おわるよ。',
+  locked:'いまは おはなし したくないよ。あした また きてね。',
+  zero:'0で わることは できないよ。'
+ },
+ id:{
+  hello:'Hai! Senang kamu mampir. Apa kabar?',
+  feel:'Aku merasa cukup baik hari ini. Bagaimana perasaanmu?',
+  happy:'Aku senang bisa menghabiskan waktu bersamamu!',
+  place:'Aku suka di sini. Tempatnya nyaman untuk belajar dan beristirahat bersama.',
+  need:'Aku baik-baik saja. Kita bisa main bersama atau lanjut pelajaran!',
+  thanks:'Sama-sama! Mampir lagi kapan saja.',
+  bye:'Sampai nanti!',
+  first:'Aku belum cukup umur untuk membicarakan itu. Ayo ganti topik.',
+  second:'Tolong berhenti. Kalau kamu terus bertanya soal itu, aku akan mengakhiri obrolan.',
+  locked:'Mojimo sedang tidak ingin mengobrol. Coba lagi besok.',
+  zero:'Angka tidak bisa dibagi nol.'
+ }
+};
+const PHONE_BOUNDARY_PATTERNS=[
+ /\b(?:porn\w*|hentai|nsfw|nudes?|erotic|explicit sex|sexual acts?|sex scene|naked pictures?|gore|gory|bloody dismemberment|dismember(?:ment)?|graphic violence|graphic torture|tortur(?:e|ing)|rape|raping|behead(?:ing)?|sexual abuse)\b/iu,
+ /\b(?:porno\w*|seks eksplisit|adegan seks|foto telanjang|siksaan grafis|pemerkosaan|memperkosa|mutilasi)\b/iu,
+ /(?:ポルノ|アダルト動画|性的な画像|エロ画像|性行為|性暴力|強姦|レイプ|拷問|切断された死体|グロ画像)/u
+];
+function phoneBoundary(message){return PHONE_BOUNDARY_PATTERNS.some(pattern=>pattern.test(message.normalize('NFKC')))}
+function phoneModerationDay(){return dayStr(Date.now())}
+function phoneLockActive(){return S.phoneBoundary?.day===phoneModerationDay()&&S.phoneBoundary.count>=3}
+function phoneRecordBoundary(blocked){
+ const day=phoneModerationDay();
+ const prior=S.phoneBoundary?.day===day?S.phoneBoundary.count:0;
+ const count=blocked?Math.min(3,prior+1):0;
+ if(count||S.phoneBoundary){S.phoneBoundary={day,count};save()}
+ return count;
+}
+function phoneSmallTalk(message){
+ const q=phoneNormalize(message);
+ if(/\b(?:how do you like (?:it|this place|where we are)|do you like (?:it here|this place|where we are)|what do you think of (?:this place|where we are)|suka (?:di sini|tempat ini))\b/.test(q)||/ここ(?:は|が)?(?:どう|好き|すき)/.test(q))return 'place';
+ if(/\b(?:do you need anything|do you need something|can i get you anything|can i help you|what do you need|butuh (?:apa|sesuatu)|perlu (?:apa|sesuatu))\b/.test(q)||/何か(?:いる|必要)|なにか(?:いる|ほしい)/.test(q))return 'need';
+ if(/\b(?:are you happy|do you feel happy|are you excited|kamu (?:senang|bahagia))\b/.test(q)||/うれしい|嬉しい|しあわせ|幸せ/.test(q))return 'happy';
+ if(/\b(?:how are you|how do you feel|how are you feeling|how s it going|how was your day|apa kabar|bagaimana perasaanmu|gimana kabarmu)\b/.test(q)||/元気|げんき|気分は|きぶんは/.test(q))return 'feel';
+ if(/^(?:hi|hello|hey|hai|halo|こんにちは|こんばんは|おはよう)$/.test(q))return 'hello';
+ if(/^(?:thanks|thank you|terima kasih|makasih|ありがとう|ありがとうございます)$/.test(q))return 'thanks';
+ if(/^(?:bye|goodbye|see you|see you later|sampai nanti|dadah|またね|さようなら)$/.test(q))return 'bye';
+ return null;
+}
+function phoneMath(message,language){
+ const q=message.normalize('NFKC').toLowerCase();
+ const m=q.match(/^(?:(?:what is|whats|what's|how much is|calculate|solve|berapa(?: hasil dari)?|hitung)\s+)?([-+]?\d{1,7}(?:\.\d{1,6})?)\s*(\+|-|−|×|\*|÷|\/|x|plus|minus|times|divided by|tambah|kurang|kali|bagi|たす|ひく|かける|わる)\s*([-+]?\d{1,7}(?:\.\d{1,6})?)\s*(?:[=?.!？。]|はいくつ|は何|はなに|berapa)*\s*$/u);
+ if(!m)return null;
+ const left=Number(m[1]),right=Number(m[3]),op=m[2];
+ const add=['+','plus','tambah','たす'].includes(op),sub=['-','−','minus','kurang','ひく'].includes(op),mul=['*','×','x','times','kali','かける'].includes(op);
+ if(!add&&!sub&&!mul&&right===0)return PHONE_SOCIAL[language].zero;
+ const n=add?left+right:sub?left-right:mul?left*right:left/right;
+ const format=new Intl.NumberFormat(language,{maximumFractionDigits:6,useGrouping:false});
+ return format.format(left)+' '+(add?'+':sub?'−':mul?'×':'÷')+' '+format.format(right)+' = '+format.format(n);
+}
 const PHONE_GRAMMAR_ALIASES={
  'g1a':['topic marker','topic particle','wa particle','desu','助詞は','partikel wa'],
  'g1b':['possessive particle','no particle','partikel no'],
@@ -6880,8 +6958,8 @@ function phoneMatch(question,followup){
 }
 function phoneLanguage(message){
  const clean=message.replace(/[“”「」『』]/g,'');
- if(/\b(apa|arti|artinya|bagaimana|tolong|bahasa|jelaskan|contoh|makasih|kenapa|yang|itu)\b/i.test(clean))return 'id';
- if(/\b(what|why|how|explain|mean|meaning|say|translate|example|please|thanks|hello)\b/i.test(clean))return 'en';
+ if(/\b(apa|arti|artinya|bagaimana|tolong|bahasa|jelaskan|contoh|makasih|kenapa|yang|itu|kabar|berapa|hitung|butuh|suka|senang|halo|hai|terima kasih|sampai nanti)\b/i.test(clean))return 'id';
+ if(/\b(what|why|how|explain|mean|meaning|say|translate|example|please|thanks|hello|hi|hey|happy|need|thank you|bye|goodbye|where|calculate)\b/i.test(clean))return 'en';
  if(phoneJapanese(clean))return 'ja';
  return null;
 }
@@ -6920,11 +6998,11 @@ async function phoneTranslate(text,sourceLanguage,targetLanguage){
  const translator=await Translator.create(options);
  try{return await translator.translate(text)}finally{translator.destroy?.()}
 }
-async function phoneReply(message,session){
+async function phoneReply(message,session,signal){
  const direct=phoneLanguage(message);
  let language=direct||session.language;
  let target=language,query=message;
- if(!direct&&phoneDetector){
+ if(!direct&&!phoneBoundary(message)&&!phoneSmallTalk(message)&&!phoneMath(message,language)&&phoneDetector){
   try{
    const detector=await phoneDetector;
    const guess=(await detector?.detect(message))?.[0];
@@ -6934,15 +7012,25 @@ async function phoneReply(message,session){
     if(PHONE_COPY[tag])language=tag;
     else{query=await phoneTranslate(message,tag,'en');language='en'}
    }
-  }catch{if(!PHONE_COPY[target])return {text:PHONE_COPY[language].supported};}
+  }catch{
+   if(!PHONE_COPY[target]){
+    if(!signal?.aborted)phoneRecordBoundary(false);
+    return {text:PHONE_COPY[language].supported};
+   }
+  }
  }
- const hit=phoneMatch(query,session.lastHit);
- let text=phoneAnswer(hit,language);
+ if(signal?.aborted)return {text:''};
+ const blocked=phoneBoundary(message)||phoneBoundary(query);
+ const boundaryCount=phoneRecordBoundary(blocked);
+ const social=phoneSmallTalk(query),math=phoneMath(query,language);
+ const hit=blocked||social||math?null:phoneMatch(query,session.lastHit);
+ const mood=PHONE_SOCIAL[language];
+ let text=blocked?mood[boundaryCount>=3?'locked':boundaryCount===2?'second':'first']:social?mood[social]:math||phoneAnswer(hit,language);
  if(target!==language){
   try{text=await phoneTranslate(text,language,target)}
-  catch{return {text:PHONE_COPY[language].supported};}
+  catch{if(!blocked)return {text:PHONE_COPY[language].supported};}
  }
- return {text,hit,language};
+ return {text,hit,language,locked:boundaryCount>=3};
 }
 function phoneClose(restoreFocus=false){
  if(!phoneSession)return;
@@ -6974,28 +7062,33 @@ function phoneOpen(button){
   const message=el('div',{class:'pocket-phone-message '+who,...attrs},text);
   history.append(message);history.scrollTop=history.scrollHeight;return message;
  };
- append(copy.welcome,'friend');
+ if(phoneLockActive()){append(PHONE_SOCIAL[language].locked,'friend');form.remove()}
+ else append(copy.welcome,'friend');
  panel.addEventListener('keydown',event=>{if(event.key==='Escape')phoneClose(true)});
  form.addEventListener('submit',async event=>{
   event.preventDefault();
   const message=input.value.trim();
-  if(!message||send.disabled)return;
+  if(!message||send.disabled||phoneLockActive())return;
   append(message,'player');
   input.value='';send.disabled=true;
   const typing=append('...','friend',{'aria-label':copy.typing});
   const delay=new Promise(resolve=>setTimeout(resolve,3000));
+  const request=new AbortController();
   let timer;
   const timeout=new Promise(resolve=>{
-   timer=setTimeout(()=>resolve({text:copy.supported}),12000);
-   session.abort.signal.addEventListener('abort',()=>resolve({text:''}),{once:true});
+   timer=setTimeout(()=>{request.abort();resolve({text:copy.supported})},12000);
   });
-  const response=phoneReply(message,session).catch(()=>({text:copy.unknown}));
+  const cancel=()=>request.abort();
+  session.abort.signal.addEventListener('abort',cancel,{once:true});
+  const response=phoneReply(message,session,request.signal).catch(()=>({text:copy.supported}));
   const [answer]=await Promise.all([Promise.race([response,timeout]),delay]);
   clearTimeout(timer);
+  session.abort.signal.removeEventListener('abort',cancel);
   if(phoneSession!==session)return;
   typing.remove();
   const bubble=append(answer.text,'friend');
   if(answer.language)session.language=answer.language;
+  if(answer.locked||phoneLockActive()){form.remove();return}
   if(answer.hit){
    session.lastHit=answer.hit;
    const hit=answer.hit.entry;
