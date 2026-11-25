@@ -3300,7 +3300,7 @@ function openMenu(){
       tog('romaji','Romaji',()=>S.romaji,v=>setRomaji(v)),
       tog('music','Music',()=>S.music,v=>{S.music=v;save();v?Music.start():Music.stop()}),
       tog('vol','Sound',()=>S.sound,v=>{S.sound=v;save();renderHome()})),
-    el('div',{class:'mlinks'},pocketFeedbackLink(),link('Show tutorial',()=>{S.hints={};save();runTour()}),link("What's new",openChangelog,isNew?'New':null),S.devTools?link('Prototype tools',()=>$('tools').classList.remove('hidden')):null),
+    el('div',{class:'mlinks'},link('Placement test',()=>pocketOpenPlacement()),pocketFeedbackLink(),link('Show tutorial',()=>{S.hints={};save();runTour()}),link("What's new",openChangelog,isNew?'New':null),S.devTools?link('Prototype tools',()=>$('tools').classList.remove('hidden')):null),
     el('details',{class:'vcred'},el('summary',{},'Voice credits'),el('p',{class:'vcredit',lang:'ja'},'Voices: VOICEVOX:四国めたん / ずんだもん / 猫使ビィ / 東北きりたん / 櫻歌ミコ / 中国うさぎ / 雨晴はう / 白上虎太郎 / 猫使アル / 満別花丸 / 小夜/SAYO / 九州そら / 冥鳴ひまり / 波音リツ / No.7 / もち子(cv 明日葉よもぎ) / 東北ずん子 / 東北イタコ / 玄野武宏 / 剣崎雌雄 / 青山龍星 / 雀松朱司 / 麒ヶ島宗麟 / 栗田まろん / 離途')),verLbl(LR_VERSION)));
 }
 function toggleRest(){
