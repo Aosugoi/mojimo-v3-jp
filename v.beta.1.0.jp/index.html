@@ -1463,14 +1463,14 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
 .pocket-first-language .langseg button{flex:1;min-width:0;min-height:58px;display:grid;justify-items:center;align-content:center;padding:5px 4px;gap:3px;font-size:13px;line-height:1.15;text-align:center}
 .pocket-first-language .langseg button.on{background:#d5e9da;color:#184c40}
 
-#stage #spotGacha,#stage #emoBtn{
+#stage #spotGacha,#stage #emoBtn,#stage .pocket-care-links button{
  width:52px;height:52px;display:grid;place-items:center;
  padding:0;box-sizing:border-box;border:2px solid #583521;border-radius:15px;
  background:#fff3d8;opacity:1;color:#50301d;
  box-shadow:0 3px 0 #583521,0 5px 9px #301d1866,inset 0 0 0 2px #fffaf0;
 }
 #stage .pocket-stage-icon{width:34px;height:34px;object-fit:contain;image-rendering:pixelated;pointer-events:none}
-#stage #spotGacha:focus-visible,#stage #emoBtn:focus-visible{outline:3px solid #fff8e5;outline-offset:3px}
+#stage #spotGacha:focus-visible,#stage #emoBtn:focus-visible,#stage .pocket-care-links button:focus-visible{outline:3px solid #fff8e5;outline-offset:3px}
 
 .crane-mode .crane{aspect-ratio:1;margin:3px auto 0}
 .crane-mode .cr-int{left:19%;top:33.5%;width:62%;height:37%}
@@ -1539,10 +1539,9 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
 .pocket-capsule-notice{position:fixed;z-index:20;top:max(66px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;width:max-content;max-width:calc(100% - 36px);padding:8px 12px;border:1px solid #735339;border-radius:12px;background:#fff3db;color:#51301f;box-shadow:0 2px 0 #735339;font-size:13px;font-weight:800;pointer-events:none}
 .pocket-capsule-notice .pocket-icon{width:20px;height:20px;flex:none;image-rendering:pixelated}
 
-.pocket-care-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:0 4px 8px}
-.pocket-care-links button{display:flex;align-items:center;justify-content:center;gap:6px;min-height:48px;padding:5px 7px;color:#51301f;background:#fff3db;border:1px solid #c9b28d;border-radius:12px;font-weight:850;font-size:14px}
-.pocket-care-links button:disabled{opacity:.55;cursor:default}
-.pocket-care-links .pocket-icon{width:34px;height:34px;flex:none;object-fit:contain;image-rendering:pixelated}
+.pocket-care-links{position:absolute;z-index:7;right:8px;top:50%;transform:translateY(-50%);display:grid;gap:10px}
+#stage .pocket-care-links button:disabled{opacity:.55;cursor:default}
+.pocket-care-links .pocket-icon{width:34px;height:34px;object-fit:contain;image-rendering:pixelated;pointer-events:none}
 
 .pocket-spend-dialog{width:min(360px,calc(100vw - 30px));max-height:calc(100dvh - 24px);margin:auto;padding:18px;border:2px solid #795639;border-radius:19px;background:#fff3db;color:#51301f;text-align:center;box-shadow:0 4px 0 #bd9d6b,0 8px 24px #3d220d55}
 .pocket-spend-dialog::backdrop{background:#3b241d75}
@@ -3247,7 +3246,7 @@ function toggleRest(){
   else{talk(['ふわぁ…おはよう！','*yawn* good morning!'],S.active);emote($('petWrap'),'hello')}
 }
 $('stage').onclick=(e)=>{
-  if(e.target.closest('#pocketBackdropControls')||e.target.closest('#spotGacha')||e.target.closest('#emoBtn')||e.target.closest('.emopick')||e.target.closest('.hud')||e.target.closest('.dock'))return;
+  if(e.target.closest('#pocketBackdropControls,.pocket-care-links')||e.target.closest('#spotGacha')||e.target.closest('#emoBtn')||e.target.closest('.emopick')||e.target.closest('.hud')||e.target.closest('.dock'))return;
   const id=S.active;if(!id)return;const st=stageOf(id),im=$('petBody');
   if(st==='egg'&&tapEgg(id)){const pp=pet(id);pp.taps=(pp.taps||0)+1;const left=TAP_HATCH-pp.taps;save();
     if(left<=0){['hatchRing','hatchTap'].forEach(x=>$(x).classList.add('hidden'));$('tapHint').classList.remove('ready');anim(im,'anim-shakeoff',750);setTimeout(()=>evolve(id,'hatch',()=>go('home')),500);return}
@@ -5410,14 +5409,14 @@ function pocketInit(){
  const learn=document.querySelector('.lr-learn');learn.firstChild.replaceWith(pocketIcon('learn'));learn.querySelector('b').textContent='Continue learning';learn.append(el('span',{class:'pocket-chevron','aria-hidden':'true'},'›'));
  const review=el('button',{class:'pocket-review',onclick:()=>go('review')},pocketIcon('review'),el('b',{id:'pocketReviewText'},'Review words'),el('span',{class:'pocket-chevron','aria-hidden':'true'},'›'));
  document.querySelector('.lr-quick').replaceWith(review);
- review.after(el('div',{class:'pocket-care-links'},
-  el('button',{id:'pocketPlayBall',type:'button',disabled:true,onclick:()=>{
+ $('stage').append(el('div',{class:'pocket-care-links',onclick:event=>event.stopPropagation()},
+  el('button',{id:'pocketPlayBall',type:'button',title:T('Play Ball'),'aria-label':T('Play Ball'),disabled:true,onclick:()=>{
    if(!S.active||stageOf(S.active)==='egg')return;
    if(S.resting){S.resting=false;save();renderHome()}
    $('stage').scrollIntoView({block:'nearest'});
    Life.ball();
-  }},pocketIcon('home-ball'),el('span',{},'Play Ball')),
-  el('button',{type:'button',onclick:openHangout},pocketIcon('home-hangout'),el('span',{},'Hangout'))));
+  }},pocketIcon('home-ball')),
+  el('button',{type:'button',title:T('Hangout'),'aria-label':T('Hangout'),onclick:openHangout},pocketIcon('home-hangout'))));
  $('coinBtn').after(el('span',{id:'pocketHomeTickets'}));
  $('menuBtn').before(el('button',{id:'pocketPhoneButton',type:'button',class:'iconbtn','aria-label':T('Mojimo Phone'),'aria-expanded':'false','aria-controls':'pocketPhoneChat',onclick:event=>phoneOpen(event.currentTarget)},pocketIcon('mojimo-phone')));
  for(const [key,icon,label] of [
