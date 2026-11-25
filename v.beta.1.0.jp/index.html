@@ -1555,21 +1555,26 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
 #pocketPhoneButton{width:35px;min-width:30px;padding:0;flex:none}
 #pocketPhoneButton>.pocket-icon{width:27px;height:27px}
 #s-home{position:relative}
-.pocket-phone-chat{position:absolute;z-index:22;left:7px;right:7px;bottom:0;display:flex;flex-direction:column;height:min(345px,54%);min-height:160px;padding:8px;overflow:hidden;background:#fff3db;border:2px solid #795539;border-radius:19px 19px 0 0;box-shadow:0 -2px 0 #caab7d,0 -5px 22px #442e2640;color:#51301f}
-.pocket-phone-chat header{display:flex;align-items:center;gap:7px;padding:2px 5px 7px;border-bottom:1px solid #d6bf9a;line-height:1.2}
-.pocket-phone-chat header>.pocket-icon{width:32px;height:32px}
-.pocket-phone-chat header b,.pocket-phone-chat header small{display:block}
-.pocket-phone-chat header small{color:#77583f;font-size:11px}
-.pocket-phone-chat header button{margin-left:auto;min-width:37px;min-height:37px}
-.pocket-phone-history{min-height:0;flex:1;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;align-items:flex-start;gap:7px;padding:8px 4px}
-.pocket-phone-message{max-width:88%;flex:none;border-radius:13px;padding:7px 9px;background:#f8e6c6;border:1px solid #d7ba90;font-size:13px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
-.pocket-phone-message.player{align-self:flex-end;background:#d9ebe1;border-color:#8faf9e}
+.pocket-phone-chat{position:absolute;z-index:22;left:7px;right:7px;bottom:0;display:flex;flex-direction:column;height:min(360px,54%);min-height:160px;padding:7px 7px 6px;overflow:hidden;border:3px solid #51321f;border-radius:18px 18px 6px 6px;background:repeating-linear-gradient(91deg,#0000 0 13px,#68371f2b 14px 16px,#0000 17px 25px),linear-gradient(#d9a66a 0%,#be7e49 65%,#a96a3d 100%);box-shadow:inset 0 0 0 2px #f4c789,0 -4px 0 #704a31,0 -7px 18px #412b2250;color:#51301f}
+.pocket-phone-chat header{flex:none;display:grid;grid-template-columns:36px minmax(0,1fr) 44px;align-items:center;gap:8px;padding:2px 4px 5px;margin-bottom:5px;border:2px solid #4f301f;border-radius:10px 10px 5px 5px;background:linear-gradient(#49998a 0 14%,#338477 15% 88%,#226458 89%);box-shadow:inset 0 1px #b1d2ab,0 2px 0 #805031;color:#fff3d8;line-height:1.15}
+.pocket-phone-chat header>.pocket-icon{width:31px;height:34px;justify-self:center;object-fit:contain;image-rendering:pixelated}
+.pocket-phone-name{min-width:0;text-shadow:0 2px #214f45}
+.pocket-phone-name b,.pocket-phone-name small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pocket-phone-name b{font-size:15px}
+.pocket-phone-name small{margin-top:2px;color:#ede4bd;font-size:11px}
+.pocket-phone-close{display:grid;place-items:center;min-width:44px;min-height:44px;padding:0;border:2px solid #533521;border-radius:10px;background:#fff2d0;color:#51301f;box-shadow:0 2px 0 #523624,inset 0 0 0 2px #fff9e5;font:800 26px/1 system-ui;touch-action:manipulation}
+.pocket-phone-close:focus-visible,.pocket-phone-action:focus-visible{outline:2px solid #164f45;outline-offset:2px}
+.pocket-phone-display{display:flex;flex:1;flex-direction:column;min-height:0;overflow:hidden;border:2px solid #644227;border-radius:8px;background:#fff1d1;box-shadow:inset 0 0 0 2px #d9bb82}
+.pocket-phone-history{min-height:0;flex:1;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;align-items:flex-start;gap:7px;padding:9px 6px}
+.pocket-phone-message{max-width:88%;flex:none;border-radius:11px 11px 11px 3px;padding:7px 9px;background:#f9e5bc;border:1px solid #b99b69;box-shadow:0 1px #d6b685;font-size:13px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
+.pocket-phone-message.player{align-self:flex-end;border-radius:11px 11px 3px 11px;background:#d9ebe1;border-color:#8faf9e;box-shadow:0 1px #a4bfaa}
 .pocket-phone-message .link{display:block;margin-top:3px;text-align:left;padding:3px 0;color:#12685c;font-weight:850}
-.pocket-phone-actions{display:flex;flex-wrap:wrap;gap:5px;padding-top:5px;border-top:1px solid #d6bf9a;max-height:123px;overflow:auto}
-.pocket-phone-action{height:auto;min-height:32px;max-width:100%;padding:5px 9px;border:1px solid #8faf9e;border-radius:12px;background:#d9ebe1;color:#174c44;font:inherit;font-size:12px;font-weight:800;white-space:normal;overflow-wrap:anywhere}
-.pocket-phone-action:disabled{opacity:.5}
+.pocket-phone-actions{flex:none;display:flex;flex-wrap:wrap;gap:6px;padding:6px;border-top:2px solid #b69563;background:#f5dfb3;max-height:112px;overflow:auto;overscroll-behavior:contain}
+.pocket-phone-actions:empty{display:none}
+.pocket-phone-action{height:auto;min-height:32px;max-width:100%;padding:4px 8px;border:1px solid #5b7f70;border-radius:8px;background:#d9ebe1;color:#174c44;box-shadow:0 1px #799788;font:inherit;font-size:12px;font-weight:800;white-space:normal;overflow-wrap:anywhere}
+.pocket-phone-action:disabled{opacity:.55}
 .pocket-phone-filters{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
-.pocket-phone-filters select{min-width:0;height:36px;padding:3px 5px;border:1px solid #b39a73;border-radius:9px;background:#fffaf0;color:inherit;font:inherit;font-size:14px}
+.pocket-phone-filters select{min-width:0;height:36px;padding:3px 5px;border:1px solid #b39a73;border-radius:8px;background:#fffaf0;color:inherit;font:inherit;font-size:14px}
 #petWrap>.pocket-phone-emote{position:absolute;z-index:4;top:0;left:85%;width:34px;height:34px;padding:3px;background:#fff3db;border:1px solid #795539;border-radius:9px;pointer-events:none;image-rendering:pixelated}
 @media(max-width:360px){#pocketPhoneButton{width:28px;min-width:28px}#pocketPhoneButton>.pocket-icon{width:23px;height:23px}.pocket-phone-chat{height:min(320px,55%)}}
 
@@ -6971,13 +6976,16 @@ function phoneOpen(button){
   ...Object.entries(PHONE_PROMPTS).map(([key,labels])=>({label:labels[index],answer:PHONE_SOCIAL[language][key]})),
   ...PHONE_EXTRA_CHAT.map(([labels,answers])=>({label:labels[index],answer:answers[index]}))
  ];
- const close=el('button',{type:'button',class:'iconbtn','aria-label':copy.close,onclick:()=>phoneClose(true)},'×');
+ const close=el('button',{type:'button',class:'pocket-phone-close','aria-label':copy.close,onclick:()=>phoneClose(true)},'×');
  const panel=el('section',{id:'pocketPhoneChat',class:'pocket-phone-chat','aria-label':copy.title},
-  el('header',{},pocketIcon('mojimo-phone'),el('div',{},el('b',{},copy.title),el('small',{},PET[S.active].name)),close),history,controls);
+  el('header',{},pocketIcon('mojimo-phone'),el('div',{class:'pocket-phone-name'},el('b',{},copy.title),el('small',{},PET[S.active].name)),close),
+  el('div',{class:'pocket-phone-display'},history,controls));
  const icon=pocketIcon('mojimo-phone','pocket-phone-emote');
  const session=phoneSession={button,panel,icon,timer:null};
  $('s-home').append(panel);$('s-home').classList.add('pocket-phone-open');
  $('petWrap').append(icon);button.setAttribute('aria-expanded','true');
+ close.focus({preventScroll:true});
+ panel.addEventListener('keydown',event=>{if(event.key==='Escape')phoneClose(true)});
  const append=(text,who,attrs={})=>{
   const message=el('div',{class:'pocket-phone-message '+who,...attrs},text);
   history.append(message);history.scrollTop=history.scrollHeight;return message;
@@ -6988,7 +6996,6 @@ function phoneOpen(button){
   return;
  }
  append(recent?copy.welcome:empty,'friend');
- panel.addEventListener('keydown',event=>{if(event.key==='Escape')phoneClose(true)});
  const action=(label,onclick,disabled=false)=>el('button',{type:'button',class:'pocket-phone-action',onclick,disabled},label);
  const questionsFor=entry=>phoneLessonQuestions(entry.wi,entry.lesson,language,copy);
  const played=new Set();
