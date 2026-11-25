@@ -1625,7 +1625,7 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
 .pg-fighter,.pg-scene-actor{min-width:0;min-height:0}
 .pg-fighter>img:first-child,.pg-scene-actor>img:first-child{min-width:0;min-height:0}
 
-.gtreat{width:96px;height:96px;margin:8px auto}.gtreat img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}.fpic img.pocket-icon,.giftrow .pic img.pocket-icon,.npic img.pocket-icon{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}</style>
+.gtreat{width:96px;height:96px;margin:8px auto}.gtreat img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}.fpic img.pocket-icon,.giftrow .pic img.pocket-icon,.npic img.pocket-icon{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}.hci-wotd img{width:34px!important;height:34px!important;object-fit:contain;display:block}.wotd-art{width:84px;height:84px;object-fit:contain;display:block;margin:0 auto 6px}.lr-event-card #seasonIco img{width:44px!important;height:44px!important}img[src*="lr-season-"]{image-rendering:auto!important;object-fit:contain}</style>
 </head>
 <body>
 <div class="app" id="app">
@@ -1659,7 +1659,7 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
       </div>
       <div id="placeSlot"></div>
       <div class="chiprow">
-        <button class="hchip" id="scrollWord"><span class="hci" style="color:#A4425A"><svg class="i" viewBox="0 0 24 24"><path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9z"/></svg></span><span class="hct"><small>Word of the day</small><b class="wotd-jp" id="wordV" lang="ja">ことば</b><span class="sr" id="wordEn"></span></span></button>
+        <button class="hchip" id="scrollWord"><span class="hci hci-wotd"><img src="assets/pocket/wotd.png" alt=""></span><span class="hct"><small>Word of the day</small><b class="wotd-jp" id="wordV" lang="ja">ことば</b><span class="sr" id="wordEn"></span></span></button>
         <button class="hchip seasoncard hidden" id="seasonCard"><span class="hci" id="seasonIco"></span><span class="hct"><small>Event</small><b id="seasonName"></b><span class="sr" id="seasonTip"></span></span></button>
       </div>
     </div>
@@ -3032,7 +3032,7 @@ function openDaily(){const box=el('div',{style:'text-align:left'});renderQuests(
 function openWord(){
   const w=wordOfDay(),it=I[w];say(w);
   const lb=el('button',{class:'bigbtn white'});lb.innerHTML=svgI('vol')+' ';lb.append('Listen');lb.style.display='flex';lb.style.justifyContent='center';lb.style.gap='8px';lb.onclick=()=>say(w);
-  overlay(el('div',{class:'modal'},el('div',{class:'mkicker'},'Word of the day'),el('div',{class:'wordday',lang:'ja','data-noromaji':''},w),el('div',{class:'romaji'},it.r[0]),el('h3',{},meaning(w)),
+  overlay(el('div',{class:'modal'},el('img',{class:'wotd-art',src:assetURL('assets/pocket/wotd.png'),alt:''}),el('div',{class:'mkicker'},'Word of the day'),el('div',{class:'wordday',lang:'ja','data-noromaji':''},w),el('div',{class:'romaji'},it.r[0]),el('h3',{},meaning(w)),
     el('p',{},'A word from your notebook, picked fresh every day.'),lb,el('button',{class:'link',onclick:closeOverlays},'Close')));
 }
 function fitPet(im,id,egg,grownLook){
