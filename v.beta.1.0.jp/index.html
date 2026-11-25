@@ -1566,7 +1566,7 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
 .pocket-phone-message.player{align-self:flex-end;background:#d9ebe1;border-color:#8faf9e}
 .pocket-phone-message .link{display:block;margin-top:3px;text-align:left;padding:3px 0;color:#12685c;font-weight:850}
 .pocket-phone-form{display:flex;align-items:center;gap:6px}
-.pocket-phone-form input{min-width:0;flex:1;height:40px;padding:5px 10px;border:1px solid #b39a73;border-radius:12px;background:#fffaf0;color:inherit;font:inherit;font-size:16px}
+.pocket-phone-form select{min-width:0;flex:1;height:40px;padding:5px 10px;border:1px solid #b39a73;border-radius:12px;background:#fffaf0;color:inherit;font:inherit;font-size:16px}
 .pocket-phone-form .bigbtn{margin:0;min-height:40px;padding:5px 10px;width:auto;font-size:13px}
 #petWrap>.pocket-phone-emote{position:absolute;z-index:4;top:0;left:85%;width:34px;height:34px;padding:3px;background:#fff3db;border:1px solid #795539;border-radius:9px;pointer-events:none;image-rendering:pixelated}
 @media(max-width:360px){#pocketPhoneButton{width:28px;min-width:28px}#pocketPhoneButton>.pocket-icon{width:23px;height:23px}.pocket-phone-chat{height:min(320px,55%)}}
@@ -6794,31 +6794,22 @@ RENDER.review=function(){
 
 const PHONE_COPY={
  en:{
-  title:'Mojimo Phone',welcome:'Ask me about a Japanese word, kana, or grammar from Journey.',
-  placeholder:'Ask about Japanese…',send:'Send',typing:'Typing…',close:'Close chat',
-  unknown:'I’ve never heard of that before. Maybe it’s in another land!',
-  later:(lesson,world)=>`I think I saw that in ${world}, in “${lesson}”. We can learn it when we get there!`,
+  title:'Mojimo Phone',welcome:'Pick a topic from a Journey lesson you’ve finished, or choose a quick chat.',
+  placeholder:'Choose a question…',smallTalk:'Quick chat',math:'Quick math',empty:'Finish a Journey lesson to unlock study questions.',send:'Send',typing:'Typing…',close:'Close chat',
   learned:(term,reading,gloss)=>`${term}${reading?' ('+reading+')':''} means ${gloss}.`,
   kana:(term,reading)=>`${term} is read “${reading}”.`,example:'Example',jump:'Open in Journey',
-  supported:'Sorry, I’m not sure I understand.'
  },
  ja:{
-  title:'モジモ フォン',welcome:'たびで まなぶ ことば、かな、ぶんぽうの ことを きいてね。',
-  placeholder:'にほんごの しつもんを かいてね…',send:'おくる',typing:'へんじを かいています…',close:'チャットを とじる',
-  unknown:'それは きいた ことが ないな。べつの くにに あるのかも！',
-  later:(lesson,world)=>`${world}の「${lesson}」で みた きがするよ。そこに ついたら いっしょに まなぼう！`,
+  title:'モジモ フォン',welcome:'クリアした レッスンの ことばや ぶんぽうを えらぶか、おはなし しよう。',
+  placeholder:'しつもんを えらぼう…',smallTalk:'おはなし',math:'かんたんな さんすう',empty:'レッスンを クリアすると ふくしゅうの しつもんが ふえるよ。',send:'おくる',typing:'へんじを かいています…',close:'チャットを とじる',
   learned:(term,reading,gloss)=>`「${term}」${reading?'（'+reading+'）':''}の いみは「${gloss}」だよ。`,
   kana:(term,reading)=>`「${term}」は「${reading}」と よむよ。`,example:'れい',jump:'たびで みる',
-  supported:'ごめんね。よく わからなかったよ。'
  },
  id:{
-  title:'Ponsel Mojimo',welcome:'Tanya aku tentang kosakata, kana, atau tata bahasa Jepang dari Perjalanan.',
-  placeholder:'Tanya tentang bahasa Jepang…',send:'Kirim',typing:'Sedang mengetik…',close:'Tutup obrolan',
-  unknown:'Aku belum pernah dengar itu. Mungkin ada di negeri lain!',
-  later:(lesson,world)=>`Sepertinya aku pernah melihatnya di ${world}, dalam pelajaran “${lesson}”. Kita bisa belajar saat sampai di sana!`,
+  title:'Ponsel Mojimo',welcome:'Pilih topik dari pelajaran Perjalanan yang sudah selesai, atau pilih obrolan singkat.',
+  placeholder:'Pilih pertanyaan…',smallTalk:'Obrolan singkat',math:'Hitungan singkat',empty:'Selesaikan satu pelajaran Perjalanan untuk membuka pertanyaan belajar.',send:'Kirim',typing:'Sedang mengetik…',close:'Tutup obrolan',
   learned:(term,reading,gloss)=>`${term}${reading?' ('+reading+')':''} artinya ${gloss}.`,
   kana:(term,reading)=>`${term} dibaca “${reading}”.`,example:'Contoh',jump:'Buka di Perjalanan',
-  supported:'Maaf, aku belum begitu paham.'
  }
 };
 TR['Mojimo Phone']=[PHONE_COPY.ja.title,PHONE_COPY.id.title];
@@ -6831,10 +6822,7 @@ const PHONE_SOCIAL={
   need:'I’m all set for now. We could play together or do a Journey lesson!',
   thanks:'You’re welcome! Come chat anytime.',
   bye:'See you later!',
-  first:'I’m not old enough to talk about that. Let’s talk about something else.',
-  second:'Please stop. If you keep asking about that, I’m leaving the chat.',
   locked:'Mojimo doesn’t want to chat right now. Try again tomorrow.',
-  zero:'You can’t divide by zero.'
  },
  ja:{
   hello:'こんにちは！あえて うれしいよ。げんき？',
@@ -6844,10 +6832,7 @@ const PHONE_SOCIAL={
   need:'いまは だいじょうぶ！いっしょに あそぶか、レッスンを しよう。',
   thanks:'どういたしまして！また はなそうね。',
   bye:'またね！',
-  first:'その はなしは まだ できないよ。べつの はなしを しよう。',
-  second:'やめてね。つづけたら チャットを おわるよ。',
   locked:'いまは おはなし したくないよ。あした また きてね。',
-  zero:'0で わることは できないよ。'
  },
  id:{
   hello:'Hai! Senang kamu mampir. Apa kabar?',
@@ -6857,121 +6842,54 @@ const PHONE_SOCIAL={
   need:'Aku baik-baik saja. Kita bisa main bersama atau lanjut pelajaran!',
   thanks:'Sama-sama! Mampir lagi kapan saja.',
   bye:'Sampai nanti!',
-  first:'Aku belum cukup umur untuk membicarakan itu. Ayo ganti topik.',
-  second:'Tolong berhenti. Kalau kamu terus bertanya soal itu, aku akan mengakhiri obrolan.',
   locked:'Mojimo sedang tidak ingin mengobrol. Coba lagi besok.',
-  zero:'Angka tidak bisa dibagi nol.'
  }
 };
-const PHONE_BOUNDARY_PATTERNS=[
- /\b(?:porn\w*|hentai|nsfw|nudes?|erotic|explicit sex|sexual acts?|sex scene|naked pictures?|gore|gory|bloody dismemberment|dismember(?:ment)?|graphic violence|graphic torture|tortur(?:e|ing)|rape|raping|behead(?:ing)?|sexual abuse)\b/iu,
- /\b(?:porno\w*|seks eksplisit|adegan seks|foto telanjang|siksaan grafis|pemerkosaan|memperkosa|mutilasi)\b/iu,
- /(?:ポルノ|アダルト動画|性的な画像|エロ画像|性行為|性暴力|強姦|レイプ|拷問|切断された死体|グロ画像)/u
-];
-function phoneBoundary(message){return PHONE_BOUNDARY_PATTERNS.some(pattern=>pattern.test(message.normalize('NFKC')))}
-function phoneModerationDay(){return dayStr(Date.now())}
-function phoneLockActive(){return S.phoneBoundary?.day===phoneModerationDay()&&S.phoneBoundary.count>=3}
-function phoneRecordBoundary(blocked){
- const day=phoneModerationDay();
- const prior=S.phoneBoundary?.day===day?S.phoneBoundary.count:0;
- const count=blocked?Math.min(3,prior+1):0;
- if(count||S.phoneBoundary){S.phoneBoundary={day,count};save()}
- return count;
-}
-function phoneSmallTalk(message){
- const q=phoneNormalize(message);
- if(/\b(?:how do you like (?:it|this place|where we are)|do you like (?:it here|this place|where we are)|what do you think of (?:this place|where we are)|suka (?:di sini|tempat ini))\b/.test(q)||/ここ(?:は|が)?(?:どう|好き|すき)/.test(q))return 'place';
- if(/\b(?:do you need anything|do you need something|can i get you anything|can i help you|what do you need|butuh (?:apa|sesuatu)|perlu (?:apa|sesuatu))\b/.test(q)||/何か(?:いる|必要)|なにか(?:いる|ほしい)/.test(q))return 'need';
- if(/\b(?:are you happy|do you feel happy|are you excited|kamu (?:senang|bahagia))\b/.test(q)||/うれしい|嬉しい|しあわせ|幸せ/.test(q))return 'happy';
- if(/\b(?:how are you|how do you feel|how are you feeling|how s it going|how was your day|apa kabar|bagaimana perasaanmu|gimana kabarmu)\b/.test(q)||/元気|げんき|気分は|きぶんは/.test(q))return 'feel';
- if(/^(?:hi|hello|hey|hai|halo|こんにちは|こんばんは|おはよう)$/.test(q))return 'hello';
- if(/^(?:thanks|thank you|terima kasih|makasih|ありがとう|ありがとうございます)$/.test(q))return 'thanks';
- if(/^(?:bye|goodbye|see you|see you later|sampai nanti|dadah|またね|さようなら)$/.test(q))return 'bye';
- return null;
-}
-function phoneMath(message,language){
- const q=message.normalize('NFKC').toLowerCase();
- const m=q.match(/^(?:(?:what is|whats|what's|how much is|calculate|solve|berapa(?: hasil dari)?|hitung)\s+)?([-+]?\d{1,7}(?:\.\d{1,6})?)\s*(\+|-|−|×|\*|÷|\/|x|plus|minus|times|divided by|tambah|kurang|kali|bagi|たす|ひく|かける|わる)\s*([-+]?\d{1,7}(?:\.\d{1,6})?)\s*(?:[=?.!？。]|はいくつ|は何|はなに|berapa)*\s*$/u);
- if(!m)return null;
- const left=Number(m[1]),right=Number(m[3]),op=m[2];
- const add=['+','plus','tambah','たす'].includes(op),sub=['-','−','minus','kurang','ひく'].includes(op),mul=['*','×','x','times','kali','かける'].includes(op);
- if(!add&&!sub&&!mul&&right===0)return PHONE_SOCIAL[language].zero;
- const n=add?left+right:sub?left-right:mul?left*right:left/right;
- const format=new Intl.NumberFormat(language,{maximumFractionDigits:6,useGrouping:false});
- return format.format(left)+' '+(add?'+':sub?'−':mul?'×':'÷')+' '+format.format(right)+' = '+format.format(n);
-}
-const PHONE_GRAMMAR_ALIASES={
- 'g1a':['topic marker','topic particle','wa particle','desu','助詞は','partikel wa'],
- 'g1b':['possessive particle','no particle','partikel no'],
- 'g1c':['question particle','ka particle','partikel ka'],
+const PHONE_PROMPTS={
+ hello:['Hi!','こんにちは！','Hai!'],
+ feel:['How are you feeling?','きぶんは どう？','Bagaimana perasaanmu?'],
+ happy:['Are you happy?','うれしい？','Apa kamu senang?'],
+ place:['How do you like it here?','ここは どう？','Apa kamu suka di sini?'],
+ need:['Do you need anything?','なにか いる？','Apa kamu butuh sesuatu?'],
+ thanks:['Thank you!','ありがとう！','Terima kasih!'],
+ bye:['See you later!','またね！','Sampai nanti!']
 };
-const phoneNormalize=value=>String(value||'').normalize('NFKC').toLowerCase().replace(/[’']/g,'').replace(/[^\p{L}\p{N}]+/gu,' ').trim();
-const phoneJapanese=value=>/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(value);
-const phoneNames=value=>[value,TR[value]?.[0],TR[value]?.[1]].filter(Boolean);
-const PHONE_LESSONS=[];
-let phoneSession=null,phoneDetector=null;
-function phoneBuildIndex(){
- if(PHONE_LESSONS.length)return;
+let phoneSession=null;
+function phoneQuestionPicker(language,copy){
+ const index=language==='ja'?1:language==='id'?2:0;
+ const select=el('select',{'aria-label':copy.placeholder});
+ select.append(el('option',{value:'',disabled:true,selected:true},copy.placeholder));
+ const questions=[];
+ let lessonCount=0;
+ const add=(group,label,answer,entry)=>{
+  questions.push({label,answer,entry});
+  group.append(el('option',{value:String(questions.length)},label));
+ };
  WORLDS.forEach((world,wi)=>world.lessons.forEach(lesson=>{
-  if(lesson.gate)return;
-  const note=GNOTES[lesson.note],terms=[];
+  if(lesson.gate||!S.done.includes(lesson.id))return;
+  const note=GNOTES[lesson.note],entry={world,wi,lesson,note};
+  const group=el('optgroup',{label:T(world.name)+' · '+T(lesson.title)});
+  if(note)add(group,note.p,phoneAnswer({entry,term:null},language),entry);
   const keys=[...new Set([...(lesson.items||[]),...(lesson.words||[]),...(lesson.kana||[]),...(lesson.kanji||[])])];
   for(const key of keys){
    const item=I[key];
-   if(!item)continue;
-   const gloss=item.en,indonesian=MEAN_ID[gloss];
-   terms.push({key,item,aliases:[...new Set([key,item.w,item.rd,...(item.r||[]),gloss,indonesian].map(phoneNormalize).filter(Boolean))]});
+   if(!item?.en&&item?.kind!=='kana')continue;
+   const word=item.w||key,reading=item.r?.[0];
+   add(group,word+(reading?' · '+reading:''),phoneAnswer({entry,term:{item,key}},language),entry);
   }
-  const topic=[...phoneNames(lesson.title),...(note?[note.p,...note.t,...(PHONE_GRAMMAR_ALIASES[lesson.note]||[])]:[])].flatMap(s=>{
-   const plain=s.replace(/^(grammar|kanji|kana|katakana|story):\s*/i,'').replace(/^the\s+/i,'');
-   return [s,plain,plain.replace(/て-form/i,'te-form')];
-  });
-  PHONE_LESSONS.push({world,wi,lesson,note,terms,topic:[...new Set(topic.map(phoneNormalize).filter(Boolean))]});
+  if(group.children.length){select.append(group);lessonCount++}
  }));
-}
-function phoneMatch(question,followup){
- const q=phoneNormalize(question);
- if(!q)return null;
- if(followup&&/^(example|another example|an example please|can you give (me )?an example|show me an example|れい|例|例文|例をおしえて|contoh|contohnya|beri contoh)$/.test(q))return followup;
- phoneBuildIndex();
- const lone=q.replace(/^(what (does|is)|how (do you|to) say|meaning of|translate|apa arti|apa itu|arti|jelaskan)\s+/,'').replace(/\s+(mean|in japanese|dalam bahasa jepang)$/,'');
- const padded=' '+lone+' ';
- function weight(alias){
-  if(q===alias||lone===alias)return 100+alias.length;
-  if((alias.length>=2||phoneJapanese(alias))&&padded.includes(' '+alias+' '))return 40+alias.length;
-  if(alias.length>=2&&phoneJapanese(alias)&&q.includes(alias))return 43+alias.length;
-  return 0;
- }
- let best=null,score=0;
- for(const entry of PHONE_LESSONS){
-  const completed=S.done.includes(entry.lesson.id);
-  for(const candidate of [{term:null,aliases:entry.topic},...entry.terms.map(term=>({term,aliases:term.aliases}))]){
-   for(const alias of candidate.aliases){
-    const w=weight(alias);
-    // A precise topic or word wins before progress breaks ties.
-    const rank=w?w*4+(completed?2:0)+(candidate.term?1:0):0;
-    if(rank>score){score=rank;best={entry,term:candidate.term};}
-   }
-  }
- }
- return best;
-}
-function phoneLanguage(message){
- const clean=message.replace(/[“”「」『』]/g,'');
- if(/\b(apa|arti|artinya|bagaimana|tolong|bahasa|jelaskan|contoh|makasih|kenapa|yang|itu|kabar|berapa|hitung|butuh|suka|senang|halo|hai|terima kasih|sampai nanti)\b/i.test(clean))return 'id';
- if(/\b(what|why|how|explain|mean|meaning|say|translate|example|please|thanks|hello|hi|hey|happy|need|thank you|bye|goodbye|where|calculate)\b/i.test(clean))return 'en';
- if(phoneJapanese(clean))return 'ja';
- return null;
+ const smallTalk=el('optgroup',{label:copy.smallTalk});
+ for(const [type,labels] of Object.entries(PHONE_PROMPTS))add(smallTalk,labels[index],PHONE_SOCIAL[language][type]);
+ const math=el('optgroup',{label:copy.math});
+ for(const [question,answer] of [['3 + 4','7'],['9 − 3','6'],['8 × 7','56'],['24 ÷ 6','4']])add(math,question+' = ?',question+' = '+answer);
+ select.append(smallTalk,math);
+ return {select,questions,lessonCount};
 }
 function phoneAnswer(hit,language){
  const copy=PHONE_COPY[language],index=language==='ja'?1:language==='id'?2:0;
- if(!hit)return copy.unknown;
  const {entry,term}=hit;
- const {lesson,world,note}=entry;
- if(!S.done.includes(lesson.id)){
-  const locate=name=>phoneNames(name)[index]||name;
-  return copy.later(locate(lesson.title),locate(world.name));
- }
+ const {note}=entry;
  if(!term&&note){
   const example=note.x?.[0];
   return note.p+'\n'+note.r[index]+(example?'\n'+copy.example+': '+example[0]+(index!==1?' — '+example[index===2?2:1]:''):'');
@@ -6982,61 +6900,17 @@ function phoneAnswer(hit,language){
   if(item.kind==='kana')return copy.kana(word,reading);
   const gloss=index===2?(MEAN_ID[item.en]||item.en):item.en;
   let text=language==='ja'?copy.kana(word,reading||key)+' 英語では「'+item.en+'」だよ。':copy.learned(word,reading,gloss);
-  const example=note?.x?.[0]||entry.terms.find(candidate=>candidate.key!==key&&candidate.key.includes(key)&&candidate.item.en);
+  const example=note?.x?.[0];
   if(Array.isArray(example))text+='\n'+copy.example+': '+example[0]+(index!==1?' — '+example[index===2?2:1]:'');
-  else if(example)text+='\n'+copy.example+': '+example.key;
   return text;
  }
- const example=entry.terms.find(candidate=>candidate.item.en);
- if(example)return copy.example+': '+phoneAnswer({entry,term:example},language);
- return copy.unknown;
-}
-async function phoneTranslate(text,sourceLanguage,targetLanguage){
- if(!window.Translator)throw new Error('Translation unavailable');
- const options={sourceLanguage,targetLanguage};
- if(await Translator.availability(options)==='unavailable')throw new Error('Language unavailable');
- const translator=await Translator.create(options);
- try{return await translator.translate(text)}finally{translator.destroy?.()}
-}
-async function phoneReply(message,session,signal){
- const direct=phoneLanguage(message);
- let language=direct||session.language;
- let target=language,query=message;
- if(!direct&&!phoneBoundary(message)&&!phoneSmallTalk(message)&&!phoneMath(message,language)&&phoneDetector){
-  try{
-   const detector=await phoneDetector;
-   const guess=(await detector?.detect(message))?.[0];
-   const tag=guess?.detectedLanguage?.split('-')[0];
-   if(tag&&tag!=='und'&&guess.confidence>.72&&message.length>=12){
-    target=tag;
-    if(PHONE_COPY[tag])language=tag;
-    else{query=await phoneTranslate(message,tag,'en');language='en'}
-   }
-  }catch{
-   if(!PHONE_COPY[target]){
-    if(!signal?.aborted)phoneRecordBoundary(false);
-    return {text:PHONE_COPY[language].supported};
-   }
-  }
- }
- if(signal?.aborted)return {text:''};
- const blocked=phoneBoundary(message)||phoneBoundary(query);
- const boundaryCount=phoneRecordBoundary(blocked);
- const social=phoneSmallTalk(query),math=phoneMath(query,language);
- const hit=blocked||social||math?null:phoneMatch(query,session.lastHit);
- const mood=PHONE_SOCIAL[language];
- let text=blocked?mood[boundaryCount>=3?'locked':boundaryCount===2?'second':'first']:social?mood[social]:math||phoneAnswer(hit,language);
- if(target!==language){
-  try{text=await phoneTranslate(text,language,target)}
-  catch{if(!blocked)return {text:PHONE_COPY[language].supported};}
- }
- return {text,hit,language,locked:boundaryCount>=3};
+ return '';
 }
 function phoneClose(restoreFocus=false){
  if(!phoneSession)return;
- const {panel,icon,button,abort}=phoneSession;
+ const {panel,icon,button,timer}=phoneSession;
  phoneSession=null;
- abort.abort();panel.remove();icon.remove();
+ clearTimeout(timer);panel.remove();icon.remove();
  $('s-home').classList.remove('pocket-phone-open');
  button.setAttribute('aria-expanded','false');
  if(restoreFocus)button.focus();
@@ -7046,59 +6920,51 @@ function phoneOpen(button){
  if(phoneSession){phoneClose(true);return}
  if(!S.active)return;
  const language=PHONE_COPY[S.lang]?S.lang:'en',copy=PHONE_COPY[language];
- if(!phoneDetector&&window.LanguageDetector)phoneDetector=LanguageDetector.create().catch(()=>null);
  const history=el('div',{class:'pocket-phone-history',role:'log','aria-live':'polite'});
- const input=el('input',{type:'text',maxlength:'240',autocomplete:'off',placeholder:copy.placeholder,'aria-label':copy.placeholder});
- const send=el('button',{type:'submit',class:'bigbtn'},copy.send);
- const form=el('form',{class:'pocket-phone-form'},input,send);
+ const {select,questions,lessonCount}=phoneQuestionPicker(language,copy);
+ const send=el('button',{type:'submit',class:'bigbtn',disabled:true},copy.send);
+ const form=el('form',{class:'pocket-phone-form'},select,send);
  const close=el('button',{type:'button',class:'iconbtn','aria-label':copy.close,onclick:()=>phoneClose(true)},'×');
  const panel=el('section',{id:'pocketPhoneChat',class:'pocket-phone-chat','aria-label':copy.title},
   el('header',{},pocketIcon('mojimo-phone'),el('div',{},el('b',{},copy.title),el('small',{},PET[S.active].name)),close),history,form);
  const icon=pocketIcon('mojimo-phone','pocket-phone-emote');
- const session=phoneSession={button,panel,icon,language,abort:new AbortController(),lastHit:null};
+ const session=phoneSession={button,panel,icon,timer:null};
  $('s-home').append(panel);$('s-home').classList.add('pocket-phone-open');
  $('petWrap').append(icon);button.setAttribute('aria-expanded','true');
  const append=(text,who,attrs={})=>{
   const message=el('div',{class:'pocket-phone-message '+who,...attrs},text);
   history.append(message);history.scrollTop=history.scrollHeight;return message;
  };
- if(phoneLockActive()){append(PHONE_SOCIAL[language].locked,'friend');form.remove()}
- else append(copy.welcome,'friend');
+ if(S.phoneBoundary?.day===dayStr(Date.now())&&S.phoneBoundary.count>=3){
+  append(PHONE_SOCIAL[language].locked,'friend');
+  form.remove();
+  return;
+ }
+ append(copy.welcome,'friend');
+ if(!lessonCount)append(copy.empty,'friend');
  panel.addEventListener('keydown',event=>{if(event.key==='Escape')phoneClose(true)});
- form.addEventListener('submit',async event=>{
+ select.addEventListener('change',()=>{send.disabled=!select.value});
+ form.addEventListener('submit',event=>{
   event.preventDefault();
-  const message=input.value.trim();
-  if(!message||send.disabled||phoneLockActive())return;
-  append(message,'player');
-  input.value='';send.disabled=true;
+  const question=questions[Number(select.value)-1];
+  if(!question||send.disabled)return;
+  append(question.label,'player');
+  select.value='';select.disabled=true;send.disabled=true;
   const typing=append('...','friend',{'aria-label':copy.typing});
-  const delay=new Promise(resolve=>setTimeout(resolve,3000));
-  const request=new AbortController();
-  let timer;
-  const timeout=new Promise(resolve=>{
-   timer=setTimeout(()=>{request.abort();resolve({text:copy.supported})},12000);
-  });
-  const cancel=()=>request.abort();
-  session.abort.signal.addEventListener('abort',cancel,{once:true});
-  const response=phoneReply(message,session,request.signal).catch(()=>({text:copy.supported}));
-  const [answer]=await Promise.all([Promise.race([response,timeout]),delay]);
-  clearTimeout(timer);
-  session.abort.signal.removeEventListener('abort',cancel);
-  if(phoneSession!==session)return;
-  typing.remove();
-  const bubble=append(answer.text,'friend');
-  if(answer.language)session.language=answer.language;
-  if(answer.locked||phoneLockActive()){form.remove();return}
-  if(answer.hit){
-   session.lastHit=answer.hit;
-   const hit=answer.hit.entry;
-   bubble.append(el('button',{type:'button',class:'link',onclick:()=>{
-    phoneClose();S.jWorld=hit.wi;save();go('journey');
-    document.querySelector(`[data-lesson="${hit.lesson.id}"]`)?.click();
-   }},(PHONE_COPY[session.language]||copy).jump));
-   history.scrollTop=history.scrollHeight;
-  }
-  send.disabled=false;
+  session.timer=setTimeout(()=>{
+   if(phoneSession!==session)return;
+   typing.remove();
+   const bubble=append(question.answer,'friend');
+   if(question.entry){
+    const {wi,lesson}=question.entry;
+    bubble.append(el('button',{type:'button',class:'link',onclick:()=>{
+     phoneClose();S.jWorld=wi;save();go('journey');
+     document.querySelector(`[data-lesson="${lesson.id}"]`)?.click();
+    }},copy.jump));
+    history.scrollTop=history.scrollHeight;
+   }
+   select.disabled=false;
+  },3000);
  });
 }
 
