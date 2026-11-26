@@ -1794,6 +1794,15 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
 #pocketHomeTickets .pocket-icon{width:20px}
 .pg-ticket-guide>.pocket-icon{width:70px;height:50px;margin:0 auto 8px;object-fit:contain;image-rendering:pixelated}
 .pg-entry-modal>.pg-ticket-badge{margin-block:8px;display:flex}
+.pg-quantity-table{width:100%;table-layout:fixed;margin:6px 0 14px;border:1px solid #cdb38d;border-spacing:0;border-radius:10px;overflow:hidden;background:#fff8e8;font-size:.92rem;color:#422819}
+.pg-quantity-table th,.pg-quantity-table td{padding:6px 2px;border-bottom:1px solid #e5d3b4;border-right:1px solid #e5d3b4;text-align:center;line-height:1.2}
+.pg-quantity-table thead th{background:#f3e5c9}
+.pg-quantity-table th:first-child{width:29%}
+.pg-quantity-table th[scope=row]{background:#fbefda}
+.pg-quantity-table tr>:last-child{border-right:0}
+.pg-quantity-table tbody tr:last-child>*{border-bottom:0}
+.pg-quantity-table b,.pg-quantity-table small{display:block}
+.pg-quantity-table small{margin-top:3px;color:#705744;font-size:.72rem;font-weight:650;overflow-wrap:anywhere}
 
 .gtreat{width:96px;height:96px;margin:8px auto}.gtreat img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}.hci-wotd img{width:34px!important;height:34px!important;object-fit:contain;display:block}.wotd-art{width:84px;height:84px;object-fit:contain;display:block;margin:0 auto 6px}.lr-event-card #seasonIco img{width:44px!important;height:44px!important}img[src*="lr-season-"]{image-rendering:auto!important;object-fit:contain}
 </style>
@@ -6411,16 +6420,20 @@ Object.assign(TR,{
  'Remove one':['1つ へらす','Kurangi satu'],
  'Add an item first.':['メニューから えらんでね。','Pilih menu terlebih dahulu.']
 });
+const PG_CAFE_COUNTS={
+ 'つ':[['ひとつ','hitotsu'],['ふたつ','futatsu'],['みっつ','mittsu']],
+ 'こ':[['いっこ','ikko'],['にこ','niko'],['さんこ','sanko']],
+ 'はい':[['いっぱい','ippai'],['にはい','nihai'],['さんばい','sanbai']]
+};
 function pgCafe(g){
  let dishes=[];
  const draw=()=>{
  if(!dishes.length)dishes=shuffle([...PG_FOODS]);
  g.round++;g.lock=false;g.body.replaceChildren();
  const f=dishes.pop(),q=g.round<3?1:rnd([1,2,3]);
- const counters={'つ':['ひとつ','ふたつ','みっつ'],'はい':['いっぱい','にはい','さんばい'],'こ':['いっこ','にこ','さんこ']};
- const readings={'つ':['hitotsu','futatsu','mittsu'],'はい':['ippai','nihai','sanbai'],'こ':['ikko','niko','sanko']};
- const jp=f.jp+'を '+(g.round<3?'':counters[f.counter][q-1]+' ')+'ください。';
- const r=f.r+' o '+(g.round<3?'':readings[f.counter][q-1]+' ')+'kudasai.';
+ const [quantity,reading]=PG_CAFE_COUNTS[f.counter][q-1];
+ const jp=f.jp+'を '+(g.round<3?'':quantity+' ')+'ください。';
+ const r=f.r+' o '+(g.round<3?'':reading+' ')+'kudasai.';
  g.body.append(el('p',{class:'sub'},'Serve as many orders as you can before three mistakes.'));
  pgPrompt(g,jp,r,rnd(S.owned.filter(id=>stageOf(id)!=='egg'))||pgFriend());
  let pay=null;
@@ -6582,6 +6595,10 @@ Object.assign(TR,{
  'How to play': ['あそびかた','Cara bermain'],
  'Don’t remind me again today':['きょうは もう あそびかたを ひょうじしない','Jangan ingatkan lagi hari ini'],
  'Menu refresher':['メニューの おさらい','Tinjauan menu'],
+ 'Counter':['かぞえ方','Kata bantu'],
+ 'General items':['いろいろなもの','Barang umum'],
+ 'Small items':['小さなもの','Benda kecil'],
+ 'Cups and glasses':['飲みもの','Gelas dan cangkir'],
  'Quantity refresher':['かぞえかたの おさらい','Tinjauan cara menghitung'],
  'Seasonal event':['きせつの イベント','Acara musiman'],
  'Finish lessons to earn Arcade Tickets for Play Together.':['レッスンで あそびチケットを あつめよう。','Selesaikan pelajaran untuk mendapat Tiket Arkade.'],
@@ -6649,8 +6666,15 @@ function pgEntryBlock(mode){
 function pgCafeRefresher(){
  const list=el('ul',{class:'pg-menu-refresher'});
  PG_FOODS.forEach((food,i)=>list.append(el('li',{},pocketIcon('cafe-'+PG_FOOD_ART[i]),el('span',{},el('b',{lang:'ja'},food.jp),el('small',{},food.price+' 円')))));
+ const rows=[['つ','General items'],['こ','Small items'],['はい','Cups and glasses']].map(([counter,label])=>
+  el('tr',{},el('th',{scope:'row'},el('b',{lang:'ja','data-noromaji':'','data-nofuri':''},counter==='はい'?'杯':counter),el('small',{},label)),
+   ...PG_CAFE_COUNTS[counter].map(([word,reading])=>el('td',{},
+    el('b',{lang:'ja','data-noromaji':'','data-nofuri':''},word),S.romaji?el('small',{},reading):null))));
+ const quantities=el('table',{class:'pg-quantity-table','aria-labelledby':'pgQuantityTitle'},
+  el('thead',{},el('tr',{},el('th',{scope:'col'},'Counter'),...[1,2,3].map(n=>el('th',{scope:'col'},String(n))))),
+  el('tbody',{},...rows));
  return el('section',{},el('h4',{},T('Menu refresher')+' · '+PG_FOODS.length),list,
-  el('h4',{},'Quantity refresher'),el('p',{lang:'ja'},'1–3 · ひとつ、ふたつ、みっつ / いっこ、にこ、さんこ / いっぱい、にはい、さんばい'));
+  el('h4',{id:'pgQuantityTitle'},'Quantity refresher'),quantities);
 }
 function pgRequestEntry(mode,launch){
  const blocked=pgEntryBlock(mode);
