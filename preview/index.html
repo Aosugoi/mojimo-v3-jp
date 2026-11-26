@@ -12,61 +12,101 @@
 @media(max-width:745px){.hero{grid-template-columns:1fr;padding-top:34px;gap:24px}.cards{grid-template-columns:1fr}.nav>a:first-child{display:none}.features{padding-bottom:35px}}
 @media(max-width:360px){.wrap{width:calc(100% - 28px)}.brand{gap:5px}.brand img{width:25px}.nav .button{padding-inline:10px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.pet{animation:none}}
+ .lang-switch{display:flex;gap:3px;padding:3px;border:1px solid var(--line);border-radius:11px;background:#f8ecd4}
+.lang-switch button{display:grid;place-items:center;width:42px;height:38px;padding:3px;border:1px solid transparent;border-radius:7px;background:transparent;cursor:pointer}
+.lang-switch button[aria-pressed=true]{background:#fff9ee;border-color:#9aab83;box-shadow:0 1px #bdc4a1}
+.lang-switch img{width:27px;height:19px;object-fit:contain}
+@media(max-width:745px){.nav{gap:8px}.nav>a.button{display:none}}
 </style>
 </head>
 <body>
-<header><div class="wrap bar">
-<a class="brand" href="./" aria-label="MOJIMO Beta home"><img class="pixel" src="https://aosugoi.github.io/mojimo-v3-jp/beta-v1.0.jp/assets/pocket/mountain.png" alt=""> MOJIMO <span class="badge">BETA</span></a>
-<nav class="nav" aria-label="Main"><a href="#explore">Explore</a><a class="button" href="https://aosugoi.github.io/mojimo-v3-jp/v.beta.1.0.jp/">Play the beta</a></nav>
+<header id="top"><div class="wrap bar">
+<a class="brand" href="#top" aria-label="MOJIMO Beta home" data-ja-label="MOJIMO ベータ版のトップへ"><img class="pixel" src="https://aosugoi.github.io/mojimo-v3-jp/beta-v1.0.jp/assets/pocket/mountain.png" alt=""> MOJIMO <span class="badge">BETA</span></a>
+<nav class="nav" aria-label="Main" data-ja-label="メインナビゲーション"><a href="#explore" data-ja="ゲーム紹介">Explore</a><a class="button" href="https://aosugoi.github.io/mojimo-v3-jp/v.beta.1.0.jp/" data-ja="ベータ版で遊ぶ">Play the beta</a>
+<div class="lang-switch" role="group" aria-label="Preview language" data-ja-label="プレビューの言語">
+<button type="button" data-lang="en" lang="en" aria-label="English" aria-pressed="true"><img src="https://aosugoi.github.io/mojimo-v3-jp/beta-v1.0.jp/assets/pocket/flag-en.png" alt="" class="pixel"></button>
+<button type="button" data-lang="ja" lang="ja" aria-label="日本語" aria-pressed="false"><img src="https://aosugoi.github.io/mojimo-v3-jp/beta-v1.0.jp/assets/pocket/flag-ja.png" alt="" class="pixel"></button>
+</div></nav>
 </div></header>
 <main class="wrap">
 <section class="hero" aria-labelledby="hero-title">
 <div>
-<p class="kicker"><img class="pixel" src="https://aosugoi.github.io/mojimo-v3-jp/beta-v1.0.jp/assets/pocket/leaf.png" alt=""> Pocket Adventure</p>
-<h1 id="hero-title">Learn Japanese. <em>Grow together.</em></h1>
-<p class="intro">Pick a mysterious egg and bring your Mojimo along for bite-sized Japanese lessons, vocabulary games, and little adventures.</p>
-<div class="actions"><a class="button" href="https://aosugoi.github.io/mojimo-v3-jp/v.beta.1.0.jp/">Play MOJIMO Beta</a><span class="languages">English · 日本語</span></div>
+<p class="kicker"><img class="pixel" src="https://aosugoi.github.io/mojimo-v3-jp/beta-v1.0.jp/assets/pocket/leaf.png" alt=""> <span data-ja="ポケットアドベンチャー">Pocket Adventure</span></p>
+<h1 id="hero-title"><span data-ja="日本語を学ぼう。">Learn Japanese.</span> <em data-ja="いっしょに育とう。">Grow together.</em></h1>
+<p class="intro" data-ja="ふしぎな卵を選んで、もじもと冒険へ。短い日本語レッスンや、ことば遊びを楽しもう。">Pick a mysterious egg and bring your Mojimo along for bite-sized Japanese lessons, vocabulary games, and little adventures.</p>
+<div class="actions"><a class="button" href="https://aosugoi.github.io/mojimo-v3-jp/v.beta.1.0.jp/" data-ja="MOJIMO ベータ版で遊ぶ">Play MOJIMO Beta</a><span class="languages" data-ja="日本語・英語">English · 日本語</span></div>
 </div>
-<figure class="frame" aria-label="Try three scenes from MOJIMO">
+<figure class="frame" aria-label="Try three scenes from MOJIMO" data-ja-label="MOJIMOの3つの風景をプレビュー">
 <div class="scene">
 <img id="landscape" class="landscape" src="https://aosugoi.github.io/mojimo-v3-jp/beta-v1.0.jp/assets/bg/ajisai.webp" alt="">
 <img id="preview-pet" class="pet pixel" src="https://aosugoi.github.io/mojimo-v3-jp/beta-v1.0.jp/assets/slot29-baby.webp" alt="Baby Nekorin">
 <span class="scene-name" id="scene-name" aria-live="polite">Rainy Garden · Baby Nekorin</span>
 </div>
-<div class="scene-options" role="group" aria-label="Preview backdrop">
-<button type="button" aria-pressed="true" data-scene="ajisai" data-label="Rainy Garden" data-pet="slot29" data-pet-name="Nekorin">Rainy Garden</button>
-<button type="button" aria-pressed="false" data-scene="beach" data-label="Beach" data-pet="slot01" data-pet-name="Ahirun">Beach</button>
-<button type="button" aria-pressed="false" data-scene="fuji" data-label="Mount Fuji" data-pet="slot21" data-pet-name="Kirarin">Mount Fuji</button>
+<div class="scene-options" role="group" aria-label="Preview backdrop" data-ja-label="風景を選ぶ">
+<button type="button" aria-pressed="true" data-scene="ajisai" data-label="Rainy Garden" data-label-ja="雨の庭" data-ja="雨の庭" data-pet="slot29" data-pet-name="Nekorin" data-pet-name-ja="ネコリン">Rainy Garden</button>
+<button type="button" aria-pressed="false" data-scene="beach" data-label="Beach" data-label-ja="ビーチ" data-ja="ビーチ" data-pet="slot01" data-pet-name="Ahirun" data-pet-name-ja="アヒルン">Beach</button>
+<button type="button" aria-pressed="false" data-scene="fuji" data-label="Mount Fuji" data-label-ja="富士山" data-ja="富士山" data-pet="slot21" data-pet-name="Kirarin" data-pet-name-ja="キラリン">Mount Fuji</button>
 </div>
 </figure>
 </section>
 <section class="features" id="explore" aria-labelledby="features-title">
-<h2 id="features-title">What you can do in MOJIMO</h2>
+<h2 id="features-title" data-ja="MOJIMOでできること">What you can do in MOJIMO</h2>
 <div class="cards">
-<article class="card"><img class="pixel" src="https://aosugoi.github.io/mojimo-v3-jp/beta-v1.0.jp/assets/pocket/learn.png" alt="" loading="lazy"><div><h3>Follow the Journey</h3><p>Practice reading, listening, and everyday Japanese one lesson at a time.</p></div></article>
-<article class="card"><img class="pixel" src="https://aosugoi.github.io/mojimo-v3-jp/beta-v1.0.jp/assets/pocket/nav-friends.png" alt="" loading="lazy"><div><h3>Raise your Mojimo</h3><p>Hatch your egg, watch your companion grow, and spend time together at Home.</p></div></article>
-<article class="card"><img class="pixel" src="https://aosugoi.github.io/mojimo-v3-jp/beta-v1.0.jp/assets/pocket/activity-cafe.png" alt="" loading="lazy"><div><h3>Play together</h3><p>Serve orders in MOJIMO Café or put your vocabulary to work in arcade games.</p></div></article>
+<article class="card"><img class="pixel" src="https://aosugoi.github.io/mojimo-v3-jp/beta-v1.0.jp/assets/pocket/learn.png" alt="" loading="lazy"><div><h3 data-ja="学びの旅に出よう">Follow the Journey</h3><p data-ja="レッスンをひとつずつ進めながら、日本語の読み方や聞き取り、日常表現を練習しよう。">Practice reading, listening, and everyday Japanese one lesson at a time.</p></div></article>
+<article class="card"><img class="pixel" src="https://aosugoi.github.io/mojimo-v3-jp/beta-v1.0.jp/assets/pocket/nav-friends.png" alt="" loading="lazy"><div><h3 data-ja="もじもを育てよう">Raise your Mojimo</h3><p data-ja="卵をかえして、相棒の成長を見守ろう。ホームでいっしょに過ごせるよ。">Hatch your egg, watch your companion grow, and spend time together at Home.</p></div></article>
+<article class="card"><img class="pixel" src="https://aosugoi.github.io/mojimo-v3-jp/beta-v1.0.jp/assets/pocket/activity-cafe.png" alt="" loading="lazy"><div><h3 data-ja="いっしょに遊ぼう">Play together</h3><p data-ja="MOJIMOカフェで注文を受けたり、アーケードゲームで覚えたことばを使ったりしよう。">Serve orders in MOJIMO Café or put your vocabulary to work in arcade games.</p></div></article>
 </div>
 </section>
 </main>
-<footer><div class="wrap bottom"><span>MOJIMO Beta · Pocket Adventure</span><span>A Japanese learning game for your browser.</span></div></footer>
+<footer><div class="wrap bottom"><span data-ja="MOJIMO ベータ版 · ポケットアドベンチャー">MOJIMO Beta · Pocket Adventure</span><span data-ja="ブラウザで遊べる日本語学習ゲーム。">A Japanese learning game for your browser.</span></div></footer>
 <script>
 const scenery = document.querySelector('#landscape');
 const sceneName = document.querySelector('#scene-name');
-const buttons = Array.from(document.querySelectorAll('[data-scene]'));
+const sceneButtons = Array.from(document.querySelectorAll('[data-scene]'));
+const languageButtons = Array.from(document.querySelectorAll('[data-lang]'));
+const copy = Array.from(document.querySelectorAll('[data-ja]'), node => [node, node.textContent, node.dataset.ja]);
+const labels = Array.from(document.querySelectorAll('[data-ja-label]'), node => [node, node.getAttribute('aria-label'), node.dataset.jaLabel]);
 const pet = document.querySelector('#preview-pet');
 const backdropBase = new URL('.', scenery.src);
 const spriteBase = new URL('.', pet.src);
-for (const button of buttons) {
+const url = new URL(location.href);
+let language = url.searchParams.get('lang') === 'ja' ? 'ja' : 'en';
+let selected = sceneButtons[0];
+
+function renderSceneLabel() {
+  const {label, labelJa, petName, petNameJa} = selected.dataset;
+  pet.alt = language === 'ja' ? '赤ちゃんの' + petNameJa : 'Baby ' + petName;
+  sceneName.textContent = (language === 'ja' ? labelJa : label) + ' · ' + pet.alt;
+}
+
+function renderLanguage() {
+  document.documentElement.lang = language;
+  document.title = language === 'ja' ? 'MOJIMO ベータ版 | ポケットアドベンチャー' : 'MOJIMO Beta | Pocket Adventure';
+  for (const [node, en, ja] of copy) node.textContent = language === 'ja' ? ja : en;
+  for (const [node, en, ja] of labels) node.setAttribute('aria-label', language === 'ja' ? ja : en);
+  for (const button of languageButtons) button.setAttribute('aria-pressed', String(button.dataset.lang === language));
+  renderSceneLabel();
+}
+
+for (const button of languageButtons) {
   button.addEventListener('click', () => {
-    const {scene, label, pet: slot, petName} = button.dataset;
-    scenery.src = new URL(scene + '.webp', backdropBase);
-    pet.src = new URL(slot + '-baby.webp', spriteBase);
-    pet.alt = 'Baby ' + petName;
-    sceneName.textContent = label + ' · ' + pet.alt;
-    for (const option of buttons) option.setAttribute('aria-pressed', String(option === button));
+    language = button.dataset.lang;
+    url.searchParams.set('lang', language);
+    url.hash = location.hash;
+    history.replaceState(null, '', url);
+    renderLanguage();
   });
 }
+for (const button of sceneButtons) {
+  button.addEventListener('click', () => {
+    selected = button;
+    scenery.src = new URL(button.dataset.scene + '.webp', backdropBase);
+    pet.src = new URL(button.dataset.pet + '-baby.webp', spriteBase);
+    renderSceneLabel();
+    for (const option of sceneButtons) option.setAttribute('aria-pressed', String(option === selected));
+  });
+}
+renderLanguage();
 </script>
 </body>
 </html>
