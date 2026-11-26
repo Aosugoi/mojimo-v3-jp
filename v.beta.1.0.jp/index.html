@@ -6619,7 +6619,7 @@ Object.assign(TR,{
  'Cups and glasses':['飲みもの','Gelas dan cangkir'],
  'Advanced quantities (4–5)':['4と5のかぞえ方','Jumlah lanjutan (4–5)'],
  'Example from order 21 onward':['21件目以降の注文例','Contoh mulai pesanan ke-21'],
- 'Add 2 ramen and 4 teas to the receipt. Choose ¥400 for payment.':['レシートにラーメンを2つ、お茶を4杯入れ、支払いは400円を選ぼう。','Tambahkan 2 ramen dan 4 teh ke struk, lalu pilih ¥400 untuk pembayaran.'],
+ 'Add 2 ramen, 4 teas, and 1 rice ball to the receipt. Choose ¥480 for payment.':['レシートにラーメンを2つ、お茶を4杯、おにぎりを1個入れ、支払いは480円を選ぼう。','Tambahkan 2 ramen, 4 teh, dan 1 nasi kepal ke struk, lalu pilih ¥480 untuk pembayaran.'],
  'Quantity refresher':['かぞえかたの おさらい','Tinjauan cara menghitung'],
  'Seasonal event':['きせつの イベント','Acara musiman'],
  'Finish lessons to earn Arcade Tickets for Play Together.':['レッスンで あそびチケットを あつめよう。','Selesaikan pelajaran untuk mendapat Tiket Arkade.'],
@@ -6700,9 +6700,9 @@ function pgCafeRefresher(){
   el('h4',{id:'pgQuantityTitle'},'Quantity refresher'),quantityTable([1,2,3],'pgQuantityTitle'),
   el('h4',{id:'pgAdvancedQuantityTitle'},'Advanced quantities (4–5)'),quantityTable([4,5],'pgAdvancedQuantityTitle'),
   el('div',{class:'pg-cafe-hint'},el('b',{},'Example from order 21 onward'),
-   el('span',{lang:'ja','data-noromaji':'','data-nofuri':''},'ラーメンを ふたつ、おちゃを よんはい ください。'),
-   S.romaji?el('small',{},'Raamen o futatsu, ocha o yonhai kudasai.'):null,
-   el('span',{},'Add 2 ramen and 4 teas to the receipt. Choose ¥400 for payment.')));
+   el('span',{lang:'ja','data-noromaji':'','data-nofuri':''},'ラーメンを ふたつ、おちゃを よんはい、おにぎりを いっこ ください。'),
+   S.romaji?el('small',{},'Raamen o futatsu, ocha o yonhai, onigiri o ikko kudasai.'):null,
+   el('span',{},'Add 2 ramen, 4 teas, and 1 rice ball to the receipt. Choose ¥480 for payment.')));
 }
 function pgRequestEntry(mode,launch){
  const blocked=pgEntryBlock(mode);
