@@ -29,14 +29,14 @@
 </div>
 <figure class="frame" aria-label="Try three scenes from MOJIMO">
 <div class="scene">
-<img id="landscape" class="landscape" src="https://aosugoi.github.io/mojimo-v3-jp/beta-v1.0.jp/assets/bg/sakura.webp" alt="">
-<img class="pet pixel" src="https://aosugoi.github.io/mojimo-v3-jp/beta-v1.0.jp/assets/slot01-baby.webp" alt="Inumaru">
-<span class="scene-name" id="scene-name" aria-live="polite">Sakura Village</span>
+<img id="landscape" class="landscape" src="https://aosugoi.github.io/mojimo-v3-jp/beta-v1.0.jp/assets/bg/ajisai.webp" alt="">
+<img id="preview-pet" class="pet pixel" src="https://aosugoi.github.io/mojimo-v3-jp/beta-v1.0.jp/assets/slot29-baby.webp" alt="Baby Nekorin">
+<span class="scene-name" id="scene-name" aria-live="polite">Rainy Garden · Baby Nekorin</span>
 </div>
 <div class="scene-options" role="group" aria-label="Preview backdrop">
-<button type="button" aria-pressed="true" data-scene="sakura" data-label="Sakura Village">Sakura</button>
-<button type="button" aria-pressed="false" data-scene="koi" data-label="Koi Pond">Koi Pond</button>
-<button type="button" aria-pressed="false" data-scene="meadow" data-label="Meadow">Meadow</button>
+<button type="button" aria-pressed="true" data-scene="ajisai" data-label="Rainy Garden" data-pet="slot29" data-pet-name="Nekorin">Rainy Garden</button>
+<button type="button" aria-pressed="false" data-scene="beach" data-label="Beach" data-pet="slot01" data-pet-name="Ahirun">Beach</button>
+<button type="button" aria-pressed="false" data-scene="fuji" data-label="Mount Fuji" data-pet="slot21" data-pet-name="Kirarin">Mount Fuji</button>
 </div>
 </figure>
 </section>
@@ -54,11 +54,16 @@
 const scenery = document.querySelector('#landscape');
 const sceneName = document.querySelector('#scene-name');
 const buttons = Array.from(document.querySelectorAll('[data-scene]'));
-const base = new URL('.', scenery.src);
+const pet = document.querySelector('#preview-pet');
+const backdropBase = new URL('.', scenery.src);
+const spriteBase = new URL('.', pet.src);
 for (const button of buttons) {
   button.addEventListener('click', () => {
-    scenery.src = new URL(button.dataset.scene + '.webp', base);
-    sceneName.textContent = button.dataset.label;
+    const {scene, label, pet: slot, petName} = button.dataset;
+    scenery.src = new URL(scene + '.webp', backdropBase);
+    pet.src = new URL(slot + '-baby.webp', spriteBase);
+    pet.alt = 'Baby ' + petName;
+    sceneName.textContent = label + ' · ' + pet.alt;
     for (const option of buttons) option.setAttribute('aria-pressed', String(option === button));
   });
 }
