@@ -1804,8 +1804,8 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
 .pg-quantity-table b,.pg-quantity-table small{display:block}
 .pg-quantity-table small{margin-top:3px;color:#705744;font-size:.72rem;font-weight:650;overflow-wrap:anywhere}
 .pg-shell[data-activity="cafe"] .pg-prompt b,.pg-shell[data-activity="cafe"] .pg-prompt small{white-space:pre-line}
-.pg-cafe-advanced{margin:0 0 12px;text-align:left}
-.pg-cafe-advanced summary{cursor:pointer;font-weight:800}
+.pg-cafe-hint{display:grid;gap:4px;margin:0 0 12px;padding:9px 11px;border:1px solid #cdb38d;border-radius:10px;background:#fff8e8;text-align:start;font-size:.86rem;line-height:1.4}
+.pg-cafe-hint small{color:#705744;font-size:.76rem}
 
 .gtreat{width:96px;height:96px;margin:8px auto}.gtreat img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}.hci-wotd img{width:34px!important;height:34px!important;object-fit:contain;display:block}.wotd-art{width:84px;height:84px;object-fit:contain;display:block;margin:0 auto 6px}.lr-event-card #seasonIco img{width:44px!important;height:44px!important}img[src*="lr-season-"]{image-rendering:auto!important;object-fit:contain}
 </style>
@@ -6617,7 +6617,9 @@ Object.assign(TR,{
  'General items':['いろいろなもの','Barang umum'],
  'Small items':['小さなもの','Benda kecil'],
  'Cups and glasses':['飲みもの','Gelas dan cangkir'],
- 'Advanced quantities':['4と5のかぞえ方','Jumlah 4 dan 5'],
+ 'Advanced quantities (4–5)':['4と5のかぞえ方','Jumlah lanjutan (4–5)'],
+ 'Example from order 21 onward':['21件目以降の注文例','Contoh mulai pesanan ke-21'],
+ 'Add 2 ramen and 4 teas to the receipt. Choose ¥400 for payment.':['レシートにラーメンを2つ、お茶を4杯入れ、支払いは400円を選ぼう。','Tambahkan 2 ramen dan 4 teh ke struk, lalu pilih ¥400 untuk pembayaran.'],
  'Quantity refresher':['かぞえかたの おさらい','Tinjauan cara menghitung'],
  'Seasonal event':['きせつの イベント','Acara musiman'],
  'Finish lessons to earn Arcade Tickets for Play Together.':['レッスンで あそびチケットを あつめよう。','Selesaikan pelajaran untuk mendapat Tiket Arkade.'],
@@ -6696,7 +6698,11 @@ function pgCafeRefresher(){
  };
  return el('section',{},el('h4',{},T('Menu refresher')+' · '+PG_FOODS.length),list,
   el('h4',{id:'pgQuantityTitle'},'Quantity refresher'),quantityTable([1,2,3],'pgQuantityTitle'),
-  el('details',{class:'pg-cafe-advanced'},el('summary',{id:'pgAdvancedQuantityTitle'},'Advanced quantities'),quantityTable([4,5],'pgAdvancedQuantityTitle')));
+  el('h4',{id:'pgAdvancedQuantityTitle'},'Advanced quantities (4–5)'),quantityTable([4,5],'pgAdvancedQuantityTitle'),
+  el('div',{class:'pg-cafe-hint'},el('b',{},'Example from order 21 onward'),
+   el('span',{lang:'ja','data-noromaji':'','data-nofuri':''},'ラーメンを ふたつ、おちゃを よんはい ください。'),
+   S.romaji?el('small',{},'Raamen o futatsu, ocha o yonhai kudasai.'):null,
+   el('span',{},'Add 2 ramen and 4 teas to the receipt. Choose ¥400 for payment.')));
 }
 function pgRequestEntry(mode,launch){
  const blocked=pgEntryBlock(mode);
