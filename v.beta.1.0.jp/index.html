@@ -1477,8 +1477,9 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
 .crane-mode .cr-int{left:19%;top:33.5%;width:62%;height:37%}
 .crane-mode .cr-frame{z-index:1;image-rendering:pixelated}
 .crane-mode .cr-lamp{display:none}
-.crane-mode .cr-gohit{left:51%;top:79%;width:27%;height:14%;min-height:44px;padding:0;display:grid;place-items:center;touch-action:manipulation}
-.crane-mode .cr-gohit .cr-go{position:static;display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.crane-mode .cr-gohit{left:58%;top:79.5%;width:24%;height:13%;min-height:44px;padding:0;display:grid;place-items:center;box-sizing:border-box;touch-action:manipulation;border:2px solid #50301d;border-radius:12px;background:linear-gradient(#469f87,#207765);box-shadow:inset 0 0 0 2px #e9bd78,0 3px #50301d;color:#fff6db;font-family:inherit;font-size:clamp(15px,4.8vw,24px);font-weight:900;line-height:1;text-shadow:0 1px #235e51;cursor:pointer}
+.crane-mode .cr-gohit:active,.crane-mode .cr-gohit.press{transform:translateY(2px);box-shadow:inset 0 0 0 2px #e9bd78,0 1px #50301d}
+.crane-mode .cr-gohit:disabled{opacity:1;cursor:wait}
 .crane-mode .cr-joy{top:82%;height:12%;border-radius:9px;background:#fff0cb;border-color:#633b25;box-shadow:0 3px 0 #633b25}
 .crane-mode .cr-joy.l{left:18%}
 .crane-mode .cr-joy.r{left:34%}
@@ -3465,8 +3466,7 @@ function openGacha(){
   const crane=el('div',{class:'crane'});
   const inner=el('div',{class:'cr-int'});
   const frame=el('img',{class:'cr-frame',src:CRA('frame.webp'),alt:'',draggable:'false'});
-  const goImg=el('img',{class:'cr-go',src:CRA('go.webp'),alt:'',draggable:'false'});
-  const goBtn=el('button',{type:'button',class:'cr-gohit','aria-label':'GO'},goImg);
+  const goBtn=el('button',{type:'button',class:'cr-gohit','aria-label':'GO'},'GO!');
   const joyL=el('button',{class:'cr-joy l','aria-label':'Move claw left'},'◀');
   const joyR=el('button',{class:'cr-joy r','aria-label':'Move claw right'},'▶');
   crane.append(inner,frame,el('span',{class:'cr-lamp l'}),el('span',{class:'cr-lamp r'}),goBtn,joyL,joyR);
@@ -3541,7 +3541,7 @@ function openGacha(){
     if(S.sound)unlockVoice();
     pocketCapsuleNotice(wrap,price);
     result.classList.add('hidden');wrap.classList.remove('revealed','mythwin');
-    goImg.classList.add('press');setTimeout(()=>goImg.classList.remove('press'),180);
+    goBtn.classList.add('press');setTimeout(()=>goBtn.classList.remove('press'),180);
     prize=rollGacha();pgCapsuleBonus(prize);save();drawBtn();spin.disabled=true;
     // pick the target
     let ti=-1;
