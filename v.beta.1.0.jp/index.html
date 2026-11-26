@@ -1803,6 +1803,9 @@ button{font-weight:800}button:focus-visible,select:focus-visible{outline:3px sol
 .pg-quantity-table tbody tr:last-child>*{border-bottom:0}
 .pg-quantity-table b,.pg-quantity-table small{display:block}
 .pg-quantity-table small{margin-top:3px;color:#705744;font-size:.72rem;font-weight:650;overflow-wrap:anywhere}
+.pg-shell[data-activity="cafe"] .pg-prompt b,.pg-shell[data-activity="cafe"] .pg-prompt small{white-space:pre-line}
+.pg-cafe-advanced{margin:0 0 12px;text-align:left}
+.pg-cafe-advanced summary{cursor:pointer;font-weight:800}
 
 .gtreat{width:96px;height:96px;margin:8px auto}.gtreat img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}.hci-wotd img{width:34px!important;height:34px!important;object-fit:contain;display:block}.wotd-art{width:84px;height:84px;object-fit:contain;display:block;margin:0 auto 6px}.lr-event-card #seasonIco img{width:44px!important;height:44px!important}img[src*="lr-season-"]{image-rendering:auto!important;object-fit:contain}
 </style>
@@ -6421,19 +6424,32 @@ Object.assign(TR,{
  'Add an item first.':['メニューから えらんでね。','Pilih menu terlebih dahulu.']
 });
 const PG_CAFE_COUNTS={
- 'つ':[['ひとつ','hitotsu'],['ふたつ','futatsu'],['みっつ','mittsu']],
- 'こ':[['いっこ','ikko'],['にこ','niko'],['さんこ','sanko']],
- 'はい':[['いっぱい','ippai'],['にはい','nihai'],['さんばい','sanbai']]
+ 'つ':[['ひとつ','hitotsu'],['ふたつ','futatsu'],['みっつ','mittsu'],['よっつ','yottsu'],['いつつ','itsutsu']],
+ 'こ':[['いっこ','ikko'],['にこ','niko'],['さんこ','sanko'],['よんこ','yonko'],['ごこ','goko']],
+ 'はい':[['いっぱい','ippai'],['にはい','nihai'],['さんばい','sanbai'],['よんはい','yonhai'],['ごはい','gohai']]
 };
+function pgCafeDifficulty(round){
+ const tier=Math.min(4,Math.floor((round-1)/10));
+ return {lines:1+tier,limit:Math.min(5,Math.max(3,tier+2)),menuSize:6+tier};
+}
 function pgCafe(g){
  let dishes=[];
  const draw=()=>{
- if(!dishes.length)dishes=shuffle([...PG_FOODS]);
  g.round++;g.lock=false;g.body.replaceChildren();
- const f=dishes.pop(),q=g.round<3?1:rnd([1,2,3]);
- const [quantity,reading]=PG_CAFE_COUNTS[f.counter][q-1];
- const jp=f.jp+'を '+(g.round<3?'':quantity+' ')+'ください。';
- const r=f.r+' o '+(g.round<3?'':reading+' ')+'kudasai.';
+ const {lines,limit,menuSize}=pgCafeDifficulty(g.round);
+ const order=new Map();
+ for(let i=0;i<lines;i++){
+   if(!dishes.length)dishes=shuffle(PG_FOODS.filter(food=>!order.has(food)));
+   const food=dishes.pop();
+   order.set(food,g.round<3?1:1+Math.floor(Math.random()*limit));
+ }
+ const requests=[...order].map(([food,amount])=>{
+   const [quantity,reading]=PG_CAFE_COUNTS[food.counter][amount-1];
+   return g.round<3?[food.jp+'を',food.r+' o']:[food.jp+'を '+quantity,food.r+' o '+reading];
+ });
+ const jp=requests.map(line=>line[0]).join('、\n')+' ください。';
+ const r=requests.map(line=>line[1]).join(',\n')+' kudasai.';
+ const price=[...order].reduce((sum,[food,amount])=>sum+food.price*amount,0);
  g.body.append(el('p',{class:'sub'},'Serve as many orders as you can before three mistakes.'));
  pgPrompt(g,jp,r,rnd(S.owned.filter(id=>stageOf(id)!=='egg'))||pgFriend());
  let pay=null;
@@ -6441,7 +6457,7 @@ function pgCafe(g){
  const rows=el('div',{}),total=el('b',{role:'status'});
  const adjust=(food,delta)=>{
    if(g.lock)return;
-   const amount=Math.min(3,(cart.get(food)||0)+delta);
+   const amount=Math.min(limit,(cart.get(food)||0)+delta);
    if(amount<=0)cart.delete(food);else cart.set(food,amount);
    renderReceipt();
  };
@@ -6454,12 +6470,12 @@ function pgCafe(g){
        el('span',{},name,el('small',{},food.price+' 円 × '+amount)),
        el('button',{'aria-label':T('Remove one')+' '+name,onclick:()=>adjust(food,-1)},'−'),
        el('b',{},String(amount)),
-       el('button',{'aria-label':T('Add one')+' '+name,disabled:amount>=3,onclick:()=>adjust(food,1)},'+'),
+       el('button',{'aria-label':T('Add one')+' '+name,disabled:amount>=limit,onclick:()=>adjust(food,1)},'+'),
        el('b',{},food.price*amount+' 円')));
    }
    total.textContent=T('Total')+' · '+[...cart].reduce((sum,[food,n])=>sum+food.price*n,0)+' 円';
  };
- for(const food of shuffle([f,...pick(PG_FOODS.filter(item=>item!==f),5)])){
+ for(const food of shuffle([...order.keys(),...pick(PG_FOODS.filter(item=>!order.has(item)),menuSize-order.size)])){
    const button=pgFoodButton(food,()=>adjust(food,1));
    button.append(el('small',{},food.price+' 円'));
    menu.append(button);
@@ -6467,20 +6483,22 @@ function pgCafe(g){
  receipt.append(el('h3',{},'Receipt'),rows,total);
  renderReceipt();
  g.body.append(menu,receipt);
- if(g.round>=5){const sums=shuffle([...new Set([f.price*q,f.price*q+50,Math.max(10,f.price*q-30)])]),payments=el('div',{class:'pg-options'});sums.forEach(n=>{const b=el('button',{'aria-pressed':'false',onclick:()=>{pay=n;payments.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)))}},n+' 円');payments.append(b)});g.body.append(el('b',{},'Payment'),payments)}
+ if(g.round>=5){const sums=shuffle([...new Set([price,price+50,Math.max(10,price-30)])]),payments=el('div',{class:'pg-options'});sums.forEach(n=>{const b=el('button',{'aria-pressed':'false',onclick:()=>{pay=n;payments.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)))}},n+' 円');payments.append(b)});g.body.append(el('b',{},'Payment'),payments)}
  g.foot.replaceChildren(el('button',{class:'bigbtn',onclick:()=>{
    if(g.lock)return;
    if(!cart.size){toast(T('Add an item first.'));return}
    g.lock=true;
-   const ok=cart.size===1&&cart.get(f)===q&&(g.round<5||pay===f.price*q);
-   pgMark(g,ok,I[f.k]?f.k:null);
+   const wrongItem=[...order].find(([food,amount])=>cart.get(food)!==amount)?.[0];
+   const ok=cart.size===order.size&&!wrongItem&&(g.round<5||pay===price);
+   const word=wrongItem?.k||(order.size===1?order.keys().next().value.k:null);
+   pgMark(g,ok,word&&I[word]?word:null);
    const records=pgDefaults().stats;
    if(ok&&g.score>(records.cafe?.score||0)){
      records.cafe={score:g.score,seconds:Math.round(g.elapsed)};
      save();
      pgHud(g);
    }
-   pgFeedback(g,ok,f.jp+' × '+q+(g.round>=5?' = '+f.price*q+' 円':''));
+   pgFeedback(g,ok,[...order].map(([food,amount])=>food.jp+' × '+amount).join(' · ')+(g.round>=5?' = '+price+' 円':''));
    pgLater(g,()=>{
      if(g.wrong>=3)pgFinish(g,T('Three orders were incorrect.'));
      else draw();
@@ -6548,7 +6566,7 @@ const PG_ENTRY = {
  memory:[['w1l1'],'Flip two cards to match Japanese with its meaning. Clear a board for another, or tap Finish to record your score.'],
  shiritori:[['w5l6'],'Pick or type a word that starts with the last kana. Repeats are invalid, and ending in ん loses the round.'],
  sort:[['n7l1'],'Pick a category, then sort the words by dakuten or vowel length before time runs out.'],
- cafe:[['w4l1','w4l6'],'Read the order, add each item to the receipt, and adjust the quantities. Later, choose the total in yen. Three wrong orders end your run.'],
+ cafe:[['w4l1','w4l6'],'Read the order, add each item to the receipt, and adjust the quantities. Later, choose the total in yen. Starting with order 11, customers ask for more dishes at once. Three wrong orders end your run.'],
  errands:[['n13l2','c4g1'],'Follow the Japanese directions on the map, then choose the item you were sent to buy.'],
  hide:[['c4g1'],'Read the location clue, then tap the matching hiding spot.'],
  requests:[['w5l1'],'Read each friend’s request and choose the item they ask for. A hatched friend is required.'],
@@ -6565,7 +6583,7 @@ const PG_INSTRUCTION_TRANSLATIONS = [
  ['カードを2まい めくって、ことばと いみを あわせよう。そろうと つぎの ボードへ。「おわる」で きろくするよ。','Balik dua kartu untuk mencocokkan kata Jepang dan artinya. Setelah papan beres, lanjut ke papan baru atau ketuk Selesai untuk menyimpan skor.'],
  ['さいごの かなで はじまる ことばを えらぶか いれよう。おなじ ことばは つかえず、んで おわると まけ。','Pilih atau ketik kata yang dimulai dengan kana terakhir. Kata tidak boleh diulang. Akhiran ん mengakhiri permainan.'],
  ['しゅるいを えらび、じかんないに だくてんや ぼいんの ながさで しわけよう。','Pilih kategori, lalu pilah menurut dakuten atau panjang vokal sebelum waktu habis.'],
- ['ちゅうもんを よみ、レシートの かずを あわせよう。あとで ごうけいも えらぶよ。3かい まちがえると おしまい。','Baca pesanan, tambahkan makanan ke struk, dan sesuaikan jumlah. Nanti pilih total yen. Tiga pesanan salah mengakhiri permainan.'],
+ ['ちゅうもんを よみ、レシートの かずを あわせよう。あとで ごうけいも えらぶよ。11件目からは、一度にいくつもの料理が注文されるよ。3かい まちがえると おしまい。','Baca pesanan, tambahkan makanan ke struk, dan sesuaikan jumlah. Nanti pilih total yen. Mulai pesanan ke-11, pelanggan meminta beberapa hidangan sekaligus. Tiga pesanan salah mengakhiri permainan.'],
  ['ちずで にほんごの あんないに したがい、たのまれた ものを えらぼう。','Ikuti petunjuk bahasa Jepang di peta, lalu pilih barang yang diminta.'],
  ['ばしょの ヒントを よみ、かくれている ところを タップしよう。','Baca petunjuk lokasi, lalu ketuk tempat persembunyian yang cocok.'],
  ['おねがいを よみ、ほしい ものを えらぼう。たまごが かえってから あそべるよ。','Baca permintaan lalu pilih barang yang diminta. Teman harus sudah menetas.'],
@@ -6599,6 +6617,7 @@ Object.assign(TR,{
  'General items':['いろいろなもの','Barang umum'],
  'Small items':['小さなもの','Benda kecil'],
  'Cups and glasses':['飲みもの','Gelas dan cangkir'],
+ 'Advanced quantities':['4と5のかぞえ方','Jumlah 4 dan 5'],
  'Quantity refresher':['かぞえかたの おさらい','Tinjauan cara menghitung'],
  'Seasonal event':['きせつの イベント','Acara musiman'],
  'Finish lessons to earn Arcade Tickets for Play Together.':['レッスンで あそびチケットを あつめよう。','Selesaikan pelajaran untuk mendapat Tiket Arkade.'],
@@ -6666,15 +6685,18 @@ function pgEntryBlock(mode){
 function pgCafeRefresher(){
  const list=el('ul',{class:'pg-menu-refresher'});
  PG_FOODS.forEach((food,i)=>list.append(el('li',{},pocketIcon('cafe-'+PG_FOOD_ART[i]),el('span',{},el('b',{lang:'ja'},food.jp),el('small',{},food.price+' 円')))));
+ const quantityTable=(amounts,heading)=>{
  const rows=[['つ','General items'],['こ','Small items'],['はい','Cups and glasses']].map(([counter,label])=>
   el('tr',{},el('th',{scope:'row'},el('b',{lang:'ja','data-noromaji':'','data-nofuri':''},counter==='はい'?'杯':counter),el('small',{},label)),
-   ...PG_CAFE_COUNTS[counter].map(([word,reading])=>el('td',{},
-    el('b',{lang:'ja','data-noromaji':'','data-nofuri':''},word),S.romaji?el('small',{},reading):null))));
- const quantities=el('table',{class:'pg-quantity-table','aria-labelledby':'pgQuantityTitle'},
-  el('thead',{},el('tr',{},el('th',{scope:'col'},'Counter'),...[1,2,3].map(n=>el('th',{scope:'col'},String(n))))),
+   ...amounts.map(n=>{const [word,reading]=PG_CAFE_COUNTS[counter][n-1];return el('td',{},
+    el('b',{lang:'ja','data-noromaji':'','data-nofuri':''},word),S.romaji?el('small',{},reading):null)})));
+ return el('table',{class:'pg-quantity-table','aria-labelledby':heading},
+  el('thead',{},el('tr',{},el('th',{scope:'col'},'Counter'),...amounts.map(n=>el('th',{scope:'col'},String(n))))),
   el('tbody',{},...rows));
+ };
  return el('section',{},el('h4',{},T('Menu refresher')+' · '+PG_FOODS.length),list,
-  el('h4',{id:'pgQuantityTitle'},'Quantity refresher'),quantities);
+  el('h4',{id:'pgQuantityTitle'},'Quantity refresher'),quantityTable([1,2,3],'pgQuantityTitle'),
+  el('details',{class:'pg-cafe-advanced'},el('summary',{id:'pgAdvancedQuantityTitle'},'Advanced quantities'),quantityTable([4,5],'pgAdvancedQuantityTitle')));
 }
 function pgRequestEntry(mode,launch){
  const blocked=pgEntryBlock(mode);
